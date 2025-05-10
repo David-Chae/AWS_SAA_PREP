@@ -6,19 +6,19 @@ Below are AWS Solutions Architect Associate Exam guide links:
 
 Below content is directly from the AWS Certified Solutions Architect Associate (SAA-C03) Exam Guide.
 
-The exam has the following content domains and weightings:
-• Domain 1: Design Secure Architectures (30% of scored content)
-• Domain 2: Design Resilient Architectures (26% of scored content)
-• Domain 3: Design High-Performing Architectures (24% of scored content)
-• Domain 4: Design Cost-Optimized Architectures (20% of scored content)
-
+The exam has the following content domains and weightings:  
+• Domain 1: Design Secure Architectures (30% of scored content)  
+• Domain 2: Design Resilient Architectures (26% of scored content)  
+• Domain 3: Design High-Performing Architectures (24% of scored content)  
+• Domain 4: Design Cost-Optimized Architectures (20% of scored content)  
+ 
 ## Domain 1: Design Secure Architectures
 
 ### Task Statement 1.1: Design secure access to AWS resources.
 #### Knowledge of:
-• Access controls and management across multiple accounts
-• AWS federated access and identity services (for example, AWS Identity and Access Management [IAM], AWS IAM Identity Center [AWS Single Sign-On])
-• AWS global infrastructure (for example, Availability Zones, AWS Regions)
+• Access controls and management across multiple accounts  
+• AWS federated access and identity services (for example, AWS Identity and Access Management [IAM], AWS IAM Identity Center [AWS Single Sign-On])  
+• AWS global infrastructure (for example, Availability Zones, AWS Regions)  
 • AWS security best practices (for example, the principle of least privilege)
 • The AWS shared responsibility model
 #### Skills in:
