@@ -1,4 +1,4 @@
-# AWS_SAA_PREP\
+# AWS_SAA_PREP
 Below are AWS Solutions Architect Associate Exam guide links:
 
 [AWS Certified Solutions Architect - Associate](https://aws.amazon.com/certification/certified-solutions-architect-associate/#exam-prep)
