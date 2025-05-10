@@ -1,7 +1,7 @@
 # AWS_SAA_PREP
 Below are AWS Solutions Architect Associate Exam guide links:
 
-[AWS Certified Solutions Architect - Associate](https://aws.amazon.com/certification/certified-solutions-architect-associate/#exam-prep)
+[AWS Certified Solutions Architect - Associate](https://aws.amazon.com/certification/certified-solutions-architect-associate/#exam-prep)  
 [Skill Builder - AWS Certified Solutions Architect - Associate](https://skillbuilder.aws/exam-prep/solutions-architect-associate)
 
 Below content is directly from the AWS Certified Solutions Architect Associate (SAA-C03) Exam Guide.
