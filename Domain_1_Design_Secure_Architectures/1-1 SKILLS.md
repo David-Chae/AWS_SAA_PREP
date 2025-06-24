@@ -1,12 +1,13 @@
 
 Skills in:
+```
 • Applying AWS security best practices to IAM users and root users (for example, multi-factor authentication [MFA])
 • Designing a flexible authorization model that includes IAM users, groups, roles, and policies
 • Designing a role-based access control strategy (for example, AWS Security Token Service [AWS STS], role switching, cross-account access)
 • Designing a security strategy for multiple AWS accounts (for example, AWS Control Tower, service control policies [SCPs])
 • Determining the appropriate use of resource policies for AWS services
 • Determining when to federate a directory service with IAM roles
-
+```
 Here’s a clean, crisp explanation of each, so you can clearly understand and review how to apply them in practice:
 
 ---
