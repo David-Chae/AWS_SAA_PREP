@@ -1,10 +1,11 @@
+```
 Knowledge of:
 • Access controls and management across multiple accounts
 • AWS federated access and identity services (for example, AWS Identity and Access Management [IAM], AWS IAM Identity Center [AWS Single Sign-On])
 • AWS global infrastructure (for example, Availability Zones, AWS Regions)
 • AWS security best practices (for example, the principle of least privilege)
 • The AWS shared responsibility model
-
+```
 
 Let’s break down **Domain 1.1: Design Secure Access to AWS Resources** clearly and concisely, focusing on exactly what you need to understand for the AWS Solutions Architect Associate certification. 
 Here’s an **outline** of the knowledge you should have:
