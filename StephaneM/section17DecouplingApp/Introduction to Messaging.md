@@ -67,3 +67,74 @@ AWS는 서비스 간 결합도를 낮추고 확장을 지원하는 다양한 메
 - AWS의 **SQS, SNS, Kinesis**는 확장 가능하고 느슨하게 결합된 아키텍처를 구현하는 핵심 서비스  
 
 
+
+# Introduction to Messaging  
+
+Welcome to the section on AWS integration and messaging.  
+
+---
+
+## Introduction to Application Communication Patterns  
+
+In this section, we will explore how to orchestrate interactions between different services using middleware.  
+When deploying multiple applications, they inevitably need to communicate with one another to share information and data.  
+
+There are two primary patterns of application communication:  
+
+1. **Synchronous communication**: where one application directly connects to another.  
+2. **Asynchronous communication**: where applications communicate via an intermediary such as a queue.  
+
+---
+
+## Synchronous Communication Example  
+
+For example, consider an online store with a **buying service** and a **shipping service**.  
+When an item is purchased, the buying service directly notifies the shipping service to send the item.  
+
+➡️ Here, the buying and shipping services are directly connected, representing **synchronous communication**.  
+
+---
+
+## Asynchronous Communication Example  
+
+Alternatively, in **asynchronous** or **event-based communication**, a middleware such as a **queue** connects the applications.  
+
+- The buying service places a message indicating a purchase into the queue.  
+- The shipping service then polls the queue for new messages and processes them independently.  
+
+This decouples the services, as they do not communicate directly.  
+
+---
+
+## Advantages of Asynchronous Communication  
+
+Synchronous communication can be problematic if one service becomes overwhelmed, such as during sudden spikes in traffic.  
+
+For instance, a video encoding service receiving **1,000 videos at once instead of the usual 10** could experience outages.  
+
+➡️ Decoupling applications using asynchronous communication allows the middleware layer to scale independently, handling traffic spikes more gracefully.  
+
+---
+
+## AWS Services for Decoupling and Scaling  
+
+AWS provides several services to facilitate scalable, decoupled communication:  
+
+- **SQS (Simple Queue Service):** Implements a queue model for asynchronous messaging.  
+- **SNS (Simple Notification Service):** Implements a publish/subscribe model.  
+- **Kinesis:** Supports real-time streaming and big data processing.  
+
+Using these services, applications can scale independently while the middleware scales efficiently as well.  
+
+In this section, we will learn about these three technologies and how they enable scalable, decoupled service communication.  
+
+---
+
+## Key Takeaways  
+
+- Applications communicate through **synchronous** or **asynchronous** patterns.  
+- **Synchronous communication** involves direct connections between services.  
+- **Asynchronous communication** uses middleware like queues to decouple services.  
+- AWS services such as **SQS, SNS, and Kinesis** enable scalable, decoupled communication. 
+
+
