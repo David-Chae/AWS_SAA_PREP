@@ -1,5 +1,4 @@
 
-```markdown
 # All AWS Storage Options Compared
 
 ## Overview of AWS Storage Options
@@ -94,8 +93,7 @@ Understanding the differences between AWS storage options is essential for selec
 - **DataSync** → Scheduled synchronization between on-premises and AWS or between AWS services.  
 - **Snow Family** → Physical devices for massive data transfers to AWS.  
 
----
-```
+
 
 ---
 
