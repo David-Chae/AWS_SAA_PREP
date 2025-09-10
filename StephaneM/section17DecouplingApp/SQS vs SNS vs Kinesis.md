@@ -76,7 +76,7 @@ This mode offers much higher throughput and allows more applications to read fro
 이 모드는 훨씬 높은 처리량을 제공하며, 더 많은 애플리케이션이 Kinesis 스트림에서 데이터를 읽을 수 있습니다.  
 
 Kinesis stores data persistently with the new Kinesis Data Streams, enabling replay of data.  
-Kinesis는 데이터를 영구적으로 저장하며, Kinesis Data Streams를 통해 데이터 재생(replay)을 지원합니다.  
+Kinesis는 데이터를 지속적으로 저장하며, Kinesis Data Streams를 통해 데이터 재생(replay)을 지원합니다.  
 
 It is typically used for real-time big data analytics and ETL (Extract, Transform, Load) processes.  
 주로 실시간 빅데이터 분석 및 ETL(추출, 변환, 적재) 프로세스에 사용됩니다.  
