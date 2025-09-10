@@ -94,4 +94,29 @@ That concludes the key points to remember about Amazon MQ for the exam.
 - Amazon MQ는 하나의 브로커 안에서 큐 기능(SQS 유사)과 토픽 기능(SNS 유사)을 모두 제공합니다.  
 
 - High availability is achieved through multi-AZ deployment with failover using Amazon EFS as backend storage to synchronize data between active and standby brokers.  
-- 고가용성은 다중 가용 영역(Multi-AZ) 배포와 Amazon EFS를 백엔드 스토리지로 사용하는 장애 조치를 통해 활성 브로커와 대기 브로커 간 데이터를 동기화하여 구현됩니다.  
+- 고가용성은 다중 가용 영역(Multi-AZ) 배포와 Amazon EFS를 백엔드 스토리지로 사용하는 장애 조치를 통해 활성 브로커와 대기 브로커 간 데이터를 동기화하여 구현됩니다.
+
+---
+
+A **message broker** is an intermediary software that facilitates communication between different applications or services.
+**메시지 브로커**는 서로 다른 애플리케이션이나 서비스 간의 통신을 용이하게 해주는 중개 소프트웨어입니다.
+
+It allows producers to send messages without needing to know the details of the consumers.
+메시지 브로커는 생산자가 소비자의 세부 사항을 알 필요 없이 메시지를 전송할 수 있도록 합니다.
+
+Consumers can receive messages without needing to know the details of the producers.
+소비자는 생산자의 세부 정보를 알 필요 없이 메시지를 받을 수 있습니다.
+
+Message brokers support asynchronous communication, meaning producers and consumers do not need to interact at the same time.
+메시지 브로커는 비동기 통신을 지원합니다. 즉, 생산자와 소비자가 동시에 상호작용할 필요가 없습니다.
+
+They often provide features like message queuing, routing, filtering, and transformation.
+메시지 브로커는 종종 메시지 큐잉, 라우팅, 필터링, 변환과 같은 기능을 제공합니다.
+
+Some common message broker technologies include RabbitMQ, ActiveMQ, and Amazon MQ.
+일반적인 메시지 브로커 기술로는 RabbitMQ, ActiveMQ, Amazon MQ 등이 있습니다.
+
+Message brokers are useful for decoupling applications, improving scalability, and ensuring reliable delivery of messages.
+메시지 브로커는 애플리케이션을 분리하고, 확장성을 높이며, 메시지의 신뢰할 수 있는 전달을 보장하는 데 유용합니다.
+
+
