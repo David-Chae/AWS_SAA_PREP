@@ -240,8 +240,6 @@ It is suitable for serverless application development when your data consists of
 
 - DynamoDB supports high availability across multiple availability zones and provides features like transactions, TTL for expiring data, and DAX for microsecond read latency.  
 - 다중 AZ 고가용성, 트랜잭션, TTL, DAX 지원  
-```
-
 
 → 안정성과 성능 확보.
 
