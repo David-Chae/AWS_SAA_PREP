@@ -196,6 +196,3 @@ Standard와 Advanced 파라미터 등급이 있으며, Advanced는 만료(TTL) �
   Parameter Store는 CloudFormation, Secrets Manager와 통합되며, AWS 리소스를 위한 공개 파라미터도 지원합니다.
 
 🎮 게임보상: "SSM 파라미터 전략가" +700 XP 🔑
-
-```
-
