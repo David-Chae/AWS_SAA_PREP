@@ -1,0 +1,81 @@
+```markdown
+# IAM Security Tools  
+IAM 보안 도구  
+→ IAM에서 제공하는 보안 도구와 활용 방법에 대한 강의입니다.  
+
+---
+
+## IAM Security Tools  
+IAM 보안 도구  
+→ 이 섹션의 마지막 부분에서 IAM 보안 도구를 소개합니다.  
+
+We are nearing the end of the section, but first, let us discuss the types of security tools available in IAM.  
+섹션이 거의 끝나가지만, 먼저 IAM에서 제공되는 보안 도구 유형을 살펴봅시다.  
+→ IAM 보안 도구 종류 소개  
+
+---
+
+## IAM Credentials Report  
+IAM 자격 증명 보고서  
+→ 계정 수준에서 사용자 자격 정보를 확인할 수 있는 도구  
+
+One such tool is the IAM Credentials Report, which operates at the account level. This report contains all your account's users and the status of their various credentials.  
+IAM Credentials Report는 계정 수준에서 작동하며, 계정의 모든 사용자와 각 사용자의 자격 증명 상태를 포함합니다.  
+→ 계정 전체 사용자 정보 및 자격 상태 확인 가능  
+
+We will generate this report now and examine it.  
+지금 이 보고서를 생성하고 내용을 확인해보겠습니다.  
+→ 실습 또는 예제 통해 보고서 확인  
+
+---
+
+## IAM Access Advisor  
+IAM 액세스 어드바이저  
+→ 사용자 수준에서 권한 사용 현황을 확인할 수 있는 도구  
+
+The second security tool in IAM is called IAM Access Advisor. This tool functions at the user level and displays the service permissions granted to a user along with the last time those services were accessed.  
+IAM의 두 번째 보안 도구는 IAM Access Advisor입니다. 이 도구는 사용자 수준에서 작동하며, 사용자에게 부여된 서비스 권한과 해당 서비스에 마지막으로 접근한 시간을 표시합니다.  
+→ 권한 사용 현황과 마지막 접근 시간 확인 가능  
+
+This information is very helpful because it relates to the principle of least privilege.  
+이 정보는 최소 권한 원칙(Principle of Least Privilege)과 관련이 있어 매우 유용합니다.  
+→ 최소 권한 원칙 적용에 도움  
+
+Using IAM Access Advisor, we can identify which permissions are not used and reduce the permissions a user has to align with the principle of least privilege.  
+IAM Access Advisor를 사용하면 사용되지 않는 권한을 식별하고, 최소 권한 원칙에 맞게 사용자 권한을 줄일 수 있습니다.  
+→ 불필요한 권한 제거로 보안 강화  
+
+I will see you in the next lecture to demonstrate how to use these security tools.  
+다음 강의에서 이 보안 도구들을 실제로 사용하는 방법을 보여드리겠습니다.  
+→ 실습 예고  
+
+---
+
+## Key Takeaways  
+핵심 요약  
+→ 기억해야 할 사항  
+
+- IAM provides security tools such as the IAM Credentials Report and IAM Access Advisor.  
+  IAM은 IAM Credentials Report와 IAM Access Advisor와 같은 보안 도구를 제공합니다.  
+  → IAM 보안 도구 개요  
+
+- The IAM Credentials Report offers an account-level overview of all users and their credential statuses.  
+  IAM Credentials Report는 계정 수준에서 모든 사용자와 자격 증명 상태를 개괄적으로 보여줍니다.  
+  → 계정 전체 사용자 정보 확인 가능  
+
+- IAM Access Advisor operates at the user level, displaying granted service permissions and their last access times.  
+  IAM Access Advisor는 사용자 수준에서 부여된 서비스 권한과 마지막 접근 시간을 표시합니다.  
+  → 권한 사용 현황 모니터링  
+
+- These tools assist in enforcing the principle of least privilege by identifying unused permissions for reduction.  
+  이러한 도구들은 사용되지 않는 권한을 식별하여 최소 권한 원칙을 적용하는 데 도움을 줍니다.  
+  → 최소 권한 원칙 적용 지원  
+
+---
+
+🎮 **게임 보상:**  
+- IAM Credentials Report 생성 실습 +20  
+- IAM Access Advisor 분석 경험치 +30  
+- 최소 권한 원칙 이해 +20  
+🏆 “IAM Security Analyst” 칭호 획득!
+```
