@@ -1,0 +1,89 @@
+```markdown
+# IAM Roles Hands On  
+IAM 역할 실습  
+→ AWS에서 역할(Role)을 생성하고 권한을 부여하는 실습 강의입니다.  
+
+---
+
+## Introduction to AWS Roles  
+AWS 역할 소개  
+→ 실습 목표와 역할의 기본 개념 설명  
+
+Let's practice using roles in AWS. On the left-hand side, click on "Roles". You may notice that some roles have already been created for your accounts. There could be two or more roles; the exact number does not matter. Our goal is to create our own role here.  
+AWS에서 역할을 실습해봅시다. 왼쪽 메뉴에서 "Roles"를 클릭하세요. 이미 생성된 역할이 몇 개 있을 수 있습니다. 개수는 중요하지 않습니다. 여기서 우리의 목표는 새로운 역할을 만드는 것입니다.  
+→ 기존 역할 확인 후 새 역할 생성 실습  
+
+A role is a way to grant AWS entities permissions to perform actions on AWS. There are different kinds of roles available. Currently, you can create five types of roles. For this hands-on exercise and for the exam, the role you need to know about is a role for an AWS service.  
+역할(Role)은 AWS 엔티티가 AWS에서 작업을 수행할 수 있도록 권한을 부여하는 방법입니다. 다양한 유형의 역할이 있으며, 현재 다섯 가지 유형의 역할을 생성할 수 있습니다. 이번 실습과 시험에서는 AWS 서비스용 역할을 주로 다룹니다.  
+→ 서비스용 역할 중심 실습  
+
+---
+
+## Selecting the Service for the Role  
+역할에 적용할 서비스 선택  
+→ 어떤 AWS 서비스에 역할을 연결할지 선택하는 과정  
+
+Let's choose the role for an AWS service. Next, we need to select the service to which this role will apply. When you click on the service selection, you will see commonly used services such as EC2 and Lambda, as well as roles for nearly every service on AWS. This is a very common and important concept to understand in AWS.  
+AWS 서비스용 역할을 선택합시다. 다음으로 이 역할을 적용할 서비스를 선택해야 합니다. 서비스 선택을 클릭하면 EC2, Lambda 등 자주 사용되는 서비스와 거의 모든 AWS 서비스용 역할이 표시됩니다. AWS에서 매우 일반적이고 중요한 개념입니다.  
+→ 서비스별 역할 선택 이해  
+
+For this example, we will create a role for an EC2 instance, which we will use later in the EC2 section. So, select EC2 as the service, and the use case is simply EC2. We can disregard the other options here.  
+이번 예제에서는 EC2 인스턴스용 역할을 생성합니다. 이후 EC2 섹션에서 사용할 예정입니다. 따라서 서비스는 EC2로 선택하고, 사용 사례도 EC2로 지정합니다. 다른 옵션은 무시합니다.  
+→ 실습 목적에 맞게 서비스 지정  
+
+---
+
+## Attaching a Policy to the Role  
+역할에 정책 연결  
+→ 역할에 권한 정책(Permission Policy) 적용  
+
+Click "Next" to proceed. Since we are creating a role for an EC2 instance, we need to attach a policy. I will attach the "IAM Read Only Access" policy to allow my EC2 instance to read information from IAM.  
+"Next"를 클릭합니다. EC2 인스턴스용 역할을 생성하므로 정책을 연결해야 합니다. 예제로 "IAM Read Only Access" 정책을 연결하여 EC2 인스턴스가 IAM 정보를 읽을 수 있도록 합니다.  
+→ 정책 연결로 권한 부여  
+
+After attaching the policy, click "Next" again. Now, enter a name for the role. I will name it DemoRoleForEC2. Then, select the trusted entities. This setting indicates that this role can be assumed by the EC2 service, which defines it as a role for Amazon EC2.  
+정책 연결 후 다시 "Next"를 클릭합니다. 이제 역할 이름을 입력합니다. 예제에서는 "DemoRoleForEC2"로 지정합니다. 다음으로 Trusted entities를 선택합니다. 이 설정은 EC2 서비스가 이 역할을 사용할 수 있도록 지정하는 것으로, Amazon EC2용 역할임을 정의합니다.  
+→ 역할 이름 지정 및 신뢰할 서비스 설정  
+
+We verify the permissions to ensure the role has IAM read-only access, and then create the role. Once created, the role appears in the list of roles.  
+권한이 IAM 읽기 전용 액세스를 포함하는지 확인한 후 역할을 생성합니다. 생성되면 역할 목록에 표시됩니다.  
+→ 생성 후 목록 확인  
+
+You can verify that the permissions attached to this role are correct. However, you cannot use this role immediately because we need to reach the EC2 section to apply it. We will use it when we get to that section.  
+이 역할에 연결된 권한이 올바른지 확인할 수 있습니다. 다만, 바로 사용할 수는 없습니다. EC2 섹션에서 적용해야 하기 때문입니다. 해당 섹션에서 사용하게 됩니다.  
+→ 권한 검증 가능, 적용 시점은 EC2 섹션  
+
+In the meantime, you have learned how to create a role for Amazon EC2 and how to attach the correct permissions to it.  
+이 과정에서 Amazon EC2용 역할 생성과 올바른 권한 연결 방법을 학습했습니다.  
+→ 실습 요점 정리  
+
+---
+
+## Key Takeaways  
+핵심 요약  
+→ 기억해야 할 사항  
+
+- Roles in AWS are used to grant permissions to AWS entities.  
+  AWS에서 역할(Role)은 AWS 엔티티에 권한을 부여하는 데 사용됩니다.  
+  → 권한 부여 수단  
+
+- There are multiple types of roles, but the focus here is on roles for AWS services.  
+  역할에는 여러 유형이 있지만, 여기서는 AWS 서비스용 역할에 집중합니다.  
+  → 서비스용 역할 중심  
+
+- Creating a role involves selecting the service it applies to, attaching policies, and naming the role.  
+  역할 생성 과정에는 적용 서비스 선택, 정책 연결, 역할 이름 지정이 포함됩니다.  
+  → 생성 과정 요약  
+
+- The created role must be assumed by the specified service to function correctly.  
+  생성된 역할은 지정된 서비스가 사용해야 올바르게 작동합니다.  
+  → 역할 적용 원리  
+
+---
+
+🎮 **게임 보상:**  
+- EC2용 역할 생성 실습 +40  
+- 정책 연결 경험치 +30  
+- AWS 서비스 권한 이해 +30  
+🏆 “AWS Role Creator” 칭호 획득!
+```
