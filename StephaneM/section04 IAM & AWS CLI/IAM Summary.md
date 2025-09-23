@@ -1,0 +1,85 @@
+```markdown
+# IAM Summary  
+IAM 요약  
+→ AWS Identity and Access Management(IAM)의 핵심 개념을 정리합니다.  
+
+---
+
+## IAM Summary  
+IAM 요약  
+→ IAM 강의의 핵심 사항 요약  
+
+This summary covers the key concepts of AWS Identity and Access Management (IAM).  
+이 요약에서는 AWS IAM의 주요 개념을 다룹니다.  
+→ 강의 핵심 포인트 정리  
+
+IAM users should be mapped to actual physical users within your company. Each user will have a password for accessing the AWS Management Console.  
+IAM 사용자는 회사 내 실제 사용자에 대응되어야 합니다. 각 사용자는 AWS Management Console에 접근할 수 있는 비밀번호를 가집니다.  
+→ 사용자 계정과 실제 사람 매핑  
+
+Users can be organized into groups. Policies, which are JSON documents outlining permissions, can be attached to either users or groups to manage access rights.  
+사용자는 그룹으로 조직할 수 있습니다. 권한을 정의한 JSON 문서인 정책(Policy)은 사용자 또는 그룹에 부착하여 접근 권한을 관리할 수 있습니다.  
+→ 그룹 단위 권한 관리  
+
+Roles can also be created. These roles serve as identities, but are intended for AWS services such as EC2 instances rather than individual users.  
+역할(Role)도 생성할 수 있습니다. 역할은 하나의 정체성으로 사용되지만 개별 사용자가 아닌 EC2 인스턴스와 같은 AWS 서비스용입니다.  
+→ AWS 서비스 권한 부여용 역할  
+
+For enhanced security, multi-factor authentication (MFA) can be enabled. Additionally, password policies can be set to enforce password strength and rotation for users.  
+보안을 강화하기 위해 다중 인증(MFA)을 활성화할 수 있습니다. 또한 비밀번호 정책을 설정해 강도와 회전 주기를 강제할 수 있습니다.  
+→ MFA와 비밀번호 정책 권장  
+
+AWS services can be managed using the Command Line Interface (CLI) or the Software Development Kit (SDK), which allows management through programming languages.  
+AWS 서비스는 CLI 또는 SDK를 사용하여 관리할 수 있으며, SDK는 프로그래밍 언어를 통해 관리할 수 있게 합니다.  
+→ CLI/SDK를 통한 관리  
+
+Access keys can be created to allow programmatic access to AWS services via the CLI or SDK.  
+CLI 또는 SDK를 통해 프로그램 방식으로 AWS에 접근할 수 있도록 액세스 키를 생성할 수 있습니다.  
+→ 프로그래밍 접근용 액세스 키  
+
+IAM usage can be audited by generating an IAM credentials report and by using the IAM access advisor service to review permissions and usage.  
+IAM 사용은 IAM 자격 증명 보고서를 생성하거나 IAM Access Advisor 서비스를 사용하여 권한 및 사용 내역을 검토함으로써 감사할 수 있습니다.  
+→ 사용 감사와 권한 점검  
+
+This concludes the lecture on IAM. Thank you for your attention, and I look forward to seeing you in the next lecture.  
+이로써 IAM 강의를 마칩니다. 경청해 주셔서 감사합니다. 다음 강의에서 뵙겠습니다.  
+→ 강의 마무리  
+
+---
+
+## Key Takeaways  
+핵심 요약  
+→ 기억해야 할 사항  
+
+- IAM users should be mapped to actual physical users within your company.  
+  IAM 사용자는 회사 내 실제 사용자와 매핑되어야 합니다.  
+  → 사용자 계정 매핑  
+
+- Users can be grouped, and policies attached to users or groups to define permissions.  
+  사용자는 그룹화할 수 있으며, 정책을 사용자 또는 그룹에 부착하여 권한을 정의할 수 있습니다.  
+  → 그룹 기반 권한 관리  
+
+- Roles can be created for AWS services like EC2 instances, serving as identities.  
+  EC2 인스턴스와 같은 AWS 서비스용 역할을 생성할 수 있으며, 이는 하나의 정체성으로 작동합니다.  
+  → 서비스 권한 역할 생성  
+
+- Security can be enhanced with multi-factor authentication (MFA) and password policies.  
+  MFA와 비밀번호 정책을 통해 보안을 강화할 수 있습니다.  
+  → 보안 강화  
+
+- AWS services can be managed via the CLI or SDK using access keys.  
+  액세스 키를 사용하여 CLI 또는 SDK를 통해 AWS 서비스를 관리할 수 있습니다.  
+  → CLI/SDK 관리  
+
+- IAM usage can be audited through credentials reports and the IAM access advisor service.  
+  IAM 사용 내역은 자격 증명 보고서와 Access Advisor 서비스를 통해 감사할 수 있습니다.  
+  → 감사 및 권한 검토  
+
+---
+
+🎮 **게임 보상:**  
+- IAM 핵심 개념 학습 +30  
+- 역할과 정책 이해 +20  
+- MFA와 액세스 키 보안 이해 +20  
+🏆 “IAM Master” 칭호 획득!
+```
