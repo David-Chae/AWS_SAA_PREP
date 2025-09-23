@@ -1,0 +1,149 @@
+```markdown
+# AWS Budget Setup  
+AWS 예산 설정  
+→ 이 강의에서는 AWS 예산과 알람을 설정하여 예기치 않은 비용이 발생하지 않도록 관리합니다.  
+
+---
+
+## Introduction to AWS Budget Setup  
+AWS 예산 설정 소개  
+→ 강의 목표와 예산 관리의 중요성 소개  
+
+In this lecture, we will set up a budget and an alarm for that budget for this course to ensure we do not spend any money or exceed a certain amount.  
+이 강의에서는 예산과 예산 알람을 설정하여 일정 금액 이상 지출되지 않도록 합니다.  
+→ 비용 관리 목적  
+
+To begin, we need to access the billing console. You can do this by clicking on the top right of your screen and then selecting Billing and Cost Management.  
+먼저 청구 콘솔에 접속해야 합니다. 화면 오른쪽 상단에서 클릭 후 'Billing and Cost Management'를 선택합니다.  
+→ 청구 콘솔 접근 방법  
+
+If you encounter an "Access Denied" message, this is likely because you are logged in as an IAM user. For example, I am logged in as an IAM user named Stephane from my accounts. Even though I have administrative access, I cannot access my billing data.  
+"Access Denied" 메시지가 뜨면 IAM 사용자로 로그인했기 때문일 가능성이 높습니다. 예: 제 계정에서 IAM 사용자 Stephane로 로그인했지만, 관리자 권한이 있어도 청구 데이터를 볼 수 없습니다.  
+→ IAM 사용자와 청구 권한  
+
+To fix this, you need to log in to your root account. In the root account, you will see the name of your account without the IAM user label. Click on the account name and go to Accounts.  
+이를 해결하려면 루트 계정으로 로그인해야 합니다. 루트 계정에서는 IAM 사용자 라벨 없이 계정 이름이 표시됩니다. 계정 이름을 클릭하고 'Accounts'로 이동합니다.  
+→ 루트 계정 사용 안내  
+
+Scroll down to find the section titled "IAM user and role access to billing information." By default, this is deactivated. You need to activate IAM access to allow IAM users with administrative privileges to access billing information.  
+"Billing 정보에 대한 IAM 사용자 및 역할 접근" 섹션까지 스크롤합니다. 기본값은 비활성화되어 있습니다. IAM 관리 권한 사용자가 청구 정보에 접근할 수 있도록 활성화해야 합니다.  
+→ IAM 접근 활성화  
+
+After activating IAM access, return to the billing console and refresh the page. It may take some time, but eventually, you will be able to see your billing data.  
+IAM 접근을 활성화한 후, 청구 콘솔로 돌아가 페이지를 새로고침합니다. 시간이 걸릴 수 있지만, 결국 청구 데이터를 볼 수 있습니다.  
+→ 청구 데이터 확인  
+
+---
+
+## Understanding the Billing Console  
+청구 콘솔 이해  
+→ 청구 콘솔의 기능과 데이터 확인 방법  
+
+Once you have access, the billing console provides various information such as month-to-date costs, total forecasted costs for the current month, and last month's total cost.  
+접근이 가능하면, 청구 콘솔에서는 이번 달 누적 비용, 예측 총 비용, 지난 달 총 비용 등 다양한 정보를 제공합니다.  
+→ 비용 개요 확인  
+
+You can view a cost breakdown by month and examine detailed bills. For example, looking at December 2023, you can find charges by service at the bottom of the page.  
+월별 비용 세부 내역과 상세 청구서를 확인할 수 있습니다. 예: 2023년 12월의 서비스별 비용 확인 가능.  
+→ 세부 비용 분석  
+
+Currently, I have 28 active services. For instance, the Elastic Compute Cloud (EC2) service shows a cost of 43 in the EU Ireland region. The breakdown includes Amazon Elastic Compute, NatGateway costing 35, EBS costs, Elastic IP costs, and others.  
+현재 28개의 활성 서비스가 있습니다. 예: EC2 서비스는 EU Ireland 리전에서 43 비용 발생, Amazon Elastic Compute, NatGateway(35), EBS, Elastic IP 등 포함.  
+→ 서비스별 비용 파악  
+
+This detailed billing information allows you to understand how each service is used and billed, enabling you to break down your bill effectively.  
+상세 청구 정보를 통해 각 서비스 사용량과 비용 구조를 이해하고, 청구서를 효과적으로 분석할 수 있습니다.  
+→ 비용 구조 이해  
+
+---
+
+## Monitoring Free Tier Usage  
+프리 티어 사용 모니터링  
+→ 무료 티어 사용량 확인  
+
+On the left-hand side of the billing console, you can access the Free Tier dashboard. AWS provides a free tier, and this dashboard shows your current usage, forecasted usage, and the limits of the free tier.  
+청구 콘솔 왼쪽에서 Free Tier 대시보드에 접근 가능합니다. AWS 무료 티어 제공, 현재 사용량, 예상 사용량, 한도를 보여줍니다.  
+→ 무료 사용량 관리  
+
+If your forecasted usage exceeds the free tier limits, the dashboard will indicate this in red, signaling that you will be billed. It is important to turn off any resources that might be incurring costs to avoid unexpected charges.  
+예상 사용량이 무료 티어를 초과하면, 대시보드가 빨간색으로 표시하여 비용 발생 가능성을 알립니다. 불필요한 리소스는 종료해야 합니다.  
+→ 예상 비용 경고  
+
+---
+
+## Creating a Budget and Setting Alerts  
+예산 생성 및 알람 설정  
+→ 예산과 알람 설정 방법  
+
+To create a budget, click on Budgets on the left-hand side. Here, you can create a budget that will alert you whenever you reach specified thresholds.  
+예산을 만들려면 왼쪽 'Budgets' 클릭. 지정한 임계치에 도달하면 알람을 받을 수 있습니다.  
+→ 예산 알람 설정  
+
+Let's create a budget using a simplified template. The first budget will be a zero spend budget, which means you will receive an alert as soon as you spend 1 cent.  
+간단한 템플릿으로 예산 생성. 첫 번째는 '제로 지출 예산', 1센트만 사용해도 알람 발생.  
+→ 최소 비용 알람  
+
+Name the budget "My Zero Spend Budget" and add your email address, for example, stephane@example.com. Then create the budget. You will receive an email as soon as your spending reaches 1 cent.  
+예산 이름: "My Zero Spend Budget", 이메일 입력 예: stephane@example.com. 생성 후, 1센트 지출 시 이메일 알람 수신.  
+→ 알람 이메일 설정  
+
+Alternatively, you can create a monthly cost budget. For example, set a monthly budget of 10 dollars and specify the email recipients. This budget will alert you when your spending approaches or exceeds this amount.  
+또는 월별 비용 예산 생성 가능. 예: 월 10달러, 이메일 수신자 지정. 예산 접근/초과 시 알람.  
+→ 월별 비용 알람  
+
+For this 10-dollar budget, you can set alerts to be sent when your actual spend reaches 85% and 100%, as well as when your forecasted spend is expected to reach 100%. This way, you can monitor your costs closely.  
+10달러 예산의 경우, 실제 사용량 85%, 100%, 예상 사용량 100% 시 알람 설정 가능. 비용 모니터링 가능.  
+→ 비용 관리  
+
+After creating the budget, you will see that the zero spend budget may already be exceeded if you have spent any money this month, and you will receive an email notification accordingly.  
+예산 생성 후, 이번 달 이미 사용금액이 있으면 제로 지출 예산 초과 상태 표시 및 이메일 알람 수신.  
+→ 즉시 알람 확인  
+
+---
+
+## Summary  
+요약  
+→ AWS 예산 설정 핵심 정리  
+
+With these budgets, access to the free tier dashboard, and detailed bill breakdowns, you should be able to diagnose any costing or billing issues you encounter during this course.  
+예산, 무료 티어 대시보드, 상세 청구 내역으로 강의 중 발생하는 비용 문제를 파악 가능.  
+→ 비용 문제 진단  
+
+This skill is essential when using AWS to manage your costs effectively and avoid unexpected charges.  
+AWS 사용 시 비용을 효율적으로 관리하고 예기치 않은 비용 발생 방지에 필수적입니다.  
+→ 비용 관리 능력  
+
+That concludes this lecture on AWS budget setup. I hope you found it helpful, and I look forward to seeing you in the next lecture.  
+이로써 AWS 예산 설정 강의를 마칩니다. 도움이 되었기를 바랍니다. 다음 강의에서 뵙겠습니다.  
+→ 강의 마무리  
+
+---
+
+## Key Takeaways  
+핵심 요약  
+→ 기억해야 할 사항  
+
+- Access to billing data requires enabling IAM user and role access in the root account.  
+  청구 데이터 접근은 루트 계정에서 IAM 사용자/역할 접근 활성화 필요.  
+  → 권한 설정  
+
+- The AWS Billing console provides detailed cost breakdowns by service and month.  
+  AWS 청구 콘솔은 서비스별, 월별 상세 비용 내역 제공.  
+  → 비용 분석  
+
+- The Free Tier dashboard helps monitor usage and forecast potential charges.  
+  Free Tier 대시보드로 사용량 확인 및 예상 비용 예측 가능.  
+  → 무료 티어 모니터링  
+
+- Setting up budgets and alarms can prevent unexpected AWS costs by sending alerts when thresholds are reached.  
+  예산과 알람 설정으로 비용 초과 시 알람 수신, 예상치 못한 비용 방지 가능.  
+  → 비용 경고  
+
+---
+
+🎮 **게임 보상:**  
+- AWS 예산 설정 학습 +30  
+- 청구 콘솔 이해 +20  
+- Free Tier 모니터링 및 알람 설정 +20  
+🏆 “AWS Cost Controller” 칭호 획득!
+```
