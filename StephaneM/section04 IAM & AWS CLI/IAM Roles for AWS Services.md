@@ -1,0 +1,77 @@
+```markdown
+# IAM Roles for AWS Services  
+AWS 서비스용 IAM 역할(IAM Roles)  
+→ AWS 서비스가 특정 작업을 수행할 때 필요한 권한을 부여하기 위해 사용하는 역할에 대한 강의입니다.  
+
+---
+
+## Introduction to IAM Roles  
+IAM 역할 소개  
+→ IAM의 마지막 구성 요소인 IAM Roles 개념을 설명합니다.  
+
+We need to discuss the last component of IAM, which is called IAM Roles. Some AWS services that we will be launching throughout this course need to perform actions on our behalf, on our account.  
+IAM의 마지막 구성 요소인 **IAM Roles**에 대해 논의해야 합니다. 이 강의에서 실행할 일부 AWS 서비스는 우리 계정을 대신하여 작업을 수행해야 합니다.  
+→ 서비스가 사용자 대신 작업할 수 있도록 권한 부여 필요  
+
+To perform these actions, they require permissions just like users do. Therefore, we need to assign permissions to AWS services, and to do so, we create what is called an IAM Role.  
+이러한 작업을 수행하려면 사용자와 마찬가지로 권한이 필요합니다. 따라서 AWS 서비스에 권한을 부여하기 위해 **IAM Role**을 생성합니다.  
+→ 역할을 통해 서비스 권한 관리  
+
+IAM Roles are similar to users, but they are intended to be used not by physical people, but instead by AWS services.  
+IAM Role은 사용자와 유사하지만, 실제 사람이 아닌 AWS 서비스가 사용하도록 설계되었습니다.  
+→ 사람 대신 서비스가 사용하는 계정 개념  
+
+This concept might be a bit confusing. For example, throughout this course, we will create an EC2 Instance, which is essentially a virtual server. This EC2 Instance may want to perform some actions on AWS, and to do so, we need to grant permissions to our EC2 Instance.  
+조금 혼란스러울 수 있습니다. 예를 들어, 이 강의에서 생성할 EC2 인스턴스는 가상 서버입니다. 이 EC2 인스턴스가 AWS에서 작업을 수행하려면 권한이 필요합니다.  
+→ EC2 같은 서비스에 역할을 연결  
+
+To grant these permissions, we create an IAM Role, and together, the EC2 Instance and the IAM Role form one entity.  
+이 권한을 부여하기 위해 IAM Role을 생성하며, EC2 인스턴스와 IAM Role이 하나의 엔티티처럼 작동합니다.  
+→ 역할과 인스턴스 연동  
+
+When the EC2 Instance tries to access some information from AWS, it will use the IAM Role. If the permissions assigned to the IAM Role are correct, then the EC2 Instance will be able to access the resource or perform the call it is trying to make.  
+EC2 인스턴스가 AWS 정보에 접근하려고 하면 IAM Role을 사용합니다. IAM Role에 올바른 권한이 부여되어 있으면, 인스턴스는 리소스에 접근하거나 호출을 수행할 수 있습니다.  
+→ 역할을 통해 안전하게 권한 적용  
+
+Some common IAM Roles include EC2 Instance roles, which I just described, but also roles for other AWS services that perform actions against AWS.  
+일반적인 IAM Role에는 앞서 설명한 EC2 인스턴스 역할 외에도, AWS에서 작업을 수행하는 다른 서비스용 역할도 있습니다.  
+→ 다양한 서비스용 역할 존재  
+
+For example, Lambda Function Roles or CloudFormation Roles.  
+예를 들어, Lambda 함수 역할(Lambda Function Roles)이나 CloudFormation 역할(CloudFormation Roles) 등이 있습니다.  
+→ 서비스별 역할 예시  
+
+This is a high-level overview. In the next lecture, we will create a role, although we will not use it until the following section. Let's proceed to create a role in the next lecture.  
+이것은 개괄적인 설명입니다. 다음 강의에서 역할을 생성할 예정이지만, 실제 사용은 이후 섹션에서 이루어집니다. 다음 강의에서 역할 생성 과정을 진행합시다.  
+→ 실습 예고  
+
+---
+
+## Key Takeaways  
+핵심 요약  
+→ IAM Roles에서 기억해야 할 사항  
+
+- IAM Roles allow AWS services to perform actions on your behalf by assigning permissions.  
+  IAM Role은 AWS 서비스가 사용자 대신 작업을 수행하도록 권한을 부여합니다.  
+  → 서비스 대리 수행 가능  
+
+- IAM Roles function like users but are intended for AWS services, not physical people.  
+  IAM Role은 사용자처럼 작동하지만, 실제 사람이 아닌 AWS 서비스용입니다.  
+  → 사람 계정과 유사하지만 서비스용  
+
+- EC2 Instances use IAM Roles to access AWS resources securely.  
+  EC2 인스턴스는 IAM Role을 사용하여 AWS 리소스에 안전하게 접근합니다.  
+  → 보안적 접근 보장  
+
+- Common IAM Roles include those for EC2 Instances, Lambda Functions, and CloudFormation.  
+  일반적인 IAM Role에는 EC2, Lambda 함수, CloudFormation용 역할이 포함됩니다.  
+  → 서비스별 역할 예시  
+
+---
+
+🎮 **게임 보상:**  
+- IAM Roles 개념 이해 +30  
+- EC2와 IAM Role 연동 +20  
+- 서비스 권한 관리 경험치 +20  
+🏆 “IAM 마스터” 칭호 획득!
+```
