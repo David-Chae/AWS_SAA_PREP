@@ -1,0 +1,125 @@
+```markdown
+# IAM Security Tools Hands On  
+IAM 보안 도구 실습  
+→ IAM 보안 도구를 실제로 사용하여 계정과 사용자 권한을 확인하는 실습입니다.  
+
+---
+
+## Generating a Credentials Report  
+자격 증명 보고서 생성  
+→ 사용자의 계정 보안 상태를 CSV 보고서로 확인하는 과정  
+
+To generate a credentials report, navigate to the left-hand side and click on Credential report. Then, select Download credential report, which will create a CSV file.  
+자격 증명 보고서를 생성하려면 왼쪽 메뉴에서 "Credential report"를 클릭한 후 "Download credential report"를 선택합니다. 그러면 CSV 파일이 생성됩니다.  
+→ CSV 파일로 계정 사용자 보안 정보 확인 가능  
+
+Since I am using a training account, the CSV file is not very extensive. However, it contains two rows: one for my root account and one for my user account named stephane.  
+제가 교육용 계정을 사용하므로 CSV 파일은 크지 않습니다. 그러나 두 개의 행이 포함되어 있습니다: 하나는 루트 계정, 다른 하나는 stephane 사용자 계정입니다.  
+→ 보고서 구성 이해  
+
+The report shows when each user was created, whether a password is enabled, when the password was last used and last changed, and when the next rotation is expected if password rotation is enabled.  
+보고서에는 각 사용자가 생성된 시점, 비밀번호 사용 여부, 마지막 사용 및 변경 시점, 그리고 비밀번호 회전이 활성화된 경우 다음 회전 시점이 표시됩니다.  
+→ 사용자 비밀번호 상태 및 사용 기록 확인  
+
+The report also indicates whether Multi-Factor Authentication (MFA) is active. For example, MFA is active on my root account but not on my stephane account.  
+보고서에는 다중 인증(MFA) 활성 여부도 표시됩니다. 예를 들어 루트 계정은 MFA가 활성화되어 있지만 stephane 계정은 그렇지 않습니다.  
+→ MFA 상태 확인  
+
+Additionally, it shows if access keys are generated. Access keys exist for my stephane account but not for my root account, along with details about when they were last rotated and last used.  
+또한 액세스 키가 생성되었는지도 보여줍니다. 제 stephane 계정에는 액세스 키가 존재하지만 루트 계정에는 없으며, 마지막 회전 및 사용 시점도 표시됩니다.  
+→ 액세스 키 사용 현황 확인  
+
+The report provides further information about other access keys and certificates.  
+보고서는 다른 액세스 키 및 인증서 정보도 제공합니다.  
+→ 추가 보안 정보 확인  
+
+This credentials report is extremely helpful for identifying users who have not changed their passwords or have not used their accounts recently.  
+이 자격 증명 보고서는 비밀번호를 변경하지 않았거나 최근에 계정을 사용하지 않은 사용자를 식별하는 데 매우 유용합니다.  
+→ 보안 점검 및 위험 사용자 확인  
+
+It provides a great way to determine which users require attention from a security standpoint.  
+보안 관점에서 주의가 필요한 사용자를 판단하는 훌륭한 방법을 제공합니다.  
+→ 보안 관리 효율성 향상  
+
+---
+
+## Using IAM Access Advisor  
+IAM 액세스 어드바이저 사용  
+→ 사용자별 AWS 서비스 접근 기록 확인  
+
+Next, let's examine the IAM Access Advisor. To do this, go to the user stephane, and on the right-hand side, click on Access Advisor.  
+다음으로 IAM Access Advisor를 살펴봅시다. stephane 사용자로 이동한 후 오른쪽에서 "Access Advisor"를 클릭합니다.  
+→ 사용자별 서비스 접근 내역 확인  
+
+Access Advisor displays which AWS services have been accessed by the user and when.  
+Access Advisor는 사용자가 접근한 AWS 서비스와 마지막 접근 시점을 보여줍니다.  
+→ 권한 사용 현황 시각화  
+
+For example, my user has accessed services such as Organizations, Health, Identity and Access Management (IAM), EC2, and Resource Explorer. These accesses occurred through interactions in the user interface.  
+예를 들어 제 사용자는 Organizations, Health, IAM, EC2, Resource Explorer 등 서비스에 접근했습니다. 이러한 접근은 UI 상호작용을 통해 발생했습니다.  
+→ UI 기반 접근 기록 확인  
+
+However, some services have not been accessed by this user, such as Alexa for Business and AWS App2Container.  
+하지만 일부 서비스(Alexa for Business, AWS App2Container)는 사용자가 접근하지 않았습니다.  
+→ 사용하지 않는 권한 확인  
+
+By using Access Advisor, you can determine whether the user has the appropriate permissions.  
+Access Advisor를 사용하면 사용자가 적절한 권한만 가지고 있는지 판단할 수 있습니다.  
+→ 최소 권한 원칙 적용  
+
+For instance, based on this access data, the user may only need access to a few services rather than all of them.  
+예를 들어 이 접근 데이터를 기반으로 사용자는 모든 서비스가 아닌 몇 가지 서비스에만 접근 권한이 필요할 수 있습니다.  
+→ 권한 최소화 가능  
+
+The Access Advisor interface allows you to drill down into service access details.  
+Access Advisor 인터페이스에서는 서비스 접근 세부 정보를 확인할 수 있습니다.  
+→ 세부 권한 분석  
+
+Additionally, if a user accesses a specific service, such as Amazon EC2, the tool indicates which administrator access granted permission to that service.  
+또한 사용자가 특정 서비스(Amazon EC2)에 접근하면, 어떤 관리자 권한이 해당 서비스 접근을 허용했는지 표시됩니다.  
+→ 권한 부여 경로 추적 가능  
+
+In summary, Access Advisor is very helpful when you need to implement granular user access permissions on AWS.  
+요약하면, Access Advisor는 AWS에서 세분화된 사용자 권한을 설정할 때 매우 유용합니다.  
+→ 세밀한 권한 관리 지원  
+
+---
+
+## Conclusion  
+결론  
+→ 실습 요약  
+
+That concludes this lecture. I hope you found it informative, and I look forward to seeing you in the next lecture.  
+이번 강의를 마칩니다. 유익했기를 바라며, 다음 강의에서 뵙겠습니다.  
+→ 실습 마무리  
+
+---
+
+## Key Takeaways  
+핵심 요약  
+→ 기억해야 할 사항  
+
+- Generated a credentials report to review user security details.  
+  자격 증명 보고서를 생성하여 사용자 보안 정보를 검토했습니다.  
+  → 사용자 계정 상태 확인  
+
+- Analyzed user password status, MFA activation, and access key usage.  
+  사용자 비밀번호 상태, MFA 활성화, 액세스 키 사용 현황을 분석했습니다.  
+  → 보안 설정 점검  
+
+- Used IAM Access Advisor to identify services accessed by a user.  
+  IAM Access Advisor를 사용하여 사용자가 접근한 서비스를 확인했습니다.  
+  → 권한 사용 분석  
+
+- Leveraged Access Advisor for refining granular user permissions on AWS.  
+  Access Advisor를 활용하여 AWS 사용자 권한을 세분화하고 최적화했습니다.  
+  → 최소 권한 적용  
+
+---
+
+🎮 **게임 보상:**  
+- Credentials Report 실습 +25  
+- Access Advisor 실습 +25  
+- 세분화 권한 관리 이해 +30  
+🏆 “IAM Security Inspector” 칭호 획득!
+```
