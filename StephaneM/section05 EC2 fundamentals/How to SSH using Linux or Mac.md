@@ -1,4 +1,4 @@
-````md
+
 # How to SSH using Linux or Mac  
 # 리눅스 또는 맥에서 SSH 접속 방법  
 → EC2 인스턴스에 접속하기 위해 Linux/Mac 환경에서 SSH 사용하는 방법을 설명하는 제목입니다.  
@@ -261,4 +261,4 @@ Note that if you stop and start your instance, the public IP address may change,
 * File permissions for the PEM key must be set to 0400 to avoid security errors.
   PEM 키 파일의 권한은 0400으로 설정해야 보안 오류를 피할 수 있습니다.
 
-```
+
