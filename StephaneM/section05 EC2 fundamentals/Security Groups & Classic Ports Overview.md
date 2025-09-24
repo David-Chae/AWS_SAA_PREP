@@ -1,0 +1,152 @@
+```md
+# Security Groups & Classic Ports Overview  
+# 시큐리티 그룹 & 기본 포트 개요  
+👉 AWS에서 EC2 인스턴스를 보호하는 방화벽 기능인 시큐리티 그룹과 자주 쓰이는 기본 포트에 대한 설명입니다.  
+
+---
+
+## Introduction to Security Groups  
+## 시큐리티 그룹 소개  
+👉 EC2 인스턴스를 둘러싼 방화벽 개념을 설명하는 부분입니다.  
+
+Let's discuss the firewalls around our EC2 instances.  
+우리의 EC2 인스턴스를 둘러싼 방화벽에 대해 이야기해봅시다.  
+👉 EC2 인스턴스는 기본적으로 보안 그룹을 통해 보호됩니다.  
+
+We briefly configured one in the previous lecture, but security groups are fundamental for network security in the AWS cloud.  
+이전 강의에서 간단히 설정했지만, 시큐리티 그룹은 AWS 클라우드에서 네트워크 보안의 핵심 요소입니다.  
+👉 필수적으로 알아야 하는 기초 보안 개념입니다.  
+
+They control how traffic is allowed into and out of your EC2 instances.  
+시큐리티 그룹은 EC2 인스턴스에 들어오고 나가는 트래픽을 제어합니다.  
+👉 인바운드(들어오는)와 아웃바운드(나가는) 모두 관리합니다.  
+
+---
+
+## Example Scenario  
+## 예시 시나리오  
+👉 실제로 어떻게 작동하는지 예시를 보여줍니다.  
+
+Imagine we are on our computer, connected to the public internet, trying to access our EC2 instance.  
+우리가 컴퓨터에서 인터넷을 통해 EC2 인스턴스에 접속하려고 한다고 상상해봅시다.  
+
+We create a security group around our EC2 instance, which acts as a firewall.  
+EC2 인스턴스에 보안 그룹을 설정하면 방화벽 역할을 합니다.  
+
+This security group has rules that determine whether inbound traffic ... is allowed.  
+보안 그룹은 인바운드(외부 → 인스턴스) 트래픽 허용 여부를 결정합니다.  
+
+... and whether the EC2 instance can perform outbound traffic.  
+또한 EC2 인스턴스가 아웃바운드(인스턴스 → 외부) 트래픽을 할 수 있는지 제어합니다.  
+
+---
+
+## How Security Groups Work  
+## 시큐리티 그룹의 동작 방식  
+👉 동작 원리를 설명하는 부분입니다.  
+
+Security groups act as firewalls ... regulating access to ports and authorized IP ranges.  
+시큐리티 그룹은 방화벽처럼 동작하며, 포트 접근과 허용된 IP 범위를 제어합니다.  
+
+They support both IPv4 and IPv6 addresses.  
+IPv4와 IPv6 주소 모두 지원합니다.  
+
+They control inbound ... and outbound ...  
+인바운드(외부→인스턴스)와 아웃바운드(인스턴스→외부) 트래픽을 제어합니다.  
+
+**Rules include:**  
+**규칙 항목:**  
+
+- Type → 타입 (예: TCP)  
+- Protocol → 프로토콜 (예: TCP, UDP)  
+- Port → 포트 번호 (예: 22, 80 등)  
+- Source → 출처 IP 범위 (예: 0.0.0.0/0 은 모든 IP 허용)  
+
+---
+
+## Diagram Explanation  
+## 다이어그램 설명  
+👉 다이어그램으로 표현하면 더 직관적입니다.  
+
+Example:  
+- Our computer → port 22 허용 → EC2 접속 가능  
+- 다른 사람 컴퓨터(IP 다름) → 차단 → 타임아웃 발생  
+
+By default, outbound traffic ... is allowed.  
+기본적으로 아웃바운드 트래픽은 모두 허용됩니다.  
+
+---
+
+## Important Security Group Characteristics  
+## 시큐리티 그룹의 중요한 특징  
+👉 꼭 알아야 할 속성들입니다.  
+
+- 하나의 보안 그룹은 여러 인스턴스에 붙일 수 있음  
+- 하나의 인스턴스에 여러 보안 그룹 부착 가능  
+- 리전/ VPC 단위로 묶임 (리전 바꾸면 새로 만들어야 함)  
+- EC2 외부에서 동작 → 차단된 트래픽은 인스턴스가 보지도 못함  
+
+👉 SSH는 따로 보안 그룹 관리하는 것이 베스트 프랙티스입니다.  
+
+---
+
+## Troubleshooting Connectivity  
+## 연결 문제 해결  
+👉 접속 안 될 때 보안 그룹부터 확인!  
+
+- 타임아웃 → 보안 그룹 문제일 가능성 큼  
+- Connection refused → 보안 그룹은 통과했지만 애플리케이션 문제  
+
+기본값: 인바운드 차단, 아웃바운드 허용  
+
+---
+
+## Advanced Feature: Referencing Security Groups  
+## 고급 기능: 다른 보안 그룹 참조  
+👉 보안 그룹끼리도 연결할 수 있습니다.  
+
+예:  
+- 인스턴스 A(보안 그룹1) ↔ 인스턴스 B(보안 그룹2)  
+- 그룹1 규칙에서 그룹2를 허용 → 통신 가능  
+- 그룹3 허용 안 하면 → 차단  
+
+---
+
+## Summary of Security Groups  
+## 보안 그룹 요약  
+👉 핵심 포인트 정리입니다.  
+
+- EC2 네트워크 트래픽을 제어하는 방화벽  
+- 허용 규칙만 있음 (차단 규칙 없음)  
+- IP 주소 또는 다른 보안 그룹 참조 가능  
+- 인바운드는 기본 차단, 아웃바운드는 기본 허용  
+
+---
+
+## Common Ports to Know for the Exam  
+## 시험에 꼭 알아야 할 주요 포트  
+👉 AWS 시험에 자주 나오는 기본 포트 번호입니다.  
+
+- 22 (SSH) → 리눅스 원격 접속  
+- 21 (FTP) → 파일 전송  
+- 22 (SFTP) → 보안 파일 전송  
+- 80 (HTTP) → 웹사이트 (비암호화)  
+- 443 (HTTPS) → 웹사이트 (암호화, 표준)  
+- 3389 (RDP) → 윈도우 원격 접속  
+
+---
+
+## Key Takeaways  
+## 핵심 요약  
+👉 꼭 기억해야 할 포인트입니다.  
+
+- 보안 그룹은 EC2 방화벽  
+- 허용 규칙만 있음, 인바운드 기본 차단/아웃바운드 기본 허용  
+- IP/보안 그룹 참조 가능  
+- 주요 포트: 22(SSH), 21(FTP), 80(HTTP), 443(HTTPS), 3389(RDP)  
+
+---
+
+🎮 **게임 보상**: "방화벽 지킴이" 칭호 획득!  
+👉 시큐리티 그룹 이해 완료, 이제 해킹 시도 막을 준비 끝! 🚀
+```
