@@ -1,0 +1,271 @@
+# How to SSH using Windows 10  
+# Windows 10에서 SSH 사용하는 방법  
+
+---
+
+On Windows 10, we can use the SSH command.  
+윈도우 10에서는 SSH 명령어를 사용할 수 있습니다.  
+➡ Windows 10은 기본적으로 SSH 클라이언트를 내장하고 있어 추가 설치 없이 활용 가능합니다.  
+
+I opened Windows PowerShell and typed ssh. If you see this, it means that the command is available.  
+Windows PowerShell을 열고 `ssh`를 입력했습니다. 만약 결과가 보인다면 명령어가 사용 가능하다는 의미입니다.  
+➡ PowerShell에서 바로 실행 가능하면 SSH 클라이언트가 정상적으로 설치되어 있다는 뜻입니다.  
+
+Otherwise, you can also use the Command Prompt and type ssh. If you see this, it means the command is available.  
+그렇지 않다면 명령 프롬프트(CMD)에서도 `ssh`를 입력할 수 있습니다. 결과가 보이면 명령어가 사용 가능합니다.  
+➡ PowerShell뿐만 아니라 CMD에서도 동일하게 작동합니다.  
+
+---
+
+If you do not see the SSH command on your Windows system, it means that you do not have it installed.  
+만약 `ssh` 명령어가 보이지 않는다면 윈도우에 설치되어 있지 않다는 의미입니다.  
+➡ 이 경우에는 기본 클라이언트가 없는 것이므로 다른 방법을 사용해야 합니다.  
+
+Therefore, you must use the patching method shown in the previous lecture.  
+따라서 이전 강의에서 보여준 패치 방법을 사용해야 합니다.  
+➡ PuTTY 같은 외부 도구 설치 방법을 활용해야 합니다.  
+
+In my case, I will use PowerShell to perform these exercises.  
+제 경우에는 PowerShell을 사용해서 실습을 진행하겠습니다.  
+➡ 여기서는 PowerShell 기준으로 설명합니다.  
+
+---
+
+The next step is to run the SSH command.  
+다음 단계는 SSH 명령어를 실행하는 것입니다.  
+➡ 이제 실제 접속을 시도할 준비를 합니다.  
+
+First, you need to be in the directory where your .pem file is located.  
+먼저, `.pem` 키 파일이 있는 디렉토리로 이동해야 합니다.  
+➡ SSH 접속 시 반드시 키 파일의 경로를 지정해야 하므로 위치를 맞춰야 합니다.  
+
+Currently, I am in C:\users\stephanemaarek and I run ls.  
+현재 `C:\users\stephanemaarek` 경로에 있으며, `ls` 명령어를 실행했습니다.  
+➡ 현재 작업 디렉토리를 확인하는 과정입니다.  
+
+As you can see, I do not have my .pem file here because it is on my desktop.  
+보시다시피 여기에는 `.pem` 파일이 없고, 제 데스크탑에 있습니다.  
+➡ 접속 키 파일의 실제 위치를 확인해야 합니다.  
+
+So, I change directory to the desktop by running cd .\Desktop.  
+그래서 `cd .\Desktop` 명령어로 데스크탑으로 이동했습니다.  
+➡ `cd`는 디렉토리 이동 명령어입니다.  
+
+I clear the screen and run ls again.  
+화면을 지운 후 `ls`를 다시 실행했습니다.  
+➡ 깨끗하게 화면을 초기화한 뒤 파일 목록을 다시 확인합니다.  
+
+Now, I can see my EC2Tutorial.pem file, which is the one I downloaded, as well as the .ppk file.  
+이제 다운로드한 `EC2Tutorial.pem` 파일과 `.ppk` 파일을 확인할 수 있습니다.  
+➡ PEM 파일은 AWS 기본 키, PPK는 PuTTY 전용 키입니다.  
+
+The .ppk file is only relevant if you want to use PuTTY.  
+`.ppk` 파일은 PuTTY를 사용할 때만 필요합니다.  
+➡ PowerShell에서는 `.pem` 파일만 사용합니다.  
+
+The only file relevant for us is the EC2Tutorial.pem file.  
+여기서는 `EC2Tutorial.pem` 파일만 필요합니다.  
+➡ 이 파일이 실제 SSH 접속 인증에 사용됩니다.  
+
+---
+
+Make sure that the security group has port 22 open for SSH, which it does.  
+보안 그룹에서 SSH 접속을 위한 22번 포트가 열려 있는지 확인하세요.  
+➡ AWS 보안 그룹 설정이 잘못되면 접속이 불가능합니다.  
+
+Next, enter the SSH command. This is very similar to the command used on Mac.  
+다음으로 SSH 명령어를 입력합니다. 이는 Mac에서 사용하는 명령어와 매우 유사합니다.  
+➡ 동일한 방식으로 접속 가능합니다.  
+
+Use ssh -i followed by the name of the .pem file.  
+`ssh -i` 뒤에 `.pem` 파일 이름을 붙여서 사용합니다.  
+➡ `-i` 옵션은 인증 키를 지정하는 옵션입니다.  
+
+I typed EC2 and pressed tab to autocomplete the filename to EC2Tutorial.pem.  
+`EC2`까지만 입력하고 탭(Tab) 키를 눌러 `EC2Tutorial.pem`으로 자동 완성했습니다.  
+➡ 탭 자동완성 기능으로 입력 오류를 줄일 수 있습니다.  
+
+Pressing tab again switches between .ppk and .pem files.  
+탭을 다시 누르면 `.ppk`와 `.pem` 파일 간 전환이 됩니다.  
+➡ 자동완성으로 여러 후보 파일을 순환 선택할 수 있습니다.  
+
+---
+
+The full command is ssh -i EC2Tutorial.pem ec2-user@<public-ip>,  
+전체 명령어는 `ssh -i EC2Tutorial.pem ec2-user@<public-ip>` 입니다.  
+➡ `ec2-user`는 기본 사용자 계정, `<public-ip>`는 인스턴스의 공인 IP 주소입니다.  
+
+where <public-ip> is the public IP address of your EC2 instance.  
+여기서 `<public-ip>`는 EC2 인스턴스의 공인 IP 주소입니다.  
+➡ AWS 콘솔에서 확인할 수 있습니다.  
+
+I copy and paste the IP address.  
+IP 주소를 복사해 붙여넣습니다.  
+➡ 입력 실수를 줄이기 위해 복사/붙여넣기가 권장됩니다.  
+
+This command instructs to connect to the specified IP using the ec2-user username and the provided key file.  
+이 명령어는 지정된 IP에 `ec2-user` 사용자와 `.pem` 키 파일로 접속하라는 지시입니다.  
+➡ SSH 인증 절차가 이 방식으로 이루어집니다.  
+
+Press enter to execute.  
+엔터를 눌러 실행합니다.  
+➡ 이제 접속 시도가 이루어집니다.  
+
+---
+
+You will see a message stating that the authenticity of the host cannot be verified.  
+호스트의 신뢰성을 확인할 수 없다는 메시지가 나타납니다.  
+➡ 처음 접속할 때 항상 표시되는 경고입니다.  
+
+Type yes to continue.  
+`yes`를 입력해 계속 진행합니다.  
+➡ 한 번 수락하면 이후에는 묻지 않습니다.  
+
+You will then be logged into the machine.  
+그 후 인스턴스에 로그인됩니다.  
+➡ 성공적으로 SSH 접속이 완료됩니다.  
+
+---
+
+Sometimes, you may encounter permission issues when running this command.  
+때때로 이 명령을 실행할 때 권한 문제가 발생할 수 있습니다.  
+➡ 윈도우 파일 권한 설정이 잘못되었을 때 생깁니다.  
+
+I will show you how to fix them.  
+이를 해결하는 방법을 알려드리겠습니다.  
+➡ 다음 단계는 PEM 파일 권한 조정입니다.  
+
+---
+
+First, exit the SSH session and clear the screen.  
+먼저 SSH 세션을 종료하고 화면을 지웁니다.  
+➡ 수정 작업 전 안전하게 로그아웃해야 합니다.  
+
+If you get a permission issue when running the SSH command, locate your key file.  
+SSH 실행 중 권한 오류가 발생하면 키 파일을 찾아야 합니다.  
+➡ 보통 `.pem` 파일의 권한 문제입니다.  
+
+For me, it is on my desktop.  
+제 경우에는 데스크탑에 있습니다.  
+➡ 사용자별 위치는 다를 수 있습니다.  
+
+Right-click on your .pem file and select Properties.  
+`.pem` 파일을 마우스 오른쪽 클릭하고 속성을 선택합니다.  
+➡ 파일 속성에서 보안 설정을 변경해야 합니다.  
+
+Go to the Security tab to change permissions.  
+보안 탭으로 가서 권한을 변경합니다.  
+➡ 여기서 사용자 권한을 조정할 수 있습니다.  
+
+---
+
+Click on Advanced.  
+고급을 클릭합니다.  
+➡ 더 상세한 권한 설정 화면으로 이동합니다.  
+
+The first thing to check is that the owner of the file is yourself.  
+첫 번째로 확인할 것은 파일 소유자가 본인인지 여부입니다.  
+➡ 본인이 아니면 오류가 발생합니다.  
+
+If not, click Change.  
+그렇지 않다면 변경( Change )을 클릭합니다.  
+➡ 소유자를 본인으로 지정해야 합니다.  
+
+For object types, select your user account. Ensure the location is your computer.  
+객체 유형에서 사용자 계정을 선택하고, 위치가 내 컴퓨터로 설정되어 있는지 확인합니다.  
+➡ 올바른 사용자 계정을 지정해야 합니다.  
+
+Then type your username.  
+그다음 사용자 이름을 입력합니다.  
+➡ 본인 계정명 입력.  
+
+For me, it is Stefan.  
+제 경우는 Stefan입니다.  
+➡ 예시 사용자 계정.  
+
+I am already the owner, but you can type your name and assign ownership.  
+저는 이미 소유자지만, 본인의 이름을 입력해 소유권을 지정할 수 있습니다.  
+➡ 필요한 경우 수동으로 변경 가능합니다.  
+
+---
+
+The owner is also indicated in the permission entries.  
+소유자는 권한 항목에도 표시됩니다.  
+➡ 확인 차원에서 표시됩니다.  
+
+Next, remove unnecessary entities such as System and Administrator, as they do not need access.  
+다음으로 System이나 Administrator 같은 불필요한 엔티티는 제거합니다.  
+➡ 보안 강화를 위해 본인만 접근하도록 합니다.  
+
+Disable inheritance by removing all inherited permissions from this object.  
+상속을 비활성화하고 모든 상속된 권한을 제거합니다.  
+➡ 외부 권한이 적용되지 않도록 차단합니다.  
+
+Add yourself as the principal with full control permissions.  
+본인을 주 사용자로 추가하고 전체 권한을 부여합니다.  
+➡ 모든 접근 권한을 본인에게만 설정합니다.  
+
+For me, I added Stefan Maarek and granted full control.  
+제 경우 Stefan Maarek 계정을 추가해 전체 제어 권한을 부여했습니다.  
+➡ 예시 설정.  
+
+Press OK to confirm.  
+확인을 눌러 적용합니다.  
+➡ 변경 사항 저장.  
+
+Now, the owner and principal of the file is yourself.  
+이제 파일의 소유자와 주 사용자는 본인이 됩니다.  
+➡ PEM 파일 접근 오류 해결 완료.  
+
+---
+
+After applying these changes, right-click the file again, select Properties, and under Security, you should only see your user account with full permissions.  
+변경을 적용한 후 파일을 다시 마우스 오른쪽 클릭 → 속성 → 보안 탭을 확인하면 전체 권한을 가진 본인 계정만 보이게 됩니다.  
+➡ 최종 확인 단계입니다.  
+
+With these permissions set, running the SSH command again will not produce permission issues, and you will not be prompted with a yes/no question again.  
+이 권한이 설정되면 SSH 실행 시 권한 문제도 발생하지 않고, yes/no 확인도 다시 묻지 않습니다.  
+➡ 완전히 정상 접속 가능합니다.  
+
+---
+
+You can also open Command Prompt, navigate to your desktop, and run the SSH command there.  
+명령 프롬프트를 열어 데스크탑으로 이동한 후 SSH 명령어를 실행해도 됩니다.  
+➡ CMD와 PowerShell 모두 동일하게 동작합니다.  
+
+It will work the same way as in PowerShell.  
+PowerShell과 같은 방식으로 작동합니다.  
+➡ 차이가 없습니다.  
+
+---
+
+We have successfully connected to our EC2 instance directly from Windows.  
+이제 Windows에서 직접 EC2 인스턴스에 접속하는 데 성공했습니다.  
+➡ 최종 접속 완료.  
+
+To exit the SSH session, type exit or press Control + D.  
+SSH 세션 종료는 `exit` 입력 또는 `Ctrl + D` 누르기입니다.  
+➡ 접속 종료 방법.  
+
+---
+
+Now we can get started with this course. I hope you found this helpful. See you in the next lecture.  
+이제 본 강의를 시작할 수 있습니다. 도움이 되었기를 바랍니다. 다음 강의에서 만나요.  
+➡ 수업 마무리 멘트.  
+
+---
+
+## Key Takeaways  
+## 핵심 요약  
+
+Windows 10 includes a built-in SSH command accessible via PowerShell or Command Prompt.  
+Windows 10은 PowerShell 또는 CMD에서 사용할 수 있는 내장 SSH 명령어를 제공합니다.  
+
+To use SSH, navigate to the directory containing your .pem key file before executing the SSH command.  
+SSH를 사용하려면 `.pem` 키 파일이 있는 디렉토리로 이동해야 합니다.  
+
+Proper file permissions on the .pem key file are essential to avoid permission errors during SSH.  
+SSH 실행 시 권한 오류를 피하려면 `.pem` 파일 권한 설정이 중요합니다.  
+
+Ownership and access rights of the key file can be managed via the file's security properties in Windows.  
+윈도우 속성의 보안 탭에서 키 파일의 소유권과 접근 권한을 관리할 수 있습니다.  
