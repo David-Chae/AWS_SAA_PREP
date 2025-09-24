@@ -1,0 +1,182 @@
+```md
+# Create an EC2 Instance with EC2 User Data to have a Website Hands On  
+# EC2 User Data를 사용하여 웹사이트를 위한 EC2 인스턴스 생성 실습  
+👉 EC2 인스턴스를 생성하고 User Data를 통해 웹서버를 자동으로 띄우는 실습 강의입니다.  
+
+---
+
+Welcome. In this lecture, we are going to launch our first EC2 instance running Amazon Linux.  
+환영합니다. 이번 강의에서는 Amazon Linux를 실행하는 첫 번째 EC2 인스턴스를 생성합니다.  
+➡️ EC2 인스턴스 기본 생성 과정을 실습합니다.  
+
+We will be launching a visual server using the console. We will cover a high-level approach to the various parameters available when launching an EC2 instance. Although there are many options, we will focus on the most important ones.  
+콘솔을 사용해 가시적으로 서버를 시작하고, EC2 인스턴스를 시작할 때 선택할 수 있는 여러 매개변수를 고수준에서 다룹니다. 많은 옵션이 있지만 핵심만 집중하겠습니다.  
+➡️ 처음에는 필수적인 설정 위주로 학습합니다.  
+
+Then, we will launch a web server directly on the EC2 instance using a piece of code passed to the instance called the user data.  
+그다음 User Data라는 스크립트를 사용해 EC2 인스턴스에서 웹 서버를 바로 실행합니다.  
+➡️ User Data는 자동 설정 및 초기화에 사용됩니다.  
+
+Finally, we will learn how to start, stop, and terminate our instance. Let's get started and launch our first EC2 instance.  
+마지막으로 인스턴스를 시작, 중지, 종료하는 방법을 배우겠습니다. 이제 첫 EC2 인스턴스를 만들어 봅시다.  
+➡️ 인스턴스 관리 방법까지 익힙니다.  
+
+---
+
+## Step 1: Launching an EC2 Instance  
+## 1단계: EC2 인스턴스 시작하기  
+
+To begin, I will go into the EC2 Console, click on Instances, and then click on Launch Instances.  
+먼저 EC2 콘솔에서 "Instances"를 클릭하고 "Launch Instances"를 누릅니다.  
+➡️ AWS 콘솔에서 인스턴스 생성 시작.  
+
+Here, I can launch my first EC2 instance. I need to add a name and tags. The name will be "My First Instance" and the tag will be "app".  
+여기서 첫 EC2 인스턴스를 시작할 수 있습니다. 이름과 태그를 추가해야 하며, 이름은 "My First Instance", 태그는 "app"으로 설정합니다.  
+➡️ 이름/태그는 인스턴스 식별 및 관리 용도입니다.  
+
+---
+
+## Step 2: Choose an Amazon Machine Image (AMI)  
+## 2단계: AMI 선택하기  
+
+Next, you need to choose a base image for your EC2 instance. This is the operating system of your instance.  
+다음으로 EC2 인스턴스의 운영체제 역할을 하는 기본 이미지를 선택해야 합니다.  
+➡️ OS 선택이 중요합니다.  
+
+We will select Amazon Linux 2 AMI, which is provided by AWS and is free tier eligible. The architecture will be 64-bit x86.  
+AWS에서 제공하며 프리티어 사용 가능한 Amazon Linux 2 AMI를 선택하고, 아키텍처는 64비트 x86으로 합니다.  
+➡️ 프리티어 범위 내에서 안전한 선택입니다.  
+
+---
+
+## Step 3: Choose an Instance Type  
+## 3단계: 인스턴스 타입 선택  
+
+By default, t2.micro is selected, which is free tier eligible.  
+기본값은 t2.micro이며 프리티어에서 무료 사용 가능합니다.  
+➡️ 초보자는 t2.micro를 쓰는 게 적절합니다.  
+
+This means you can run one t2.micro instance free for an entire month if left running.  
+즉, t2.micro 인스턴스를 한 달 내내 실행해도 무료입니다.  
+➡️ 다만 시간당 750시간(약 한 달치) 제한이 있습니다.  
+
+---
+
+## Step 4: Create a Key Pair for SSH  
+## 4단계: SSH 접속용 키 페어 생성  
+
+Next, you need to create a key pair to log into your instance using SSH.  
+다음으로 인스턴스에 SSH로 접속할 수 있도록 키 페어를 생성해야 합니다.  
+➡️ 보안상 필수 과정입니다.  
+
+We will create a new key pair named "EC2 Tutorial". Choose RSA encryption and .pem format.  
+"EC2 Tutorial"이라는 새 키 페어를 만들고, RSA 암호화와 .pem 형식을 선택합니다.  
+➡️ .pem은 Mac/Linux/Win10 이상에서 사용 가능합니다.  
+
+---
+
+## Step 5: Configure Network Settings  
+## 5단계: 네트워크 설정  
+
+By default, the instance will get a public IP address.  
+기본적으로 인스턴스는 공인 IP 주소를 받습니다.  
+➡️ 외부에서 접속 가능하도록 설정됩니다.  
+
+We will allow SSH traffic (port 22) and HTTP traffic (port 80).  
+SSH(22번 포트)와 HTTP(80번 포트)를 허용합니다.  
+➡️ 웹 서버 접근을 위해 필수 설정입니다.  
+
+---
+
+## Step 6: Configure Storage  
+## 6단계: 스토리지 설정  
+
+By default, there is an 8 GB gp2 root volume.  
+기본적으로 8GB gp2 루트 볼륨이 설정됩니다.  
+➡️ 프리티어는 최대 30GB까지 가능합니다.  
+
+"Delete on termination" is enabled by default.  
+기본적으로 "종료 시 삭제"가 활성화되어 있습니다.  
+➡️ 인스턴스 종료 시 볼륨도 삭제됩니다.  
+
+---
+
+## Step 7: Add User Data Script  
+## 7단계: User Data 스크립트 추가  
+
+Scroll to advanced details, and in the user data section, paste the script to:  
+고급 설정에서 User Data 섹션으로 이동해 스크립트를 붙여넣습니다:  
+➡️ 최초 실행 시 자동 작업 실행.  
+
+- Update the system  
+- 시스템 업데이트  
+- Install HTTPD web server  
+- HTTPD 웹 서버 설치  
+- Create a simple HTML file as homepage  
+- 간단한 HTML 파일을 홈 페이지로 생성  
+
+➡️ 부팅 후 자동으로 웹 서버가 실행됩니다.  
+
+---
+
+## Step 8: Review and Launch  
+## 8단계: 검토 및 인스턴스 시작  
+
+Review all settings and launch the instance.  
+모든 설정을 확인한 뒤 인스턴스를 실행합니다.  
+➡️ 설정이 문제없으면 시작.  
+
+The instance will be in "pending" state for ~10-15 seconds, then running.  
+인스턴스는 약 10~15초 동안 "pending" 상태였다가 실행됩니다.  
+➡️ 클라우드의 빠른 배포 속도를 보여줍니다.  
+
+---
+
+## Step 9: Accessing the Web Server  
+## 9단계: 웹 서버 접속  
+
+Copy the public IPv4 address and paste it into your browser with HTTP.  
+공인 IPv4 주소를 복사해 브라우저에서 HTTP로 접속합니다.  
+➡️ HTTPS로는 접속 불가합니다.  
+
+You should see "Hello World from [Private IPv4]".  
+"Hello World from [Private IPv4]" 메시지가 표시됩니다.  
+➡️ 웹 서버가 정상 실행된 증거입니다.  
+
+---
+
+## Step 10: Managing Instance State  
+## 10단계: 인스턴스 상태 관리  
+
+- Stop: 인스턴스를 중지하면 과금이 멈추고, 볼륨은 유지됩니다.  
+- Terminate: 인스턴스를 종료하면 인스턴스와 볼륨이 삭제됩니다.  
+- Restart: 재시작하면 새로운 공인 IP가 할당될 수 있습니다.  
+
+➡️ 비용과 리소스를 효율적으로 관리할 수 있습니다.  
+
+---
+
+## Summary  
+## 요약  
+
+We launched our first EC2 instance and web server in the cloud.  
+첫 번째 EC2 인스턴스와 웹 서버를 클라우드에 배포했습니다.  
+➡️ EC2 기초 실습 완료!  
+
+---
+
+## Key Takeaways  
+## 핵심 요약  
+
+- Launched EC2 instance with Amazon Linux 2 AMI and t2.micro.  
+- Amazon Linux 2 AMI와 t2.micro로 인스턴스 시작.  
+
+- Configured key pairs and security groups (SSH + HTTP).  
+- 키 페어와 보안 그룹(SSH, HTTP) 설정.  
+
+- Used User Data to install and start web server.  
+- User Data로 웹 서버 자동 설치/실행.  
+
+- Learned to start, stop, and terminate instances.  
+- 인스턴스 시작, 중지, 종료 방법 학습.  
+```
