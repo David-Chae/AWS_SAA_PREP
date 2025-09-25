@@ -1,0 +1,180 @@
+# Elastic Network Interfaces (ENI) - Hands On  
+# 탄력적 네트워크 인터페이스 (ENI) - 실습  
+→ 이번에는 ENI를 직접 생성, 부착, 이동하는 실습을 통해 네트워크 동작을 확인.  
+
+---
+
+## Introduction to Elastic Network Interfaces (ENI)  
+## 탄력적 네트워크 인터페이스 (ENI) 소개  
+→ 실습 시작: 두 개의 EC2 인스턴스를 사용해 ENI 동작 확인.  
+
+Let's practice with Elastic Network Interfaces by launching two EC2 instances.  
+두 개의 EC2 인스턴스를 실행하여 ENI를 실습해보자.  
+
+We will use Amazon Linux 2, t2.micro instances.  
+Amazon Linux 2, t2.micro 인스턴스를 사용한다.  
+
+The key pair selection is arbitrary, and for network settings, we will use an existing security group named "launch wizard one."  
+키 페어는 임의로 선택하고, 네트워크 설정은 "launch wizard one"이라는 기존 보안 그룹을 사용한다.  
+
+After configuring, we launch two instances.  
+설정 후 두 인스턴스를 실행한다.  
+
+---
+
+## Viewing Network Interfaces on Instances  
+## 인스턴스의 네트워크 인터페이스 확인  
+→ 각 인스턴스는 고유의 ENI를 가짐.  
+
+Once the instances are running, we can examine their network interfaces.  
+인스턴스가 실행되면, 네트워크 인터페이스를 확인할 수 있다.  
+
+Each instance has one network interface with an interface ID (ENI).  
+각 인스턴스에는 인터페이스 ID(ENI)가 있는 네트워크 인터페이스가 하나씩 있다.  
+
+Each interface includes a public IPv4 address, a private IPv4 address, and a private IPv4 DNS name.  
+각 인터페이스에는 공용 IPv4 주소, 사설 IPv4 주소, 사설 IPv4 DNS 이름이 포함된다.  
+
+The two instances will each have distinct network interfaces.  
+두 인스턴스는 각각 별도의 네트워크 인터페이스를 갖는다.  
+
+---
+
+## Network Interfaces in AWS Console  
+## AWS 콘솔에서 네트워크 인터페이스 확인  
+→ 콘솔 메뉴에서 ENI 목록을 확인 가능.  
+
+On the left-hand side of the AWS console, under "Network & Security," we can find the "Network Interfaces" section.  
+AWS 콘솔 왼쪽 메뉴의 "네트워크 및 보안" 아래 "네트워크 인터페이스" 섹션을 찾을 수 있다.  
+
+Here, the two ENIs corresponding to our instances are listed.  
+여기에 두 인스턴스에 해당하는 ENI가 나열되어 있다.  
+
+Each ENI is attached to an EC2 instance, indicated by the "in-use" status and linked instance ID.  
+각 ENI는 "in-use" 상태와 연결된 인스턴스 ID로 표시되어 EC2 인스턴스에 연결됨을 보여준다.  
+
+---
+
+## Creating a New Network Interface  
+## 새로운 네트워크 인터페이스 생성  
+→ 수동으로 ENI를 만들고 보안 그룹/서브넷을 설정 가능.  
+
+We can create a new network interface by providing a description, such as "demo ENI."  
+"demo ENI" 같은 설명을 넣어 새로운 네트워크 인터페이스를 만들 수 있다.  
+
+We select a subnet for the ENI, which corresponds to a specific Availability Zone (AZ).  
+ENI를 위한 서브넷을 선택하는데, 이는 특정 가용 영역(AZ)에 해당한다.  
+
+For this demo, we choose the AZ where our EC2 instances reside, for example, us-east-2a.  
+이 실습에서는 인스턴스가 위치한 AZ(us-east-2a 등)를 선택한다.  
+
+We opt to auto-assign a private IPv4 address within the subnet and attach a security group to the ENI.  
+서브넷 내에서 사설 IPv4 주소를 자동 할당하고, ENI에 보안 그룹을 연결한다.  
+
+After creation, the new network interface is available.  
+생성 후 새 네트워크 인터페이스가 사용 가능해진다.  
+
+---
+
+## Attaching the New ENI to an Instance  
+## 새 ENI를 인스턴스에 연결  
+→ 인스턴스는 다중 ENI를 가질 수 있음.  
+
+The newly created ENI can be attached to one of our instances.  
+새로 만든 ENI를 인스턴스 중 하나에 붙일 수 있다.  
+
+We select the instance and attach the ENI.  
+인스턴스를 선택해 ENI를 부착한다.  
+
+After refreshing the instance details, we observe that the instance now has two network interfaces:  
+인스턴스 세부 정보를 새로 고치면 이제 두 개의 네트워크 인터페이스가 보인다:  
+
+- the primary one with public and private IPv4 addresses,  
+- 공용 및 사설 IPv4 주소가 있는 기본 ENI,  
+
+- the secondary one from the demo ENI with an additional private IPv4 address.  
+- 추가 사설 IPv4 주소를 가진 demo ENI 보조 인터페이스.  
+
+---
+
+## Use Case for Secondary ENIs  
+## 보조 ENI 사용 사례  
+→ ENI 이동으로 장애 조치(failover) 가능.  
+
+Having control over ENIs allows us to move them between EC2 instances.  
+ENI를 제어하면 인스턴스 간에 이동시킬 수 있다.  
+
+This is useful when two instances run the same application and need to be accessed via the same private IPv4 address.  
+두 인스턴스가 같은 애플리케이션을 실행하며 동일한 사설 IPv4 주소로 접근되어야 할 때 유용하다.  
+
+By moving the ENI, we can perform a quick and easy network failover between instances.  
+ENI를 이동함으로써 인스턴스 간 빠르고 간단한 장애 조치를 수행할 수 있다.  
+
+---
+
+## Demonstration: Moving an ENI Between Instances  
+## ENI 이동 시연  
+→ 강제 분리 후 다른 인스턴스에 재부착.  
+
+We detach the demo ENI from the first instance, using a force detach if necessary.  
+필요하다면 강제 분리를 사용해 첫 번째 인스턴스에서 demo ENI를 분리한다.  
+
+After detachment, we attach the ENI to the second instance.  
+분리 후 ENI를 두 번째 인스턴스에 부착한다.  
+
+Refreshing the instance details shows that the first instance now has only one network interface,  
+세부 정보를 새로 고치면 첫 번째 인스턴스에는 이제 하나의 네트워크 인터페이스만 남는다.  
+
+while the second instance has two, including the demo ENI.  
+반면 두 번째 인스턴스에는 demo ENI를 포함해 두 개의 인터페이스가 있다.  
+
+This demonstrates how ENIs can be moved to facilitate failover.  
+이는 ENI를 이동해 장애 조치를 수행할 수 있음을 보여준다.  
+
+---
+
+## Terminating Instances and ENI Behavior  
+## 인스턴스 종료와 ENI 동작  
+→ 자동 생성 ENI와 수동 생성 ENI의 차이.  
+
+When terminating the instances, the ENIs created automatically alongside the instances are deleted.  
+인스턴스를 종료하면 인스턴스와 함께 자동 생성된 ENI는 삭제된다.  
+
+However, the manually created ENI remains available.  
+하지만 수동으로 만든 ENI는 계속 남아있다.  
+
+This behavior provides more control over private IPv4 addresses and networking, which can be beneficial in advanced use cases.  
+이 동작은 사설 IPv4 주소와 네트워킹을 더 잘 제어할 수 있게 해주며, 고급 사용 사례에서 유리하다.  
+
+---
+
+## Conclusion  
+## 결론  
+→ 이번 실습에서 ENI 라이프사이클 제어 방법 확인.  
+
+This hands-on session demonstrated how to create, attach, detach, and move Elastic Network Interfaces between EC2 instances.  
+이번 실습에서는 EC2 인스턴스 간 ENI를 생성, 부착, 분리, 이동하는 방법을 보여주었다.  
+
+Manually created ENIs persist beyond instance termination, offering enhanced networking control.  
+수동으로 생성한 ENI는 인스턴스 종료 후에도 남아 더 나은 네트워크 제어를 제공한다.  
+
+Practicing these operations is recommended to master advanced networking scenarios in AWS.  
+AWS 고급 네트워킹 시나리오를 숙달하려면 이러한 작업을 직접 연습하는 것이 권장된다.  
+
+---
+
+## Key Takeaways  
+## 핵심 요약  
+→ ENI 실습의 주요 포인트 정리.  
+
+- Elastic Network Interfaces (ENIs) can be created, attached, detached, and moved between EC2 instances to enable flexible networking.  
+- ENI는 EC2 인스턴스 간에 생성, 부착, 분리, 이동할 수 있어 유연한 네트워킹을 제공한다.  
+
+- Each EC2 instance has a primary network interface with public and private IPv4 addresses.  
+- 각 EC2 인스턴스에는 공용 및 사설 IPv4 주소를 가진 기본 네트워크 인터페이스가 있다.  
+
+- Manually created ENIs persist independently of instance lifecycle, providing more control over private IPv4 addresses.  
+- 수동 생성 ENI는 인스턴스 생명주기와 무관하게 유지되며, 사설 IPv4 주소 제어에 더 많은 유연성을 제공한다.  
+
+- Moving ENIs between instances facilitates quick network failover for applications running on multiple EC2 instances.  
+- ENI 이동은 여러 EC2 인스턴스에서 실행되는 애플리케이션의 빠른 장애 조치를 가능하게 한다.  
