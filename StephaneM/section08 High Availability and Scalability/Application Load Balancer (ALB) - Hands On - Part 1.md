@@ -1,0 +1,175 @@
+# Application Load Balancer (ALB) - Hands On - Part 1  
+# 애플리케이션 로드 밸런서 (ALB) - 실습 - 파트 1  
+→ 실습을 통해 ALB를 직접 생성하고 EC2 인스턴스를 연결하는 과정을 배웁니다.  
+
+---
+
+## Launching EC2 Instances  
+## EC2 인스턴스 시작하기  
+→ 로드 밸런서를 사용하려면 먼저 트래픽을 받을 EC2 인스턴스가 필요합니다.  
+
+We are going to practice launching a load balancer, but first, we need to send traffic to something. So, we will launch EC2 instances.  
+로드 밸런서를 실습하기 전에 트래픽을 보낼 대상이 필요하므로, EC2 인스턴스를 실행합니다.  
+
+I will launch two instances. On the right-hand side, I can specify two instances, and the name will be My First Instance.  
+두 개의 인스턴스를 실행하며, 첫 번째 인스턴스 이름은 *My First Instance*로 설정합니다.  
+
+We will rename the second one when it is created.  
+두 번째 인스턴스는 생성 후 이름을 변경합니다.  
+
+We are going to use Amazon Linux 2 on this architecture. The instance type will be t2.micro.  
+아키텍처는 **Amazon Linux 2** 기반이며, 인스턴스 유형은 **t2.micro**입니다.  
+
+Then, we will proceed without a key pair because we do not need SSH capability.  
+SSH 접속이 필요하지 않으므로 키 페어 없이 진행합니다.  
+
+We can use EC2 Instance Connect if we ever need to access the instances.  
+나중에 접근이 필요하다면 **EC2 Instance Connect**를 사용할 수 있습니다.  
+
+For network settings, we can select an existing security group. We will use the Launch Wizard 1 security group, which allows HTTP and SSH traffic.  
+네트워크 설정에서는 기존 보안 그룹을 선택하며, HTTP와 SSH 트래픽을 허용하는 *Launch Wizard 1* 보안 그룹을 사용합니다.  
+
+We will use the basic storage configuration.  
+스토리지는 기본 구성을 사용합니다.  
+
+For advanced details, I will scroll down and add some EC2 user data.  
+추가로 **EC2 User Data** 스크립트를 붙여넣어 초기 설정을 자동화합니다.  
+
+Let's launch our two instances and then view all instances.  
+두 개 인스턴스를 실행한 뒤, 콘솔에서 상태를 확인합니다.  
+
+I will rename the second instance to My Second Instance and save the changes.  
+두 번째 인스턴스 이름을 *My Second Instance*로 변경합니다.  
+
+My EC2 instances are now ready.  
+EC2 인스턴스가 준비되었습니다.  
+
+I will copy the first instance's IPv4 address and paste it into the browser.  
+첫 번째 인스턴스의 IPv4 주소를 브라우저에 입력합니다.  
+
+Visiting the URL, I get a "hello world" message.  
+브라우저에서 "hello world" 메시지가 출력됩니다.  
+
+Similarly, for the second instance, I get the same response.  
+두 번째 인스턴스도 동일한 메시지를 출력합니다.  
+
+→ 두 개 인스턴스가 각각 정상적으로 웹 서버 역할을 하고 있습니다.  
+
+---
+
+## Introduction to Load Balancing  
+## 로드 밸런싱 소개  
+→ 여러 인스턴스를 하나의 URL로 묶어 부하 분산을 수행합니다.  
+
+What we'd like to do is have only one URL to access these two EC2 instances and balance the load between them.  
+두 인스턴스를 단일 URL로 접근하고, 트래픽을 분산하기 위해 로드 밸런서를 사용합니다.  
+
+There are different types of load balancers. In this demonstration, we will focus only on the Application Load Balancer (ALB).  
+로드 밸런서 종류는 다양하지만, 여기서는 **ALB**에 집중합니다.  
+
+The Application Load Balancer is designed for HTTP and HTTPS traffic.  
+ALB는 **HTTP/HTTPS 전용**입니다.  
+
+The Network Load Balancer operates on TCP and UDP protocols or TLS over TCP.  
+NLB는 **TCP/UDP 또는 TLS over TCP**에서 동작합니다.  
+
+It is used when ultra-high performance is required.  
+NLB는 초고성능, 초저지연 환경에 사용됩니다.  
+
+The Gateway Load Balancer is used for security purposes, such as intrusion detection and firewalls.  
+GWLB는 보안 목적(침입 탐지, 방화벽 등)에 활용됩니다.  
+
+The Classic Load Balancer is being phased out.  
+CLB는 지원 종료 단계이므로 다루지 않습니다.  
+
+---
+
+## Creating the Application Load Balancer  
+## ALB 생성하기  
+
+I will name this load balancer DemoALB.  
+로드 밸런서 이름은 *DemoALB*로 지정합니다.  
+
+The scheme is internet-facing, and the address type is IPv4.  
+스킴은 **인터넷 공개형**, 주소 타입은 **IPv4**입니다.  
+
+We will deploy it in all availability zones.  
+모든 가용 영역에 배포합니다.  
+
+Next, we assign a security group named demo-sg-load-balancer.  
+새 보안 그룹 *demo-sg-load-balancer*를 생성하여 할당합니다.  
+
+This group allows inbound HTTP traffic.  
+이 보안 그룹은 **HTTP 인바운드 트래픽**만 허용합니다.  
+
+---
+
+## Listeners and Target Groups  
+## 리스너와 타겟 그룹  
+
+We need to route traffic from HTTP on port 80 to a target group.  
+포트 80의 HTTP 요청을 타겟 그룹으로 라우팅합니다.  
+
+I will create a target group named demo-tg-alb.  
+타겟 그룹 이름은 *demo-tg-alb*입니다.  
+
+The protocol is HTTP on port 80, and health check defaults are fine.  
+프로토콜은 **HTTP:80**이며, 헬스 체크는 기본값을 사용합니다.  
+
+We register both EC2 instances into this target group.  
+두 개 인스턴스를 타겟 그룹에 등록합니다.  
+
+Now, the target group is linked to the ALB listener on port 80.  
+리스너와 타겟 그룹이 연결됩니다.  
+
+---
+
+## Load Balancer Status and Testing  
+## 로드 밸런서 상태와 테스트  
+
+After creation, the ALB is in provisioning state until active.  
+생성 후 ALB는 **프로비저닝 상태**에서 **활성 상태**로 전환됩니다.  
+
+Once active, a DNS name is available.  
+활성화되면 **DNS 이름**이 제공됩니다.  
+
+Pasting the DNS name in the browser shows "hello world".  
+브라우저에 DNS를 입력하면 "hello world" 메시지가 출력됩니다.  
+
+Refreshing the page alternates responses between instances.  
+새로고침 시 인스턴스가 번갈아 응답합니다.  
+→ 로드 밸런싱 동작 확인 완료.  
+
+---
+
+## Target Group Health Checks  
+## 타겟 그룹 헬스 체크  
+
+Both instances show as healthy.  
+두 인스턴스 모두 **Healthy** 상태입니다.  
+
+If one instance stops, it becomes unhealthy and is excluded.  
+인스턴스를 중지하면 **Unhealthy**로 표시되고, 트래픽에서 제외됩니다.  
+
+Restarting it brings it back to Healthy state.  
+다시 실행하면 헬스 체크를 통과해 정상 상태로 복귀합니다.  
+
+---
+
+## Conclusion  
+## 결론  
+
+In this session, we practiced:  
+이번 실습에서 수행한 내용:  
+
+- Launched two EC2 instances as targets  
+- 두 개의 EC2 인스턴스를 타겟으로 실행  
+
+- Created an Application Load Balancer (ALB) with a target group  
+- ALB와 타겟 그룹을 생성  
+
+- Demonstrated load balancing via a single URL  
+- 단일 URL을 통한 부하 분산 확인  
+
+- Verified health checks for automatic failover  
+- 헬스 체크로 자동 장애 감지 확인  
