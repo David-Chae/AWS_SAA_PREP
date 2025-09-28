@@ -1,4 +1,4 @@
-````markdown
+
 # AWS CLI Hands On  
 AWS CLI 실습  
 → AWS CLI 사용을 위한 기본 실습을 다룹니다.  
@@ -134,5 +134,3 @@ To restore permissions, add your user back into the appropriate group, such as t
 * IAM 권한 이해도 +30
 * CLI 실습 경험치 +50
   → 🏆 “AWS 초급 관리자” 칭호 획득!
-
-```
