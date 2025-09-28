@@ -1,4 +1,4 @@
-```markdown
+
 # IAM Best Practices  
 IAM 모범 사례  
 → AWS 사용 시 실수를 줄이기 위해 IAM 사용 가이드와 모범 사례를 정리합니다.  
@@ -86,5 +86,4 @@ This concludes the section on IAM. You now know everything about IAM best practi
 - 루트 계정 최소 사용 원칙 +10  
 - MFA 사용 권장 +10  
 - 역할(Role) 활용 권장 +15  
-🏆 “IAM Guardian” 칭호 획득!
-```
+🏆 “IAM Guardian” 칭호 획득
