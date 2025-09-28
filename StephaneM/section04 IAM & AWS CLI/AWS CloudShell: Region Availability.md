@@ -1,4 +1,4 @@
-```markdown
+
 # AWS CloudShell: Region Availability  
 AWS CloudShell: 리전(Region) 가용성  
 → CloudShell이 모든 리전에서 지원되지 않기 때문에, 사용 가능한 리전을 알아야 합니다.  
@@ -35,4 +35,3 @@ Please switch to one of these regions if you want to do the next (optional) hand
 - CloudShell 실습 준비 +30  
 - AWS 문서 활용 능력 +10  
 🏆 “CloudShell 탐험가” 칭호 획득!  
-```
