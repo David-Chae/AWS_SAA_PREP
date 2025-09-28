@@ -12,7 +12,7 @@
 
 To install the AWS Command Line Interface (CLI) on Windows, begin by searching for "aws CLI install windows" on Google. This search will provide a list of relevant links. The goal is to install AWS CLI version 2 on Windows, which is the latest version and ensures you are up to date.  
 Windows에서 AWS 명령줄 인터페이스(CLI)를 설치하려면, 먼저 구글에서 "aws CLI install windows"를 검색하세요. 그러면 관련 링크들이 나옵니다. 최신 버전인 AWS CLI v2를 설치하는 것이 목표이며, 이를 통해 최신 환경을 유지할 수 있습니다.  
-→ CLI v2는 최신 버전으로 안정성과 성능이 개선되었습니다.  
+→ CLI v2는 최신 버전으로 안정성과 성능이 개선되었습니다.  [https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html]
 🎮 게임보상: 검색 완료 시 **[탐험가 포인트 +10]** 획득!  
 
 Version 2 does not differ significantly from version 1; it mainly offers improved performance and additional capabilities. Importantly, the API remains exactly the same. Additionally, version 2 features an improved installer.  
