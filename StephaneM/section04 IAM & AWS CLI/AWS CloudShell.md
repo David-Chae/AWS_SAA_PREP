@@ -1,4 +1,3 @@
-```markdown
 # AWS CloudShell  
 AWS CloudShell  
 → AWS CLI 명령어를 실행할 수 있는 클라우드 기반 터미널 서비스 소개  
@@ -130,4 +129,3 @@ This concludes the lecture on AWS CloudShell. Thank you for your attention, and 
 - 다중 세션 및 파일 관리 +30  
 - 클라우드 기반 터미널 경험치 +40  
 🏆 “CloudShell 전문가” 칭호 획득!
-```
