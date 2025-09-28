@@ -1,4 +1,4 @@
-```markdown
+
 # AWS Console Simultaneous Sign-in  
 # AWS 콘솔 동시 로그인  
 → AWS 콘솔에서 한 브라우저 내 여러 계정을 동시에 사용하는 기능 안내.  
@@ -148,7 +148,6 @@ I hope you liked it, and I will see you in the next lecture.
 - Multi-session support enhances productivity for users managing AWS at scale.  
 - 멀티 세션 지원은 대규모 AWS 관리자의 생산성을 향상시킵니다.  
 → 대규모 운영 장점.
-```
 
 ---
 
