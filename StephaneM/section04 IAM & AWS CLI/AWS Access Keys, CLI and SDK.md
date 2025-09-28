@@ -1,4 +1,4 @@
-```md
+
 # AWS Access Keys, CLI and SDK  
 # AWS 액세스 키, CLI 및 SDK  
 → 이 문서는 AWS에 접근하는 세 가지 주요 방법(콘솔, CLI, SDK)과 액세스 키 관리에 대해 설명합니다.  
@@ -126,4 +126,3 @@ That concludes this lecture. In the next lecture, we will practice setting up th
 - The AWS SDK provides language-specific libraries to programmatically interact with AWS services within applications.  
 - AWS SDK는 언어별 라이브러리를 제공하여 애플리케이션 내부에서 프로그래밍적으로 AWS 서비스와 상호작용할 수 있게 합니다.  
 → SDK 장점 요약.  
-```
