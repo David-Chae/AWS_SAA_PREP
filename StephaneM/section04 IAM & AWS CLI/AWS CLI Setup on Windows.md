@@ -1,4 +1,4 @@
-```md
+
 # AWS CLI Setup on Windows  
 # Windows에서 AWS CLI 설정하기  
 → Windows 환경에서 AWS CLI v2를 설치, 검증, 업그레이드하는 과정을 설명합니다.  
@@ -102,4 +102,3 @@ Once you see the version output as described earlier, you are ready to proceed w
 - Windows에서 AWS CLI 업그레이드는 MSI 설치 파일을 다시 다운로드하고 실행하면 됩니다.  
 → 업그레이드도 간단.  
 🎮 최종 보상: 모든 단계 완료 시 **[AWS CLI 설치 챔피언 트로피 🏆]** 획득!  
-```
