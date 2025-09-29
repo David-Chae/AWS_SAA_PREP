@@ -1,0 +1,253 @@
+# Amazon Aurora - Advanced Concepts  
+# 아마존 오로라 - 고급 개념  
+
+---
+
+## Advanced Concepts of Amazon Aurora  
+## 아마존 오로라의 고급 개념  
+
+In this article, we discuss advanced concepts of Amazon Aurora that are essential for the exam.  
+이 글에서는 시험에 중요한 아마존 오로라의 고급 개념을 다룹니다.  
+(시험 대비 핵심 개념 안내)
+
+---
+
+## Replica Auto-Scaling  
+## 복제본 자동 확장  
+
+Consider a client setup with three Aurora instances.  
+세 개의 Aurora 인스턴스가 있는 클라이언트 환경을 가정합니다.  
+(환경 설정 예시)
+
+One instance handles writes through the writer endpoint, while the other two handle reads through the reader endpoint.  
+하나는 writer 엔드포인트를 통해 쓰기를 처리하고, 다른 두 개는 reader 엔드포인트를 통해 읽기를 처리합니다.  
+(쓰기/읽기 분리)
+
+When there is a high volume of read requests on the reader endpoint, the CPU usage of the Aurora databases increases.  
+reader 엔드포인트에 읽기 요청이 많으면 Aurora DB의 CPU 사용률이 증가합니다.  
+(부하 발생 설명)
+
+To address this, replica auto-scaling can be configured.  
+이를 해결하기 위해 복제본 자동 확장을 구성할 수 있습니다.  
+(솔루션 소개)
+
+This feature automatically adds Aurora replicas, extending the reader endpoint to include these new replicas.  
+이 기능은 Aurora 복제본을 자동으로 추가하고 reader 엔드포인트에 포함시킵니다.  
+(자동 확장 동작)
+
+Consequently, read traffic is distributed more evenly across the replicas, which helps reduce overall CPU usage.  
+결과적으로 읽기 트래픽이 복제본에 고르게 분산되어 전체 CPU 사용률을 줄입니다.  
+(효과 설명)
+
+---
+
+## Custom Endpoints  
+## 커스텀 엔드포인트  
+
+Suppose the setup includes different types of replicas, such as some using db.r3.large instances and others using db.r5.2xlarge instances.  
+예를 들어 db.r3.large와 db.r5.2xlarge를 사용하는 서로 다른 유형의 복제본이 있는 경우를 가정합니다.  
+(복제본 종류 설명)
+
+Some read replicas are more powerful than others.  
+일부 읽기 복제본은 다른 것보다 성능이 뛰어납니다.  
+(성능 차이)
+
+Custom endpoints allow defining a subset of Aurora instances, for example, the more powerful ones, as a custom endpoint.  
+커스텀 엔드포인트를 사용하면 특정 복제본(예: 성능이 높은 복제본)만 선택해 엔드포인트로 정의할 수 있습니다.  
+(엔드포인트 정의)
+
+This is useful for directing specific workloads, such as analytical queries, to these stronger replicas.  
+분석 쿼리와 같은 특정 워크로드를 성능이 높은 복제본으로 보내는 데 유용합니다.  
+(사용 사례)
+
+After defining custom endpoints, the default reader endpoint is generally not used anymore, although it remains available.  
+커스텀 엔드포인트를 정의하면 기본 reader 엔드포인트는 일반적으로 사용되지 않지만, 여전히 사용 가능합니다.  
+(엔드포인트 전환)
+
+Multiple custom endpoints can be set up to handle different workloads by querying only subsets of Aurora replicas.  
+여러 커스텀 엔드포인트를 설정해 복제본의 일부만 조회하여 다양한 워크로드를 처리할 수 있습니다.  
+(복수 엔드포인트 활용)
+
+---
+
+## Aurora Serverless  
+## 오로라 서버리스  
+
+Aurora Serverless provides automated database instantiation and auto-scaling based on actual usage.  
+Aurora Serverless는 실제 사용량에 따라 자동으로 DB 인스턴스를 생성하고 자동 확장합니다.  
+(서버리스 정의)
+
+This is especially beneficial for infrequent, intermittent, or unpredictable workloads, eliminating the need for capacity planning.  
+사용 빈도가 낮거나 간헐적, 예측 불가한 워크로드에 특히 유용하며, 용량 계획이 필요 없습니다.  
+(적합한 사용 환경)
+
+Billing is based on the seconds each Aurora instance is active, which can be more cost-effective.  
+청구는 각 Aurora 인스턴스가 활성화된 시간 기준으로 이루어져 비용 효율적입니다.  
+(비용 구조)
+
+The client communicates with a proxy fleet managed by Aurora, and the backend automatically creates Aurora instances as needed in a serverless manner, so no advance provisioning is required.  
+클라이언트는 Aurora가 관리하는 프록시 플릿과 통신하며, 백엔드는 필요에 따라 서버리스 방식으로 인스턴스를 자동 생성하므로 사전 프로비저닝이 필요 없습니다.  
+(작동 원리)
+
+---
+
+## Aurora Global Database  
+## 오로라 글로벌 데이터베이스  
+
+Aurora Global Database supports cross-region read replicas, which are useful for disaster recovery.  
+Aurora Global Database는 재해 복구용 크로스 리전 읽기 복제본을 지원합니다.  
+(재해 복구 기능)
+
+It is simple to set up and is the recommended approach.  
+설정이 간단하며 권장되는 방법입니다.  
+(설정 안내)
+
+In this configuration, there is one primary region where all reads and writes occur, and up to ten secondary read-only regions.  
+이 구성에서는 모든 읽기/쓰기가 발생하는 기본 리전 하나와 최대 10개의 읽기 전용 보조 리전이 있습니다.  
+(구성 설명)
+
+Replication lag between regions is typically less than one second.  
+리전 간 복제 지연 시간은 일반적으로 1초 미만입니다.  
+(지연 시간 안내)
+
+Each secondary region can have up to sixteen read replicas.  
+각 보조 리전은 최대 16개의 읽기 복제본을 가질 수 있습니다.  
+(복제본 제한)
+
+This setup reduces latency for read workloads worldwide and provides disaster recovery capabilities.  
+이 구성은 전 세계 읽기 워크로드 지연 시간을 줄이고 재해 복구 기능을 제공합니다.  
+(효과 설명)
+
+Failover to a secondary region has a recovery time objective (RTO) of less than one minute.  
+보조 리전으로 장애 조치 시 RTO는 1분 미만입니다.  
+(장애 조치 성능)
+
+From an exam perspective, note that data replication across regions for Aurora Global Database takes on average less than one second, which is a key hint to use Global Aurora in relevant questions.  
+시험 관점에서, Aurora Global Database의 리전 간 데이터 복제는 평균 1초 미만이며, 이는 글로벌 Aurora 사용 힌트입니다.  
+(시험 핵심 포인트)
+
+---
+
+## Example of Aurora Global Database Setup  
+## Aurora 글로벌 DB 설정 예시  
+
+For example, the primary region could be us-east-1, where applications perform reads and writes.  
+예를 들어, 기본 리전은 us-east-1이며 애플리케이션이 읽기/쓰기를 수행합니다.  
+(리전 예시)
+
+A secondary region, such as eu-west-1, can be configured for replication with a global Aurora database.  
+보조 리전은 eu-west-1처럼 글로벌 Aurora DB와 복제를 위해 설정할 수 있습니다.  
+(복제 구성)
+
+Applications in the secondary region can perform read-only queries.  
+보조 리전의 애플리케이션은 읽기 전용 쿼리를 수행할 수 있습니다.  
+(읽기 전용 활용)
+
+In case the primary region fails, failover can be performed by promoting the secondary region to a read-write Aurora cluster.  
+기본 리전 장애 시, 보조 리전을 읽기/쓰기 클러스터로 승격하여 장애 조치할 수 있습니다.  
+(장애 조치 방법)
+
+---
+
+## Aurora Machine Learning Integration  
+## 오로라 머신러닝 통합  
+
+Aurora integrates with AWS machine learning services to provide ML-based predictions through the SQL interface.  
+Aurora는 SQL 인터페이스를 통해 ML 기반 예측을 제공하기 위해 AWS ML 서비스와 통합됩니다.  
+(ML 통합 설명)
+
+This integration is simple, optimized, and secure, connecting Aurora to services such as SageMaker and Amazon Comprehend.  
+이 통합은 간단하고 최적화되며 안전하며, Aurora를 SageMaker와 Comprehend와 연결합니다.  
+(서비스 연결)
+
+SageMaker allows the use of any machine learning model, while Comprehend supports sentiment analysis.  
+SageMaker는 모든 ML 모델 사용을 지원하고, Comprehend는 감정 분석을 지원합니다.  
+(서비스 기능)
+
+Users do not need expertise in these services to utilize Aurora Machine Learning.  
+사용자는 Aurora ML을 활용하기 위해 해당 서비스 전문 지식이 필요 없습니다.  
+(사용자 편의)
+
+Use cases include fraud detection, ad targeting, sentiment analysis, and product recommendations within Aurora.  
+사용 사례: 사기 탐지, 광고 타겟팅, 감정 분석, 제품 추천 등.  
+(활용 예시)
+
+The architecture involves Aurora sending data, such as user profiles and shopping history, to the machine learning services.  
+Aurora가 사용자 프로필 및 쇼핑 기록 등의 데이터를 ML 서비스로 전송하는 구조입니다.  
+(데이터 흐름)
+
+The ML service returns predictions to Aurora, which then returns the results to the application as part of the SQL query response.  
+ML 서비스가 예측 결과를 Aurora에 반환하면, Aurora는 SQL 쿼리 응답의 일부로 애플리케이션에 전달합니다.  
+(결과 흐름)
+
+---
+
+## Babelfish for Aurora PostgreSQL  
+## Aurora PostgreSQL용 Babelfish  
+
+Babelfish is a feature that enables Amazon Aurora PostgreSQL to understand commands intended for Microsoft SQL Server using the T-SQL language.  
+Babelfish는 Aurora PostgreSQL이 T-SQL을 사용하는 SQL Server용 명령을 이해하도록 합니다.  
+(기능 정의)
+
+To clarify, if an existing application uses Microsoft SQL Server, it communicates with the database using the SQL Server Client Driver and T-SQL commands.  
+기존 애플
+```
+
+
+리케이션이 SQL Server를 사용하는 경우 SQL Server 클라이언트 드라이버와 T-SQL 명령으로 DB와 통신합니다.
+(기존 환경)
+
+Migrating this application to Aurora PostgreSQL would normally require rewriting the application to use the PostgreSQL driver and the PL/pgSQL language, which differs from T-SQL.
+Aurora PostgreSQL로 마이그레이션 시, PostgreSQL 드라이버와 PL/pgSQL 사용을 위해 앱을 수정해야 합니다.
+(문제점)
+
+Babelfish allows the application to continue using T-SQL commands and the SQL Server driver to communicate with Aurora PostgreSQL with minimal or no code changes.
+Babelfish는 T-SQL과 SQL Server 드라이버를 그대로 사용하여 Aurora PostgreSQL과 통신할 수 있게 해줍니다.
+(해결 방법)
+
+This greatly simplifies migration.
+마이그레이션이 크게 간소화됩니다.
+(효과)
+
+Migration tools such as AWS Schema Conversion Tool (SCT) and Database Migration Service (DMS) are used alongside Babelfish to migrate from SQL Server to Aurora PostgreSQL.
+SCT와 DMS 같은 마이그레이션 도구를 Babelfish와 함께 사용하여 SQL Server를 Aurora PostgreSQL로 이전합니다.
+(마이그레이션 도구 안내)
+
+---
+
+## Key Takeaways
+
+## 핵심 요약
+
+* Replica auto-scaling in Amazon Aurora automatically adds read replicas to distribute read traffic and reduce CPU usage.
+
+* Aurora의 복제본 자동 확장은 읽기 복제본을 자동 추가하여 읽기 트래픽을 분산하고 CPU 사용량을 줄입니다.
+
+* Custom endpoints allow defining subsets of Aurora instances for specialized workloads, such as analytical queries on more powerful replicas.
+
+* 커스텀 엔드포인트는 특정 워크로드를 위해 일부 Aurora 인스턴스를 지정할 수 있습니다.
+
+* Aurora Serverless provides automated database instantiation and auto-scaling based on actual usage, ideal for unpredictable workloads.
+
+* Aurora Serverless는 실제 사용량에 따라 DB 생성과 자동 확장을 제공하며, 예측 불가 워크로드에 적합합니다.
+
+* Aurora Global Database enables cross-region replication with less than one second lag and supports disaster recovery with failover under one minute.
+
+* Aurora Global Database는 1초 미만의 지연으로 크로스 리전 복제를 지원하고, 1분 미만 장애 조치로 재해 복구가 가능합니다.
+
+* Aurora integrates with AWS machine learning services like SageMaker and Comprehend to provide ML-based predictions via SQL queries.
+
+* Aurora는 SageMaker, Comprehend와 통합되어 SQL 쿼리를 통해 ML 기반 예측을 제공합니다.
+
+* Babelfish for Aurora PostgreSQL allows applications using Microsoft SQL Server's T-SQL to communicate with Aurora PostgreSQL with minimal code changes, simplifying migrations.
+
+* Aurora PostgreSQL용 Babelfish는 SQL Server T-SQL을 사용하는 앱이 최소 코드 변경으로 Aurora PostgreSQL과 통신하도록 하여 마이그레이션을 단순화합니다.
+
+---
+
+🎮 **게임 보상 지급**  
+- 경험치: **+400XP**  
+- 아이템: **"Aurora ML & Global DB 엠블럼"**  
+- 업적 달성: **"Aurora Advanced Master"** 🏆  
+
+이 MD 자료는 **복제본 자동 확장, 커스텀 엔드포인트, 서버리스, 글로벌 DB, ML 통합, Babelfish 마이그레이션**까지 Aurora 고급 개념을 모두 학습할 수 있도록 구성되어 있습니다.
