@@ -1,0 +1,313 @@
+# Amazon Aurora - Hands On  
+# 아마존 오로라 실습  
+
+---
+
+## Creating an Amazon Aurora Database  
+## 아마존 오로라 데이터베이스 생성  
+
+Let's proceed to create an Amazon Aurora database.  
+아마존 오로라 데이터베이스 생성을 진행하겠습니다.  
+(실습 시작 안내)
+
+Please note that following along with this hands-on tutorial may incur some costs.  
+이 실습을 따라하면 일부 비용이 발생할 수 있습니다.  
+(비용 주의)
+
+It is important to follow the instructions to understand the available options, but you do not need to create the database if you do not have funds to spare.  
+옵션 이해를 위해 따라가는 것이 중요하지만, 예산이 부족하면 실제로 생성할 필요는 없습니다.  
+(옵션 학습용 안내)
+
+We will select the standard create option.  
+Standard Create 옵션을 선택합니다.  
+(생성 방법 선택)
+
+Aurora offers two compatibility options: MySQL-compatible and PostgreSQL-compatible.  
+Aurora는 MySQL 호환과 PostgreSQL 호환 두 가지 옵션을 제공합니다.  
+(호환성 선택)
+
+For this hands-on, I will use the MySQL-compatible option.  
+이번 실습에서는 MySQL 호환 옵션을 사용합니다.  
+(실습 환경 설정)
+
+Next, scroll down to choose the version.  
+다음으로 버전을 선택하기 위해 아래로 스크롤합니다.  
+(버전 선택 안내)
+
+There is a version selector with filters to show versions that support features such as global database, parallel query, or Serverless v2.  
+글로벌 DB, 병렬 쿼리, Serverless v2 등을 지원하는 버전을 필터링하여 선택할 수 있는 버전 선택기가 있습니다.  
+(버전 필터 기능 설명)
+
+I will keep the default version proposed by the Aurora console, which is 3.04.1, though your version may differ.  
+Aurora 콘솔에서 제안하는 기본 버전 3.04.1을 사용합니다. (사용자 버전은 다를 수 있음)  
+(기본 버전 선택)
+
+For the template, select "Production" to configure all options.  
+템플릿으로 "Production"을 선택하여 모든 옵션을 구성합니다.  
+(템플릿 설정)
+
+Then, set the DB cluster identifier to "database2".  
+DB 클러스터 식별자를 "database2"로 설정합니다.  
+(클러스터 ID 설정)
+
+The master username defaults to "admin", and you can enter a password accordingly.  
+마스터 사용자명은 기본값 "admin"이며, 비밀번호를 설정합니다.  
+(계정 설정)
+
+---
+
+## Cluster Storage Configuration  
+## 클러스터 스토리지 구성  
+
+You have two options for cluster storage: Aurora Standard and IO Optimized.  
+클러스터 스토리지에는 Aurora Standard와 IO Optimized 두 가지 옵션이 있습니다.  
+(스토리지 옵션)
+
+If your workload involves high input/output operations, such as frequent reads and writes, IO Optimized is preferable.  
+읽기/쓰기 빈도가 높은 경우 IO Optimized가 적합합니다.  
+(고성능 환경 추천)
+
+For cost-effective workloads with less frequent Aurora usage, Aurora Standard is suitable.  
+Aurora 사용이 적고 비용을 절감하려면 Aurora Standard가 적합합니다.  
+(저비용 환경 추천)
+
+---
+
+## Instance Configuration  
+## 인스턴스 구성  
+
+You can choose the instance class for your database.  
+데이터베이스 인스턴스 클래스를 선택할 수 있습니다.  
+(인스턴스 선택)
+
+Options include memory-optimized, burstable classes, and previous generation classes.  
+옵션에는 메모리 최적화, 버스터블 클래스, 이전 세대 클래스가 있습니다.  
+(인스턴스 유형 설명)
+
+For this tutorial, I will use the burstable class db.t3.medium.  
+이번 실습에서는 버스터블 클래스 db.t3.medium을 사용합니다.  
+(실습용 인스턴스)
+
+If you select a version compatible with Serverless, you will see the Serverless v2 option, where you specify Aurora Capacity Units (ACU) instead of instance types, allowing automatic scaling between minimum and maximum ACUs.  
+Serverless 호환 버전을 선택하면, 인스턴스 대신 Aurora Capacity Units(ACU)를 설정하여 자동으로 최소~최대 ACU 사이로 확장할 수 있는 Serverless v2 옵션이 나타납니다.  
+(Serverless 설명)
+
+---
+
+## Availability and Durability  
+## 가용성 및 내구성  
+
+Aurora replicas can be created as reader nodes in different Availability Zones (AZs), providing enhanced availability, better read scalability across AZs, and fast failovers.  
+Aurora 복제본을 서로 다른 AZ의 읽기 노드로 생성할 수 있으며, 가용성 향상, AZ 간 읽기 확장성 증가, 빠른 장애 조치를 제공합니다.  
+(복제본 활용)
+
+This option increases cost but demonstrates Aurora's full capabilities.  
+비용은 증가하지만 Aurora의 전체 기능을 보여줍니다.  
+(비용-효율 고려)
+
+---
+
+## Network and Security Configuration  
+## 네트워크 및 보안 구성  
+
+For compute resources, we will not connect to an EC2 resource.  
+컴퓨트 리소스로 EC2 연결은 하지 않습니다.  
+(EC2 미연결)
+
+The network type is IPv4, which suffices for our needs.  
+네트워크 타입은 IPv4로 충분합니다.  
+(기본 네트워크)
+
+If your VPC supports IPv6, you can use dual stack mode.  
+VPC가 IPv6를 지원하면 듀얼 스택 모드를 사용할 수 있습니다.  
+(IPv6 옵션 안내)
+
+The database will be in the default VPC with the default subnet group.  
+데이터베이스는 기본 VPC와 기본 서브넷 그룹에 생성됩니다.  
+(기본 위치)
+
+Public access is enabled to allow connections from public IPs.  
+공용 IP 연결을 위해 퍼블릭 액세스를 활성화합니다.  
+(접속 허용)
+
+A new VPC security group named "demo database Aurora" is created to permit connections to the Aurora database.  
+"Aurora 데모 데이터베이스"라는 새 VPC 보안 그룹을 만들어 Aurora DB 연결을 허용합니다.  
+(보안 그룹 생성)
+
+---
+
+## Additional Configuration  
+## 추가 구성  
+
+The database port is set to 3306, the default MySQL port.  
+데이터베이스 포트는 기본 MySQL 포트인 3306으로 설정됩니다.  
+(포트 설정)
+
+Local write forwarding can be enabled to forward writes applied to read replicas automatically to the write instance, simplifying connection management.  
+Local write forwarding을 활성화하면 읽기 복제본에 적용된 쓰기가 자동으로 쓰기 인스턴스로 전달되어 연결 관리가 간편해집니다.  
+(쓰기 관리 편의)
+
+Database authentication options include IAM-based or Kerberos-based authentication for external user validation.  
+데이터베이스 인증 옵션에는 IAM 기반 또는 Kerberos 기반 인증이 있습니다.  
+(외부 사용자 인증)
+
+Enhanced monitoring is disabled as it is not needed here.  
+향상된 모니터링은 필요 없으므로 비활성화합니다.  
+(모니터링 설정)
+
+The initial database name is set to "mydb", and backup retention is configured for one day.  
+초기 DB 이름은 "mydb"이며, 백업 보존 기간은 1일로 설정합니다.  
+(기본 DB 및 백업)
+
+Encryption, backtracking, log exports, and deletion protection options are available but not modified in this tutorial.  
+암호화, 백트랙, 로그 내보내기, 삭제 보호 기능은 사용 가능하지만 이번 실습에서는 변경하지 않습니다.  
+(옵션 기능 설명)
+
+After reviewing the configuration and estimated monthly costs, proceed to create the database.  
+구성과 예상 월 비용을 확인한 후 데이터베이스를 생성합니다.  
+(생성 단계)
+
+---
+
+## Aurora Database Overview  
+## 오로라 데이터베이스 개요  
+
+The Aurora database is now created.  
+Aurora 데이터베이스가 생성되었습니다.  
+(생성 완료)
+
+It consists of a regional cluster with a writer instance and a reader instance located in different Availability Zones.  
+이 클러스터는 서로 다른 AZ에 위치한 writer 인스턴스와 reader 인스턴스로 구성됩니다.  
+(클러스터 구조)
+
+This separation allows optimized read and write operations and enhances availability.  
+이 분리는 읽기/쓰기 최적화와 가용성 향상을 가능하게 합니다.  
+(운영 효율)
+
+Each cluster has two endpoints: a writer endpoint and a reader endpoint.  
+각 클러스터에는 writer와 reader 엔드포인트 두 개가 있습니다.  
+(엔드포인트 구조)
+
+These endpoints are designed to always route connections to the appropriate writer or reader instance.  
+엔드포인트는 항상 적절한 writer/reader 인스턴스로 연결을 라우팅하도록 설계되었습니다.  
+(연결 관리)
+
+Applications should use these endpoints to connect to Aurora.  
+애플리케이션은 Aurora 연결 시 이 엔드포인트를 사용해야 합니다.  
+(연결 권장)
+
+Individual instances also have dedicated endpoints once created.  
+개별 인스턴스도 생성 후 전용 엔드포인트를 가집니다.  
+(인스턴스 연결)
+
+---
+
+## Additional features  
+## 추가 기능  
+
+Ability to add more readers to the reader cluster for scaling capacity.  
+읽기 클러스터에 복제본을 추가하여 용량을 확장할 수 있습니다.  
+(읽기 확장)
+
+Ability to create cross-region read replicas for replication in other AWS regions.  
+다른 AWS 리전으로 복제할 수 있는 크로스 리전 읽기 복제본 생성 가능.  
+(글로벌 복제)
+
+Point-in-time restore and replica auto-scaling are also available.  
+시점 복원 및 읽기 복제본 자동 확장 기능도 지원됩니다.  
+(복원 및 확장)
+
+Auto-scaling policies can be configured based on average utilization or connection count.  
+자동 확장 정책은 평균 사용률 또는 연결 수 기준으로 설정 가능.  
+(정책 설정)
+
+Scaling the number of read replicas between defined minimum and maximum values.  
+읽기 복제본 수를 최소~최대 값 사이로 확장/축소할 수 있습니다.  
+(복제본 관리)
+
+---
+
+## Global Database Feature  
+## 글로벌 데이터베이스 기능  
+
+You can add AWS regions to your database cluster if you selected a version with the global database feature enabled.  
+글로벌 DB 기능이 활성화된 버전을 선택하면, 데이터베이스 클러스터에 AWS 리전을 추가할 수 있습니다.  
+(글로벌 확장)
+
+This requires compatible instance sizes, such as larger instance types, to enable adding regions.  
+리전을 추가하려면 호환되는 인스턴스 크기, 예를 들어 대형 인스턴스가 필요합니다.  
+(인스턴스 요건)
+
+---
+
+## Conclusion  
+## 결론  
+
+Aurora offers an amazing database solution with excellent performance, scalability, global reach, and serverless options.  
+Aurora는 뛰어난 성능, 확장성, 글로벌 범위, 서버리스 옵션을 갖춘 훌륭한 DB 솔루션을 제공합니다.  
+(총평)
+
+It is a comprehensive offering from AWS that I highly recommend.  
+AWS에서 제공하는 포괄적인 서비스로 강력 추천합니다.  
+(추천)
+
+---
+
+## De
+```
+
+
+leting the Aurora Database
+
+## 오로라 데이터베이스 삭제
+
+To delete the Aurora database, you must first delete the reader instance.
+Aurora DB를 삭제하려면 먼저 reader 인스턴스를 삭제해야 합니다.
+(삭제 순서 안내)
+
+Select it, choose delete, and confirm by typing "delete me".
+인스턴스를 선택하고 삭제, "delete me" 입력으로 확인합니다.
+(삭제 확인)
+
+Then, delete the writer instance similarly.
+그다음 writer 인스턴스를 동일하게 삭제합니다.
+(writer 삭제)
+
+Once both instances are deleted, you can delete the entire cluster.
+두 인스턴스가 삭제되면 전체 클러스터를 삭제할 수 있습니다.
+(클러스터 삭제)
+
+After completing these steps, the database will be fully deleted.
+이 과정을 완료하면 DB가 완전히 삭제됩니다.
+(완전 삭제 완료)
+
+---
+
+## Key Takeaways
+
+## 핵심 요약
+
+* Created an Amazon Aurora database using the MySQL-compatible option.
+
+* MySQL 호환 옵션으로 Aurora 데이터베이스를 생성했습니다.
+
+* Configured instance types, storage options, and availability features including Aurora replicas.
+
+* 인스턴스 유형, 스토리지 옵션, Aurora 복제본 등 가용성 기능을 구성했습니다.
+
+* Utilized endpoints for writer and reader instances to optimize database connections.
+
+* writer와 reader 엔드포인트를 사용하여 DB 연결을 최적화했습니다.
+
+* Explored advanced features such as cross-region replicas, auto-scaling read replicas, and global databases.
+
+* 크로스 리전 복제본, 읽기 복제본 자동 확장, 글로벌 DB 등 고급 기능을 확인했습니다.
+
+---
+
+🎮 **게임 보상 지급**  
+- 경험치: **+350XP**  
+- 아이템: **"Aurora 글로벌 DB 토큰" (+25% 읽기 확장 효율)**  
+- 업적 달성: **"Aurora Hands-On 전문가"** 🏆  
+
+이 자료를 통해 **Aurora 생성, 인스턴스/스토리지 설정, 엔드포인트 관리, 읽기/쓰기 복제, 글로벌 DB, 자동 확장** 실습 과정을 학습할 수 있습니다.
