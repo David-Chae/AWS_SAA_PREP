@@ -1,0 +1,233 @@
+# Amazon Aurora  
+# 아마존 오로라  
+
+---
+
+## Introduction to Amazon Aurora  
+## 아마존 오로라 소개  
+
+Let's discuss Amazon Aurora, as the exam increasingly includes questions about it.  
+시험에서 Amazon Aurora 관련 문제가 늘고 있으므로 Aurora에 대해 설명하겠습니다.  
+(시험 대비 소개)
+
+While deep knowledge is not required, a high-level overview is essential to understand how it works.  
+깊은 지식은 필요 없지만, 작동 원리를 이해하기 위해 개요를 아는 것이 중요합니다.  
+(학습 목표)
+
+Aurora is a proprietary technology from AWS.  
+Aurora는 AWS의 독점 기술입니다.  
+(기술적 성격)
+
+Although it is not open source, it is compatible with Postgres and MySQL.  
+오픈소스는 아니지만, Postgres 및 MySQL과 호환됩니다.  
+(호환성 설명)
+
+Essentially, your Aurora database will accept connections using Postgres or MySQL drivers, making it seamless to connect as if you were using those databases.  
+즉, Aurora DB는 Postgres 또는 MySQL 드라이버로 연결 가능하며, 해당 DB를 사용하는 것처럼 자연스럽게 연결됩니다.  
+(연결 편의성)
+
+Aurora is cloud-optimized and achieves significant performance improvements: approximately 5x faster than MySQL on RDS and 3x faster than Postgres on RDS.  
+Aurora는 클라우드 최적화되어 있으며, MySQL RDS 대비 약 5배, Postgres RDS 대비 약 3배 빠른 성능을 냅니다.  
+(성능 이점)
+
+These gains come from various optimizations, though the internal details are complex and beyond this overview.  
+이 성능 향상은 다양한 최적화 덕분이며, 내부 구조는 복잡하여 개요 범위를 벗어납니다.  
+(내부 최적화 언급)
+
+---
+
+## Storage Auto-Scaling  
+## 스토리지 자동 확장  
+
+Aurora storage automatically grows, starting at 10GB and scaling up to 128TB as more data is added.  
+Aurora 스토리지는 자동으로 확장되며, 10GB에서 시작해 데이터가 늘어나면 최대 128TB까지 확장됩니다.  
+(자동 스토리지 확장)
+
+This feature removes the need for database administrators or system operators to monitor disk space manually.  
+이 기능 덕분에 DBA나 시스템 관리자가 디스크 공간을 수동으로 모니터링할 필요가 없습니다.  
+(관리 편의성)
+
+Aurora supports up to 15 read replicas, with replication processes faster than MySQL, typically achieving sub-10 millisecond replica lag.  
+Aurora는 최대 15개의 읽기 전용 복제본을 지원하며, MySQL보다 빠른 복제를 제공하고, 일반적으로 10ms 미만의 지연을 가집니다.  
+(읽기 확장성)
+
+Failover in Aurora is instantaneous, much faster than Multi-AZ failover on MySQL RDS.  
+Aurora의 장애 조치는 즉시 이루어지며, MySQL RDS Multi-AZ보다 훨씬 빠릅니다.  
+(고가용성)
+
+Being cloud-native, Aurora provides high availability by default.  
+클라우드 네이티브이므로 기본적으로 높은 가용성을 제공합니다.  
+(클라우드 특성)
+
+Although Aurora costs about 20% more than RDS, its efficiency at scale often results in cost savings.  
+Aurora는 RDS보다 약 20% 더 비싸지만, 대규모 환경에서는 효율성 덕분에 비용 절감 효과가 있습니다.  
+(비용 효율)
+
+---
+
+## High Availability and Read Scaling  
+## 고가용성과 읽기 확장  
+
+Aurora stores six copies of your data across three Availability Zones (AZs).  
+Aurora는 세 개의 가용 영역(AZ)에 걸쳐 데이터를 여섯 개 복사본으로 저장합니다.  
+(데이터 복제 구조)
+
+It requires four out of six copies to acknowledge writes, so if one AZ goes down, writes can continue.  
+쓰기 작업은 여섯 개 중 네 개 복사본의 확인이 필요하므로, 한 AZ가 다운되어도 쓰기가 가능합니다.  
+(쓰기 고가용성)
+
+For reads, it requires three out of six copies, ensuring high availability for read operations.  
+읽기 작업은 여섯 개 중 세 개 복사본을 필요로 하여, 읽기 고가용성을 보장합니다.  
+(읽기 고가용성)
+
+Aurora includes a self-healing process that repairs corrupted or bad data through peer-to-peer replication in the backend.  
+Aurora는 백엔드에서 피어 투 피어 복제를 통해 손상된 데이터를 자동 복구하는 자기 치유 프로세스를 포함합니다.  
+(데이터 복원 기능)
+
+Instead of relying on a single volume, it uses hundreds of volumes, reducing risk significantly.  
+단일 볼륨에 의존하지 않고 수백 개 볼륨을 사용하여 리스크를 크게 줄입니다.  
+(안정성 확보)
+
+This architecture is managed entirely by AWS, so users do not need to handle it directly.  
+이 아키텍처는 AWS가 전적으로 관리하므로 사용자가 직접 처리할 필요가 없습니다.  
+(관리 편리성)
+
+---
+
+## Storage Architecture Diagram  
+## 스토리지 아키텍처 다이어그램  
+
+Imagine three AZs with a shared logical storage volume that performs replication, self-healing, and auto-expansion.  
+세 개 AZ에 걸쳐 공유 논리 스토리지 볼륨이 있으며, 복제, 자기 복구, 자동 확장을 수행한다고 상상해보세요.  
+(구조 시각화)
+
+When data is written, six copies are distributed across the three AZs, striped across different volumes for performance and reliability.  
+데이터가 쓰이면, 여섯 개 복사본이 세 AZ에 분산되고, 성능과 신뢰성을 위해 다른 볼륨에 스트라이핑됩니다.  
+(데이터 분산)
+
+---
+
+## Aurora Instance Architecture  
+## 오로라 인스턴스 아키텍처  
+
+Aurora operates similarly to Multi-AZ RDS but with enhancements.  
+Aurora는 Multi-AZ RDS와 유사하게 동작하지만, 개선된 기능을 갖추고 있습니다.  
+(아키텍처 차이)
+
+There is a single master instance that handles all writes.  
+모든 쓰기를 처리하는 단일 마스터 인스턴스가 있습니다.  
+(쓰기 관리)
+
+If the master fails, failover occurs in less than 30 seconds on average.  
+마스터 장애 시 평균 30초 이내로 장애 조치(failover)가 발생합니다.  
+(빠른 장애 대응)
+
+Up to 15 read replicas serve read traffic, enabling read scaling.  
+최대 15개의 읽기 복제본이 읽기 트래픽을 처리하여 읽기 확장이 가능합니다.  
+(읽기 확장)
+
+Any read replica can be promoted to master if the current master fails.  
+현재 마스터가 실패하면, 모든 읽기 복제본 중 하나가 마스터로 승격될 수 있습니다.  
+(마스터 승격 가능)
+
+This differs from traditional RDS behavior where only one master exists.  
+이는 전통적인 RDS와 달리, 단일 마스터만 존재하는 구조와 차이가 있습니다.  
+(차이점)
+
+By default, there is only one master instance.  
+기본적으로 단일 마스터 인스턴스만 존재합니다.  
+(기본 설정)
+
+Read replicas support cross-region replication, enhancing disaster recovery and global availability.  
+읽기 복제본은 크로스 리전 복제를 지원하여, 재해 복구 및 글로벌 가용성을 향상시킵니다.  
+(재해 복구 지원)
+
+---
+
+## Connection Management with Endpoints  
+## 엔드포인트를 통한 연결 관리  
+
+Aurora provides a writer endpoint, which is a DNS name that always points to the current master instance.  
+Aurora는 항상 현재 마스터 인스턴스를 가리키는 writer 엔드포인트(DNS 이름)를 제공합니다.  
+(쓰기 연결 단순화)
+
+This allows clients to connect to the writer endpoint without worrying about which instance is the master, as failover automatically redirects connections.  
+클라이언트는 어떤 인스턴스가 마스터인지 신경 쓰지 않고 writer 엔드포인트에 연결할 수 있으며, 장애 조치 시 자동으로 연결이 리디렉션됩니다.  
+(자동 연결 관리)
+
+Similarly, there is a reader endpoint that load balances connections across all read replicas.  
+유사하게 reader 엔드포인트는 모든 읽기 복제본에 대해 연결을 로드 밸런싱합니다.  
+(읽기 로드 밸런싱)
+
+This endpoint simplifies connection management for applications, especially when auto scaling is enabled for read replicas.  
+이 엔드포인트는 애플리케이션의 연결 관리를 단순화하며, 특히 읽기 복제본 자동 확장 시 유용합니다.  
+(자동 확장과 연계)
+
+Note that load balancing via the reader endpoint happens at the connection level, not at the individual statement level.  
+reader 엔드포인트를 통한 로드 밸런싱은 개별 SQL 문이 아니라 연결 단위로 수행됩니다.  
+(작동 단위 주의)
+
+---
+
+## Additional Aurora Features  
+## 추가 오로라 기능  
+
+Aurora offers automatic failover, backup and recovery, isolation and security, industry compliance, push-button scaling through auto scaling, and automated patching with zero downtime.  
+Aurora는 자동 장애 조치, 백업 및 복구, 격리 및 보안, 업계 규정 준수, 자동 확장을 통한 원터치 스케일링, 무중단 자동 패치 기능을 제공합니다.  
+(주요 기능 요약)
+
+Advanced monitoring and routine maintenance are also handled automatically.  
+고급 모니터링과 정기 유지보수 또한 자동으로 수행됩니다.  
+(
+```
+
+
+자동 관리)
+
+Aurora includes a feature called backtrack, which allows you to restore data to any point in time without relying on traditional backups.
+Aurora는 backtrack 기능을 포함하여, 기존 백업 없이 원하는 시점으로 데이터를 복원할 수 있습니다.
+(데이터 복원 기능)
+
+For example, you can revert the database state to yesterday at 4:00 PM or 5:00 PM, providing flexible recovery options.
+예를 들어, DB 상태를 어제 오후 4시 또는 5시로 되돌려 유연한 복구 옵션을 제공합니다.
+(복원 예시)
+
+This concludes the overview of Amazon Aurora.
+이로써 Amazon Aurora 개요를 마칩니다.
+(강의 종료)
+
+The next lecture will cover additional topics.
+다음 강의에서는 추가 주제를 다룰 예정입니다.
+(다음 강의 안내)
+
+---
+
+## Key Takeaways
+
+## 핵심 요약
+
+* Amazon Aurora is a cloud-optimized, proprietary AWS database compatible with Postgres and MySQL drivers.
+
+* Amazon Aurora는 클라우드 최적화된 AWS 독점 DB로, Postgres 및 MySQL 드라이버와 호환됩니다.
+
+* Aurora storage automatically scales from 10GB up to 128TB, eliminating manual disk monitoring.
+
+* Aurora 스토리지는 10GB에서 128TB까지 자동 확장되며, 수동 디스크 모니터링이 필요 없습니다.
+
+* It supports up to 15 read replicas with sub-10 ms replication lag and instantaneous failover under 30 seconds.
+
+* 최대 15개의 읽기 복제본을 지원하며, 10ms 미만 지연과 30초 미만 즉시 장애 조치를 제공합니다.
+
+* Aurora provides writer and reader endpoints for seamless connection management and load balancing across replicas.
+
+* Aurora는 writer 및 reader 엔드포인트를 제공하여, 복제본 간 원활한 연결 관리와 로드 밸런싱을 지원합니다.
+
+
+---
+
+🎮 **게임 보상 지급**  
+- 경험치: **+300XP**  
+- 아이템: **"Aurora 고성능 DB 토큰" (+20% 읽기/쓰기 효율)**  
+- 업적 달성: **"클라우드 네이티브 DB 마스터"** 🏅  
+
+이 자료를 통해 **Aurora 구조, 스토리지 자동 확장, 읽기/쓰기 복제, 엔드포인트 관리, Backtrack 복원** 개념을 학습할 수 있습니다.
