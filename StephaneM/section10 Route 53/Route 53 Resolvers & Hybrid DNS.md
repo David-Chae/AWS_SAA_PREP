@@ -1,0 +1,113 @@
+# Route 53 Resolvers & Hybrid DNS  
+# Route 53 리졸버 & 하이브리드 DNS  
+
+## Introduction to Route 53 Resolver  
+## Route 53 리졸버 소개  
+
+By default, when you create a Route 53 Resolver in AWS, it answers DNS queries for local domain names associated with your EC2 instances, records in your private hosted zones, as well as records in your public name servers.  
+기본적으로 AWS에서 Route 53 리졸버를 생성하면, EC2 인스턴스와 연관된 로컬 도메인 이름, 프라이빗 호스티드 존의 레코드, 그리고 퍼블릭 네임서버의 레코드에 대한 DNS 쿼리를 처리합니다.  
+
+Essentially, everything you create under Route 53 is answered within your AWS account.  
+즉, Route 53에서 생성한 모든 리소스에 대한 DNS 요청은 AWS 계정 내에서 처리됩니다.  
+
+---
+
+## Hybrid DNS Concept  
+## 하이브리드 DNS 개념  
+
+There are scenarios where you want a hybrid DNS setup.  
+하이브리드 DNS 구성을 원하는 시나리오가 있습니다.  
+
+This means you want the Route 53 Resolver to also resolve DNS queries for your own on-premises network, and vice versa.  
+즉, Route 53 리졸버가 온프레미스 네트워크의 DNS 쿼리도 처리하고, 반대로 온프레미스 DNS가 AWS 클라우드의 도메인을 처리하도록 하고 싶은 경우입니다.  
+
+In other words, you want to establish connectivity between your AWS Cloud DNS and the DNS of your on-premises network.  
+즉, AWS 클라우드 DNS와 온프레미스 네트워크 DNS 간의 연결을 구축하고자 하는 것입니다.  
+
+---
+
+## Resolver Endpoints  
+## 리졸버 엔드포인트  
+
+To achieve this hybrid DNS functionality, we use what is called a Resolver endpoint.  
+이 하이브리드 DNS 기능을 구현하기 위해 리졸버 엔드포인트를 사용합니다.  
+
+This involves creating an inbound endpoint that allows DNS resolvers of on-premises resources to resolve domain names of AWS resources.  
+이는 온프레미스 리소스의 DNS 리졸버가 AWS 리소스의 도메인 이름을 해결할 수 있도록 인바운드 엔드포인트를 생성하는 것을 포함합니다.  
+
+---
+
+## How Inbound Endpoints Work  
+## 인바운드 엔드포인트 동작 방식  
+
+Consider that you have established your own Route 53 Resolver in your AWS Cloud, with an EC2 instance and a private hosted zone.  
+AWS 클라우드에 자체 Route 53 리졸버를 구축하고, EC2 인스턴스와 프라이빗 호스티드 존이 있다고 가정합니다.  
+
+You also have an on-premises data center with a server.  
+또한 온프레미스 데이터 센터에 서버가 있다고 가정합니다.  
+
+First, you need to establish connectivity between your data center and AWS using a VPN or Direct Connect connection.  
+먼저 VPN 또는 Direct Connect를 통해 데이터 센터와 AWS 간 연결을 설정해야 합니다.  
+
+When the on-premises server performs a DNS query for a domain name belonging to your private hosted zone, the query is passed to the closest DNS resolver — the on-premises resolver.  
+온프레미스 서버가 프라이빗 호스티드 존에 속한 도메인 이름에 대해 DNS 쿼리를 수행하면, 쿼리는 가장 가까운 DNS 리졸버인 온프레미스 리졸버로 전달됩니다.  
+
+This resolver is configured to communicate with the resolver inbound endpoint, which forwards the DNS query into your AWS Cloud.  
+이 리졸버는 리졸버 인바운드 엔드포인트와 통신하도록 구성되어 있으며, DNS 쿼리를 AWS 클라우드로 전달합니다.  
+
+The resolver then communicates with the Route 53 Resolver to resolve the query.  
+리졸버는 이후 Route 53 리졸버와 통신하여 쿼리를 해결합니다.  
+
+This forms a complete chain of DNS lookups from your on-premises data center to your AWS Cloud using an inbound endpoint.  
+이 과정을 통해 인바운드 엔드포인트를 사용하여 온프레미스 데이터 센터에서 AWS 클라우드까지의 DNS 조회 전체 체인이 형성됩니다.  
+
+---
+
+## Outbound Endpoints  
+## 아웃바운드 엔드포인트  
+
+You can also configure the other direction using an outbound endpoint.  
+아웃바운드 엔드포인트를 사용하여 반대 방향도 구성할 수 있습니다.  
+
+This allows your Route 53 Resolver to forward DNS queries to your on-premises DNS resolver.  
+이 설정은 Route 53 리졸버가 DNS 쿼리를 온프레미스 DNS 리졸버로 전달할 수 있도록 합니다.  
+
+For example, when an EC2 instance queries a DNS name that is resolved on-premises, such as web.onpremise.private, the query is passed through the resolver outbound endpoint to the DNS resolvers of the on-premises data center, enabling resolution.  
+예를 들어 EC2 인스턴스가 온프레미스에서 해결되는 DNS 이름(web.onpremise.private)을 쿼리하면, 쿼리가 리졸버 아웃바운드 엔드포인트를 통해 온프레미스 데이터 센터의 DNS 리졸버로 전달되어 해결됩니다.  
+
+---
+
+## Summary  
+## 요약  
+
+To connect your on-premises data center and AWS and ensure DNS queries are resolved both ways, you must use resolver inbound and outbound endpoints.  
+온프레미스 데이터 센터와 AWS를 연결하고 양방향 DNS 조회를 보장하려면, 리졸버 인바운드 및 아웃바운드 엔드포인트를 사용해야 합니다.  
+
+This setup enables hybrid DNS resolution between your AWS Cloud and on-premises network.  
+이 설정은 AWS 클라우드와 온프레미스 네트워크 간 하이브리드 DNS 해석을 가능하게 합니다.  
+
+---
+
+## Key Takeaways  
+## 핵심 포인트  
+
+- Route 53 Resolver answers DNS queries for local domain names, private hosted zones, and public name servers within your AWS account.  
+  Route 53 리졸버는 AWS 계정 내의 로컬 도메인 이름, 프라이빗 호스티드 존, 퍼블릭 네임서버에 대한 DNS 쿼리를 처리합니다.  
+
+- Hybrid DNS allows DNS resolution between AWS Cloud and on-premises networks using Resolver endpoints.  
+  하이브리드 DNS는 리졸버 엔드포인트를 사용하여 AWS 클라우드와 온프레미스 네트워크 간 DNS 해석을 가능하게 합니다.  
+
+- Inbound endpoints enable on-premises DNS resolvers to resolve AWS domain names.  
+  인바운드 엔드포인트는 온프레미스 DNS 리졸버가 AWS 도메인 이름을 해결할 수 있도록 합니다.  
+
+- Outbound endpoints allow AWS Route 53 Resolver to forward DNS queries to on-premises DNS resolvers, enabling two-way DNS resolution.  
+  아웃바운드 엔드포인트는 AWS Route 53 리졸버가 DNS 쿼리를 온프레미스 DNS 리졸버로 전달하도록 하여 양방향 DNS 해석을 가능하게 합니다.  
+
+---
+
+💡 **게임 보상:**
+
+* 🌐 Route 53 Resolver 기본 동작 이해 = +40 EXP
+* 🔄 하이브리드 DNS 개념 및 양방향 엔드포인트 학습 = +60 EXP
+* 🛠️ 인바운드/아웃바운드 엔드포인트 구성과 데이터 흐름 이해 = +50 EXP
+  **총 보상: 150 EXP + Hybrid DNS Expert 뱃지 🏅**
