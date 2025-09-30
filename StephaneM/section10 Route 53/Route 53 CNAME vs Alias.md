@@ -1,0 +1,252 @@
+# Route 53 CNAME vs Alias  
+# Route 53 CNAME과 Alias 비교  
+👉 주제 제목: AWS Route 53에서 CNAME 레코드와 Alias 레코드의 차이를 설명합니다.  
+
+---
+
+## Differences Between CNAME and Alias Records  
+## CNAME과 Alias 레코드의 차이점  
+👉 두 레코드 유형의 기본적인 차이를 이해합니다.  
+
+When you have an AWS resource, such as a Load Balancer or CloudFront distribution, it exposes a hostname.  
+로드 밸런서나 CloudFront 배포 같은 AWS 리소스는 호스트명을 제공합니다.  
+👉 AWS 리소스가 가진 기본 도메인을 다른 도메인과 연결할 수 있습니다.  
+
+You may want to map that hostname to a domain you own.  
+해당 호스트명을 자신이 소유한 도메인에 매핑하고 싶을 수 있습니다.  
+👉 예: ALB를 `myapp.mydomain.com`으로 연결.  
+
+For example, you might want to map this Load Balancer to myapp.mydomain.com.  
+예를 들어, 로드 밸런서를 `myapp.mydomain.com`으로 연결할 수 있습니다.  
+👉 실제 사용 예시.  
+
+There are two options to achieve this.  
+이를 위해 두 가지 방법이 있습니다.  
+👉 CNAME 레코드와 Alias 레코드.  
+
+---
+
+## CNAME Records  
+## CNAME 레코드  
+👉 첫 번째 방법: CNAME 레코드 사용.  
+
+The first option is to use a CNAME record.  
+첫 번째 옵션은 CNAME 레코드를 사용하는 것입니다.  
+
+Unlike A records, CNAME records allow you to point a hostname to any other hostname.  
+A 레코드와 달리, CNAME 레코드는 호스트명을 다른 호스트명으로 연결할 수 있습니다.  
+👉 IP 대신 다른 도메인으로 연결 가능.  
+
+For example, you can specify that app.mydomain.com points to blabla.anything.com.  
+예: `app.mydomain.com`을 `blabla.anything.com`으로 연결.  
+👉 실제 예시.  
+
+However, this only works if you have a non-root domain name, such as something.mydomain.com.  
+단, 루트 도메인(`mydomain.com`)에는 사용할 수 없습니다.  
+👉 CNAME은 서브 도메인에서만 사용 가능.  
+
+It does not work for the root domain like mydomain.com, as will be demonstrated in the hands-on section.  
+루트 도메인에서는 작동하지 않으며, 실습에서 시연할 예정입니다.  
+👉 중요한 제한 사항.  
+
+---
+
+## Alias Records  
+## Alias 레코드  
+👉 두 번째 방법: Route 53 전용 Alias 레코드.  
+
+On the other hand, alias records are specific to Route 53.  
+반면, Alias 레코드는 Route 53 전용 기능입니다.  
+
+They allow you to point a hostname to a specific AWS resource.  
+호스트명을 특정 AWS 리소스로 연결할 수 있습니다.  
+👉 IP 변경에도 자동 반영.  
+
+For example, app.mydomain.com can point to blabla.amazonaws.com.  
+예: `app.mydomain.com`을 `blabla.amazonaws.com`으로 연결 가능.  
+
+Alias records work for both root domains and non-root domains, so you can have mydomain.com pointing as an alias to an AWS resource.  
+Alias 레코드는 루트 도메인과 서브 도메인 모두에서 사용 가능.  
+👉 루트 도메인에도 적용 가능.  
+
+This is very useful and is something that may be tested on the exam.  
+이는 유용하며, AWS 시험에도 출제될 수 있습니다.  
+
+Additionally, alias records are free of charge and have native health check capabilities built in.  
+또한 Alias 레코드는 무료이며, 내장된 헬스체크 기능을 지원합니다.  
+👉 비용 절감 + 자동 상태 확인 가능.  
+
+---
+
+## Details of Alias Records  
+## Alias 레코드 세부 사항  
+👉 Alias 레코드 동작 방식.  
+
+Alias records can only be mapped to AWS resources.  
+Alias 레코드는 AWS 리소스에만 매핑할 수 있습니다.  
+
+For example, in Route 53, you can create an alias record of type A for example.com with the value being the DNS name of your load balancer.  
+예: Route 53에서 example.com에 A 타입 Alias 레코드를 만들고, 값으로 ALB DNS 이름 사용.  
+
+This extends DNS functionality beyond what exists in standard DNS systems.  
+이는 일반 DNS 시스템의 기능을 확장한 것입니다.  
+👉 IP 변경 자동 반영 가능.  
+
+If the underlying Application Load Balancer (ALB) changes IP addresses, the alias record automatically recognizes these changes.  
+ALB IP가 변경되더라도 Alias 레코드는 자동으로 이를 반영합니다.  
+
+Unlike CNAME records, alias records can be used for the top node of the DNS namespace, called the Zone Apex.  
+CNAME과 달리, Alias 레코드는 Zone Apex(루트 노드)에서도 사용 가능합니다.  
+👉 루트 도메인 적용 가능.  
+
+Alias records are always of type A or AAAA, corresponding to IPv4 or IPv6 respectively.  
+Alias 레코드는 항상 A 또는 AAAA 타입이며, 각각 IPv4/IPv6용입니다.  
+
+When you create an alias record, you cannot set the TTL manually; it is set automatically by Route 53.  
+Alias 레코드 생성 시 TTL은 자동 설정되며 수동으로 지정할 수 없습니다.  
+
+---
+
+## Targets for Alias Records  
+## Alias 레코드 대상  
+👉 Alias 레코드가 지정할 수 있는 AWS 리소스.  
+
+Alias records can target the following AWS resources:  
+Alias 레코드는 다음 AWS 리소스를 대상으로 할 수 있습니다:  
+
+- Elastic Load Balancers (ELBs)  
+- 엘라스틱 로드 밸런서 (ELB)  
+- CloudFront Distributions  
+- CloudFront 배포  
+- API Gateway  
+- API Gateway  
+- Elastic Beanstalk environments  
+- Elastic Beanstalk 환경  
+- S3 Websites (when buckets are enabled as websites)  
+- S3 웹사이트 (버킷이 웹사이트로 활성화된 경우)  
+- VPC Interface Endpoints  
+- VPC 인터페이스 엔드포인트  
+- Global Accelerator  
+- Global Accelerator  
+- Route 53 records in the same hosted zone  
+- 같은 호스티드 존의 Route 53 레코드  
+
+Note that you cannot set an alias record to an EC2 DNS name.  
+Alias 레코드는 EC2 DNS 이름을 대상으로 할 수 없습니다.  
+👉 중요한 제한 사항.  
+
+---
+
+## Hands-On: Creating CNAME and Alias Records in Route 53  
+## 실습: Route 53에서 CNAME과 Alias 레코드 생성  
+👉 AWS 콘솔에서 두 레코드 실습.  
+
+First, create a record of type CNAME.  
+먼저, CNAME 타입 레코드를 생성합니다.  
+
+For example, name it myapp.stephanetheteacher.com.  
+예: `myapp.stephanetheteacher.com`으로 이름 지정.  
+
+The record type is CNAME, and the value must be a domain name.  
+레코드 타입은 CNAME이며, 값은 도메인 이름이어야 합니다.  
+
+Copy the DNS name of your Application Load Balancer (ALB) and paste it as the value.  
+ALB DNS 이름을 복사하여 값으로 붙여넣습니다.  
+
+This setup allows you to access the ALB via myapp.stephanetheteacher.com instead of the ALB's URL.  
+이렇게 하면 ALB URL 대신 `myapp.stephanetheteacher.com`으로 접근 가능합니다.  
+
+After creating this record, accessing myapp.stephanetheteacher.com in a browser returns the expected response, such as "Hello World" from the EC2 instance behind the ALB.  
+레코드 생성 후 브라우저에서 접속하면 ALB 뒤 EC2 인스턴스의 "Hello World"를 확인할 수 있습니다.  
+
+This method works but is not AWS native.  
+작동은 하지만 AWS 네이티브 방식은 아닙니다.  
+
+---
+
+Now, create an alias record.  
+이제 Alias 레코드를 생성합니다.  
+
+Name it myalias.stephanetheteacher.com with record type A, since the ALB handles only IPv4 traffic.  
+이름은 `myalias.stephanetheteacher.com`, 타입 A, ALB가 IPv4만 처리하기 때문입니다.  
+
+Select the alias option and choose to route traffic to an Application and Classic Load Balancer in the appropriate region (e.g., eu-central-1).  
+Alias 옵션을 선택하고 ALB가 위치한 리전(예: eu-central-1)으로 트래픽을 라우팅합니다.  
+
+Select your load balancer from the list. The console will automatically evaluate the target health. Create the record.  
+목록에서 로드 밸런서를 선택하면 콘솔이 자동으로 상태를 평가합니다. 레코드를 생성합니다.  
+
+This alias record is free to query, so you will not incur charges for DNS queries.  
+Alias 레코드는 조회가 무료이며 DNS 쿼리 비용이 발생하지 않습니다.  
+
+Accessing myalias.stephanetheteacher.com returns the same response as before, confirming it works correctly.  
+`myalias.stephanetheteacher.com` 접속 시 이전과 동일한 응답이 나옵니다.  
+
+---
+
+## Handling the Domain Apex with Alias Records  
+## Alias 레코드를 이용한 루트 도메인 처리  
+👉 Zone Apex 루트 도메인에 대한 처리.  
+
+If you want to have the root domain, such as stephanetheteacher.com, redirect to your ALB, you cannot use a CNAME record at the apex.  
+루트 도메인(`stephanetheteacher.com`)을 ALB로 연결하려면 CNAME을 사용할 수 없습니다.  
+
+Attempting to create a CNAME record at the zone apex results in an error: "CNAME is not permitted at apex of this zone."  
+Zone Apex에 CNAME을 생성하면 "CNAME is not permitted at apex of this zone." 오류 발생.  
+
+The solution is to create an alias record of type A at the apex.  
+해결책은 루트 도메인에 A 타입 Alias 레코드를 생성하는 것입니다.  
+
+This alias points to the ALB in the appropriate region.  
+이 Alias 레코드는 ALB를 올바른 리전으로 연결합니다.  
+
+This record is accepted and works correctly, allowing stephanetheteacher.com to be accessible and serve traffic through the load balancer.  
+정상적으로 작동하며 `stephanetheteacher.com`이 ALB를 통해 트래픽을 처리합니다.  
+
+---
+
+## Summary  
+## 요약  
+👉 강의 핵심 내용 정리.  
+
+In this lecture, we demonstrated how CNAME and alias records work in AWS Route 53.  
+이번 강의에서는 Route 53에서 CNAME과 Alias 레코드의 작동 방식을 시연했습니다.  
+
+CNAME records are suitable for non-root domains but cannot be used at the zone apex.  
+CNAME은 서브 도메인에 적합하며 루트 도메인에서는 사용 불가.  
+
+Alias records are a Route 53-specific feature that can point to AWS resources and work for both root and non-root domains.  
+Alias 레코드는 Route 53 전용 기능으로 AWS 리소스를 가리키며 루트 및 서브 도메인 모두 가능.  
+
+Alias records are free and support native health checks, making them a preferred choice for AWS resource mapping.  
+Alias 레코드는 무료이며 내장 헬스체크를 지원하여 AWS 리소스 매핑에 적합합니다.  
+
+---
+
+## Key Takeaways  
+## 핵심 요약  
+👉 CNAME vs Alias 핵심 포인트.  
+
+CNAME records allow pointing a hostname to another hostname but cannot be used at the root domain (zone apex).  
+CNAME은 호스트명을 다른 호스트명으로 연결 가능하지만 루트 도메인에는 사용 불가.  
+
+Alias records are specific to Route 53 and can point to AWS resources, supporting both root and non-root domains.  
+Alias 레코드는 Route 53 전용으로 AWS 리소스를 가리키며 루트/서브 도메인 모두 지원.  
+
+Alias
+```
+
+
+records are free of charge and support native health checks.
+Alias 레코드는 무료이며 내장 헬스체크를 지원.
+
+Alias records cannot target EC2 DNS names but can target resources like ELBs, CloudFront, API Gateway, and S3 websites.
+Alias 레코드는 EC2 DNS 이름을 대상으로 할 수 없지만 ELB, CloudFront, API Gateway, S3 웹사이트 등에는 사용 가능.
+
+---
+
+💡 **게임 보상:**  
+- 🏗 CNAME 레코드 이해 = +50 EXP  
+- 🛡 Alias 레코드 이해 = +100 EXP  
+- ⚡ Zone Apex 처리 실습 = +150 EXP  
+**총 보상: 300 EXP + Route 53 마스터 뱃지 🥇**  
