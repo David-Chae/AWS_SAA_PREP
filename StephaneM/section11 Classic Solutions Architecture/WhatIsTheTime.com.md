@@ -186,9 +186,7 @@ Due to the one-hour TTL, users may continue to receive outdated IP addresses of 
 - 예약 인스턴스와 스팟 인스턴스로 비용 최적화.  
 → 성능-비용 균형.  
 
-좋습니다 👍 그러면 앞부분과 똑같은 방식( **한 줄 원문 → 한 줄 번역 → 설명** )을 끝까지 이어서 해드릴게요. 이어서 작성해드리겠습니다.
 
-```markdown
 ## Introducing Load Balancer for Improved Availability  
 ## 가용성 향상을 위한 로드 밸런서 도입  
 → DNS 기반 방식의 한계를 보완하기 위해 로드 밸런서를 도입합니다.  
