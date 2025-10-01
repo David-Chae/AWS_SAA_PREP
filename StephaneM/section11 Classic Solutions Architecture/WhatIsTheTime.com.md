@@ -186,25 +186,189 @@ Due to the one-hour TTL, users may continue to receive outdated IP addresses of 
 - 예약 인스턴스와 스팟 인스턴스로 비용 최적화.  
 → 성능-비용 균형.  
 
+좋습니다 👍 그러면 앞부분과 똑같은 방식( **한 줄 원문 → 한 줄 번역 → 설명** )을 끝까지 이어서 해드릴게요. 이어서 작성해드리겠습니다.
+
+```markdown
+## Introducing Load Balancer for Improved Availability  
+## 가용성 향상을 위한 로드 밸런서 도입  
+→ DNS 기반 방식의 한계를 보완하기 위해 로드 밸런서를 도입합니다.  
+
+To address the limitations of DNS-based IP management, we introduce a load balancer (ELB).  
+DNS 기반 IP 관리의 한계를 해결하기 위해 로드 밸런서(ELB)를 도입합니다.  
+→ ELB는 동적 IP와 인스턴스 상태 관리 문제를 해결해줍니다.  
+
+We deploy private EC2 instances within the same availability zone and place the ELB as the public-facing endpoint.  
+동일 가용 영역(AZ) 내에 프라이빗 EC2 인스턴스를 배포하고, ELB를 외부 접근 지점으로 설정합니다.  
+→ 사용자는 ELB를 통해서만 접근합니다.  
+
+The ELB performs health checks to ensure traffic is only routed to healthy instances.  
+ELB는 헬스 체크를 수행하여 정상 인스턴스로만 트래픽을 라우팅합니다.  
+→ 자동으로 불량 인스턴스를 배제합니다.  
+
+Security groups restrict traffic so that EC2 instances only accept requests from the ELB.  
+보안 그룹은 EC2 인스턴스가 ELB로부터의 요청만 수락하도록 제한합니다.  
+→ 직접 접근을 막아 보안을 강화합니다.  
+
+Since the ELB's IP address changes dynamically, we cannot use an A record.  
+ELB의 IP 주소는 동적으로 변경되므로 A 레코드를 사용할 수 없습니다.  
+→ 고정 IP 기반 접근이 불가능합니다.  
+
+Instead, we use a Route 53 alias record pointing to the ELB.  
+대신 Route 53 Alias 레코드를 ELB에 연결하여 사용합니다.  
+→ Route 53이 동적 IP를 자동 처리합니다.  
+
+Users query the alias record to reach the load balancer, which distributes traffic evenly across the EC2 instances.  
+사용자는 Alias 레코드를 통해 로드 밸런서에 접속하며, 로드 밸런서는 트래픽을 EC2 인스턴스에 고르게 분산합니다.  
+→ 안정적이고 자동화된 트래픽 분산 구조입니다.  
+
+This setup allows adding or removing instances without downtime, thanks to health checks and dynamic routing.  
+이 설정 덕분에 헬스 체크와 동적 라우팅으로 인스턴스를 추가하거나 제거해도 다운타임이 발생하지 않습니다.  
+→ 확장성과 무중단 운영이 가능합니다.  
+
+---
+
+## Auto-Scaling Group for Dynamic Instance Management  
+## 동적 인스턴스 관리를 위한 오토 스케일링 그룹  
+→ 인스턴스를 자동으로 증감 관리하여 효율을 극대화합니다.  
+
+Manually managing EC2 instances remains challenging.  
+EC2 인스턴스를 수동으로 관리하는 것은 여전히 어렵습니다.  
+→ 규모가 커지면 사람이 직접 관리하기 힘듭니다.  
+
+To automate scaling, we deploy an auto-scaling group managing private EC2 instances across availability zones.  
+확장을 자동화하기 위해 여러 가용 영역(AZ)에 걸쳐 프라이빗 EC2 인스턴스를 관리하는 오토 스케일링 그룹을 배포합니다.  
+→ 자동화로 관리 부담을 줄입니다.  
+
+The auto-scaling group adjusts the number of instances based on demand, scaling out during peak times and scaling in during low usage periods.  
+오토 스케일링 그룹은 수요에 따라 인스턴스 수를 조정하며, 피크 시간에는 확장하고 사용량이 적을 때는 축소합니다.  
+→ 자원 활용을 최적화합니다.  
+
+This ensures optimal resource utilization and cost efficiency.  
+이를 통해 자원 활용을 최적화하고 비용 효율성을 보장합니다.  
+→ 성능과 비용의 균형을 유지합니다.  
+
+---
+
+## Multi-AZ Deployment for High Availability  
+## 고가용성을 위한 멀티 AZ 배포  
+→ 장애 대응을 위한 고급 아키텍처 기법입니다.  
+
+To improve resilience, we deploy the application across multiple availability zones (AZs).  
+복원력을 높이기 위해 애플리케이션을 여러 가용 영역(AZ)에 걸쳐 배포합니다.  
+→ 장애 시 다른 AZ가 서비스 지속.  
+
+The ELB spans three AZs, and the auto-scaling group launches instances in each AZ, for example, two instances in AZ1, two in AZ2, and one in AZ3.  
+ELB는 3개의 AZ에 걸쳐 있으며, 오토 스케일링 그룹은 각 AZ에 인스턴스를 배포합니다. 예를 들어 AZ1에는 2개, AZ2에는 2개, AZ3에는 1개를 배포합니다.  
+→ 트래픽이 여러 AZ로 분산됩니다.  
+
+If one AZ fails, the remaining AZs continue serving traffic, ensuring high availability and fault tolerance.  
+한 AZ가 실패하더라도 나머지 AZ가 트래픽을 계속 처리하여 고가용성과 장애 허용성을 보장합니다.  
+→ 단일 장애 지점을 제거합니다.  
+
+---
+
+## Cost Optimization with Reserved and Spot Instances  
+## 예약 인스턴스와 스팟 인스턴스를 통한 비용 최적화  
+→ 성능과 비용의 균형을 잡는 전략입니다.  
+
+Knowing that a minimum number of instances must always run, we reserve capacity for these baseline instances to reduce costs.  
+최소한 항상 실행되어야 하는 인스턴스 수를 알고 있으므로, 해당 기준 인스턴스에 대해 예약 용량을 확보해 비용을 절감합니다.  
+→ 예약 인스턴스는 장기 비용 절감 효과.  
+
+Additional instances launched during scaling can be on-demand or spot instances, which are cheaper but may be terminated unexpectedly.  
+확장 시 추가되는 인스턴스는 온디맨드나 스팟 인스턴스로 실행할 수 있는데, 이는 더 저렴하지만 예기치 않게 종료될 수 있습니다.  
+→ 가변적 부하에 적합.  
+
+This strategy balances cost savings with availability requirements.  
+이 전략은 비용 절감과 가용성 요구 사항의 균형을 맞춥니다.  
+→ 안정성과 절약을 동시에 달성.  
+
+---
+
+## Summary of Architectural Evolution  
+## 아키텍처 발전 요약  
+→ 아키텍처가 점진적으로 발전한 과정을 정리합니다.  
+
+Started with a single EC2 instance with Elastic IP.  
+Elastic IP가 있는 단일 EC2 인스턴스로 시작했습니다.  
+→ 초기 구조.  
+
+Scaled vertically by upgrading instance type, causing downtime.  
+인스턴스 타입 업그레이드를 통한 수직 확장으로 다운타임이 발생했습니다.  
+→ 성능 ↑, 가용성 ↓  
+
+Scaled horizontally by adding multiple instances, managing multiple IPs.  
+여러 인스턴스를 추가하는 수평 확장을 통해 다수 IP를 관리했습니다.  
+→ 확장성 ↑, 관리 복잡성 ↑  
+
+Improved DNS management using Route 53 A records and alias records.  
+Route 53 A 레코드와 Alias 레코드를 통해 DNS 관리를 개선했습니다.  
+→ 접근 단순화.  
+
+Introduced load balancer with health checks for traffic distribution.  
+헬스 체크가 포함된 로드 밸런서를 도입해 트래픽을 분산했습니다.  
+→ 안정성 ↑  
+
+Automated scaling with auto-scaling groups.  
+오토 스케일링 그룹으로 자동 확장을 구현했습니다.  
+→ 관리 효율 ↑  
+
+Enhanced availability with multi-AZ deployment.  
+멀티 AZ 배포로 가용성을 강화했습니다.  
+→ 장애 허용성 ↑  
+
+Optimized costs using reserved and spot instances.  
+예약 및 스팟 인스턴스를 사용해 비용을 최적화했습니다.  
+→ 비용 효율성 ↑  
+
+This journey illustrates the solutions architect's role in understanding requirements and designing scalable, available, and cost-effective architectures.  
+이 여정은 요구사항을 이해하고 확장 가능하며, 고가용성, 비용 효율적인 아키텍처를 설계하는 솔루션 아키텍트의 역할을 보여줍니다.  
+→ 실무적으로 매우 중요한 역량.  
+
 ---
 
 ## Key Takeaways  
 ## 핵심 요약  
-→ 아키텍처 설계의 핵심 포인트들.  
+→ 이 사례에서 배운 핵심 교훈입니다.  
 
-- 시작은 Elastic IP가 있는 단일 EC2 인스턴스.  
-- 점차 수직/수평 확장을 통한 트래픽 대응.  
-- Route 53을 통한 DNS 관리 단순화.  
-- 로드 밸런서로 고가용성 확보.  
-- 오토 스케일링 그룹으로 자동 확장.  
-- 멀티 AZ 배포로 장애 대비.  
-- 비용 절감을 위해 예약·스팟 인스턴스 활용.  
+Started with a simple EC2 instance with an Elastic IP to serve time queries.  
+시간 질의 처리를 위해 Elastic IP가 있는 단순한 EC2 인스턴스로 시작했습니다.  
+→ 기본 출발점.  
+
+Scaled vertically by upgrading instance type, causing downtime during upgrade.  
+인스턴스 타입 업그레이드를 통한 수직 확장 과정에서 다운타임이 발생했습니다.  
+→ 단점 확인.  
+
+Scaled horizontally by adding multiple EC2 instances, managing multiple Elastic IPs.  
+여러 EC2 인스턴스를 추가하고 다수 Elastic IP를 관리하는 수평 확장을 수행했습니다.  
+→ 관리 복잡성 증가.  
+
+Improved DNS management using Route 53 A records and later Alias records with a load balancer.  
+Route 53 A 레코드와 이후 Alias 레코드 및 로드 밸런서를 활용해 DNS 관리를 개선했습니다.  
+→ 단일 진입점 확보.  
+
+Introduced a load balancer with health checks to distribute traffic and avoid downtime.  
+헬스 체크를 수행하는 로드 밸런서를 도입하여 트래픽을 분산하고 다운타임을 방지했습니다.  
+→ 안정성 강화.  
+
+Implemented auto-scaling groups for dynamic scaling based on demand.  
+수요 기반 동적 확장을 위해 오토 스케일링 그룹을 구현했습니다.  
+→ 효율적 자원 사용.  
+
+Enhanced availability by deploying multi-AZ architecture to withstand zone failures.  
+멀티 AZ 아키텍처를 배포하여 가용성을 강화하고 AZ 장애를 견뎌냈습니다.  
+→ 고도화된 안정성.  
+
+Optimized costs by reserving capacity for minimum instances and using on-demand or spot instances for scaling.  
+최소 인스턴스는 예약으로 확보하고, 확장에는 온디맨드 및 스팟 인스턴스를 사용해 비용을 최적화했습니다.  
+→ 비용-성능 균형.  
 
 ---
 
 🎮 **게임보상 획득!** 🎁  
-- 아키텍처 이해력 +100  
-- 확장성 지식 +80  
-- 비용 최적화 감각 +50  
-- “솔루션 아키텍트 레벨업!” 🏆  
+- 아키텍처 전략 이해력 +150  
+- 확장성/가용성 지식 +120  
+- 비용 최적화 능력 +100  
+- “AWS 솔루션 아키텍트 Lv.2 달성!” 🏆  
+
 
