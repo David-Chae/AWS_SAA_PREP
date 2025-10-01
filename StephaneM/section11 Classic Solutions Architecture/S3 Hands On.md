@@ -1,0 +1,333 @@
+# S3 Hands On
+# S3 실습  
+
+---
+
+## Creating an Amazon S3 Bucket  
+## Amazon S3 버킷 생성  
+👉 설명: 이번 세션에서는 Amazon S3에서 버킷을 생성하고 기본 설정을 익힌다.  
+
+In this session, we begin by creating a bucket in Amazon S3.  
+이번 세션에서는 Amazon S3에서 버킷을 생성하는 것으로 시작.  
+👉 설명: 실습 시작 안내.  
+
+Notice that the region selected is Europe, Stockholm, eu-north-1.  
+선택된 리전은 유럽, 스톡홀름(eu-north-1)임.  
+👉 설명: 리전 선택 중요성.  
+
+This is because the region selection is set accordingly.  
+이는 리전 선택이 해당 설정으로 되어 있기 때문.  
+👉 설명: 원하는 리전을 선택할 수 있음.  
+
+Choose the region where you want to create your bucket.  
+버킷을 생성할 리전을 선택.  
+👉 설명: 리전 선택에 따라 데이터 위치 결정.  
+
+Amazon S3 provides a consolidated view of all your buckets across all regions.  
+S3는 모든 리전의 버킷을 통합하여 보여줌.  
+👉 설명: 리전 전체 버킷 관리 가능.  
+
+---
+
+There is a bucket type option that may or may not be visible depending on your region.  
+버킷 타입 옵션은 리전에 따라 보이거나 보이지 않을 수 있음.  
+👉 설명: 일부 기능은 특정 리전에서만 활성화.  
+
+If available, you will see options such as general purpose or directory new.  
+사용 가능 시 일반용(general purpose) 또는 디렉터리(new) 옵션 제공.  
+👉 설명: 버킷 용도 선택 가능.  
+
+Over time, this feature will be available in more regions.  
+이 기능은 점차 더 많은 리전에서 제공될 예정.  
+👉 설명: 향후 기능 확장 안내.  
+
+If you do not see this option, it is fine; the default is general purpose.  
+옵션이 없으면 기본값은 일반용(general purpose).  
+👉 설명: 기본값 사용 가능.  
+
+Do not modify this setting or be alarmed if it is not visible.  
+설정을 변경하거나 보이지 않는다고 당황하지 않아도 됨.  
+👉 설명: 기본값 그대로 진행 가능.  
+
+Directory buckets cater to specific use cases not covered in this course, so they will not be discussed here.  
+디렉터리 버킷은 본 과정에서 다루지 않는 특정 용도용임.  
+👉 설명: 심화 내용 제외.  
+
+---
+
+Choose the general purpose bucket type if the option is available.  
+사용 가능 시 일반용 버킷 타입 선택.  
+👉 설명: 기본 추천.  
+
+If not, the bucket will default to general purpose automatically.  
+옵션이 없으면 자동으로 일반용으로 설정됨.  
+👉 설명: 자동 기본값 적용.  
+
+Next, select a unique bucket name.  
+다음으로 고유한 버킷 이름 선택.  
+👉 설명: 버킷 이름은 전 세계적으로 유일해야 함.  
+
+If you enter a bucket name that already exists, such as "tests", and attempt to create your bucket, you will receive an error indicating the bucket name is already taken.  
+이미 존재하는 이름(예: "tests") 사용 시 생성 오류 발생.  
+👉 설명: 글로벌 유니크 요구 사항.  
+
+Bucket names must be unique across all AWS regions and accounts.  
+버킷 이름은 모든 리전과 계정에서 유일해야 함.  
+👉 설명: 이름 충돌 방지.  
+
+To ensure uniqueness, use a personal naming convention.  
+고유성을 위해 개인화된 이름 규칙 사용.  
+👉 설명: 예: 사용자명 + 목적 + 버전.  
+
+For example, a bucket name could be stephane-demo-s3-v5.  
+예: stephane-demo-s3-v5  
+👉 설명: 개인 식별자 + 목적 + 버전 포함 예시.  
+
+This naming includes a personal identifier, the purpose, and a version number to accommodate interface changes over time.  
+이 이름 규칙은 식별자, 목적, 버전 포함.  
+👉 설명: 인터페이스 변경에 대비.  
+
+If the name is already taken, modify it accordingly.  
+이미 사용 중이면 이름 수정.  
+👉 설명: 유일한 이름 확보.  
+
+---
+
+For object ownership, the Access Control List (ACL) is disabled by default, which is the recommended security setting.  
+오브젝트 소유권 ACL은 기본 비활성화, 보안상 권장 설정.  
+👉 설명: 권한 관리 기본값.  
+
+Leave this as default.  
+기본값 그대로 유지.  
+👉 설명: 안전한 기본 설정.  
+
+Similarly, blocking public access to the bucket is enabled by default to maximize security, ensuring only authorized users can upload files.  
+공용 액세스 차단도 기본 활성화, 권한 있는 사용자만 업로드 가능.  
+👉 설명: 보안 강화.  
+
+Bucket versioning is disabled initially. We will explore enabling it later.  
+버전 관리는 초기 비활성화, 추후 학습 예정.  
+👉 설명: 버전 관리 선택적.  
+
+No tags are necessary at this point.  
+태그는 현재 필요 없음.  
+👉 설명: 단순 실습 기준.  
+
+For default encryption, server-side encryption with Amazon S3 managed keys is selected.  
+기본 암호화는 S3 관리 키를 사용하는 서버사이드 암호화 선택.  
+👉 설명: 데이터 자동 암호화.  
+
+This ensures all objects are encrypted automatically.  
+모든 오브젝트가 자동으로 암호화됨.  
+👉 설명: 보안 자동화.  
+
+The bucket key feature is enabled as well.  
+버킷 키 기능도 활성화.  
+👉 설명: 암호화 키 관리 강화.  
+
+All other settings remain at their defaults.  
+기타 설정은 기본값 유지.  
+👉 설명: 단순화.  
+
+---
+
+After setting the bucket name and confirming the settings, create the bucket.  
+버킷 이름 설정 후 생성.  
+👉 설명: 실습 진행.  
+
+Upon successful creation, the user interface displays all your buckets, including general purpose and directory buckets if enabled.  
+생성 완료 시 UI에 모든 버킷 표시, 옵션 활성화 시 디렉터리 버킷 포함.  
+👉 설명: 버킷 확인 방법.  
+
+Buckets from all AWS regions are visible, not just the current region.  
+모든 리전의 버킷이 표시됨.  
+👉 설명: 글로벌 뷰 제공.  
+
+You can search for buckets by name to locate them quickly.  
+이름으로 버킷 검색 가능.  
+👉 설명: 효율적 관리.  
+
+---
+
+## Uploading Objects to the Bucket  
+## 버킷에 오브젝트 업로드  
+Inside the bucket, you can upload objects.  
+버킷 안에서 오브젝트 업로드 가능.  
+👉 설명: 파일 추가 기능.  
+
+Currently, the bucket contains zero objects.  
+현재 버킷에 오브젝트 없음.  
+👉 설명: 초기 상태 확인.  
+
+Click on "Upload" and add files.  
+"Upload" 클릭 후 파일 추가.  
+👉 설명: 업로드 시작.  
+
+Navigate to the folder containing your files, for example, the S3 folder, and select a file such as coffee.jpg.  
+파일이 있는 폴더 선택 후 예: coffee.jpg 선택.  
+👉 설명: 업로드할 파일 지정.  
+
+This file is an image with a size of approximately 100 kilobytes.  
+이 파일은 약 100KB 이미지.  
+👉 설명: 업로드 용량 예시.  
+
+Confirm the destination is your bucket and proceed with the upload.  
+목적지가 버킷인지 확인 후 업로드 진행.  
+👉 설명: 정확한 버킷 지정.  
+
+Once the upload completes, close the upload dialog.  
+업로드 완료 후 대화상자 닫기.  
+👉 설명: 업로드 완료 처리.  
+
+The uploaded file will appear under the objects in your bucket.  
+업로드된 파일이 버킷 내 오브젝트로 표시.  
+👉 설명: UI 확인 가능.  
+
+Clicking on the file reveals detailed properties including upload location, size, type, and an object URL.  
+파일 클릭 시 업로드 위치, 크기, 유형, 오브젝트 URL 등 속성 확인 가능.  
+👉 설명: 오브젝트 정보 확인.  
+
+---
+
+## Accessing Uploaded Objects  
+## 업로드된 오브젝트 접근  
+You can open the uploaded object directly from the interface.  
+UI에서 오브젝트 직접 열기 가능.  
+👉 설명: 확인 목적.  
+
+Clicking "Open" displays the image, confirming successful upload to Amazon S3.  
+"Open" 클릭 시 이미지 표시, S3 업로드 성공 확인.  
+👉 설명: 실습 검증.  
+
+However, attempting to access the public URL of the object results in an "Access Denied" error.  
+공용 URL 접근 시 "Access Denied" 오류 발생.  
+👉 설명: 기본 보안 설정.  
+
+This is because the public URL is not enabled for unrestricted access.  
+공용 URL이 제한 없이 접근 가능하도록 설정되지 않음.  
+👉 설명: 안전한 접근 제어.  
+
+The working URL is a pre-signed URL, which contains a signature verifying your credentials.  
+작동 URL은 pre-signed URL, 자격 증명을 검증하는 서명 포함.  
+👉 설명: 임시 접근 권한.  
+
+This URL is long and complex, encoding your authorization to access the object.  
+URL은 길고 복잡하며 접근 권한을 인코딩.  
+👉 설명: 안전한 권한 부여 방식.  
+
+Amazon S3 validates this signature and permits access accordingly.  
+S3가 서명을 검증 후 접근 허용.  
+👉 설명: 인증 기반 접근.  
+
+This URL is private and only valid for you.  
+이 URL은 개인용이며 사용자만 유효.  
+👉 설명: 접근 제한.  
+
+Later, we will discuss how to make objects publicly accessible so that the public URL functions as well.  
+나중에 공용 URL 활성화 방법 학습 예정.  
+👉 설명: 공개 접근 설정 학습.  
+
+---
+
+## Managing Folders in the Bucket  
+## 버킷 내 폴더 관리  
+Within your bucket, you can create folders to organize objects.  
+버킷 안에서 폴더 생성 가능, 오브젝트 정리 목적.  
+👉 설명: 구조화 관리.  
+
+For example, create a folder named images.  
+예: images 폴더 생성.  
+👉 설명: 폴더 생성 실습.  
+
+After creation, navigate into the folder and upload files such as beach.jpg.  
+생성 후 폴더로 이동, beach.jpg 업로드.  
+👉 설명: 폴더 내 파일 관리.  
+
+The destination confirms the folder path within the bucket.  
+목적지 확인 시 버킷 내 폴더 경로 표시.  
+👉 설명: 경로 정확성 확인.  
+
+Upload the file and close the dialog.  
+파일 업로드 후 대화상자 닫기.  
+👉 설명: 업로드 완료 처리.  
+
+The object now appears inside the folder.  
+오브젝트가 폴더 안에 표시됨.  
+👉 설명: 계층 구조 확인.
+```
+
+
+The folder structure in Amazon S3 resembles familiar cloud storage services like Google Drive or Dropbox, providing a user-friendly experience.
+S3 폴더 구조는 Google Drive, Dropbox와 유사, 사용 친화적.
+👉 설명: 친숙한 UI 제공.
+
+You can navigate folders and manage objects similarly.
+폴더 이동 및 오브젝트 관리 가능.
+👉 설명: 탐색 및 관리 용이.
+
+To delete a folder and its contents, select the folder and choose delete.
+폴더와 내용 삭제 시 폴더 선택 후 삭제.
+👉 설명: 삭제 기능.
+
+You will be prompted to type "permanently delete" to confirm the action.
+확인을 위해 "permanently delete" 입력 요구.
+👉 설명: 실수 방지 안전 장치.
+
+This ensures intentional deletion of objects and folders, maintaining security and preventing accidental loss.
+의도적 삭제 확인, 보안 유지, 실수 방지.
+👉 설명: 안전 관리.
+
+---
+
+## Summary
+
+## 요약
+
+In this lecture, we covered how to create an Amazon S3 bucket with appropriate settings, upload objects, and explore object properties.
+이번 강의에서는 S3 버킷 생성, 오브젝트 업로드, 속성 확인 방법 학습.
+👉 설명: 기본 실습 완료.
+
+We examined the difference between public URLs and pre-signed URLs for accessing objects securely.
+공용 URL과 pre-signed URL 차이 학습, 안전한 접근 이해.
+👉 설명: 보안 접근 차이 이해.
+
+Additionally, we learned how to create and delete folders within the bucket, managing objects effectively.
+버킷 내 폴더 생성/삭제, 오브젝트 효율적 관리 학습.
+👉 설명: 계층 구조 관리.
+
+This foundational knowledge prepares you for further exploration of Amazon S3 features.
+기초 지식 확보, S3 심화 학습 준비.
+👉 설명: 실습 기반 이해 강화.
+
+---
+
+## Key Takeaways
+
+## 핵심 요약
+
+* Created an Amazon S3 bucket with appropriate region and unique naming conventions.
+
+* 적절한 리전과 고유 이름 규칙으로 S3 버킷 생성.
+
+* Uploaded objects to the bucket and explored object properties including encryption and versioning.
+
+* 버킷에 오브젝트 업로드, 암호화 및 버전 속성 확인.
+
+* Understood the difference between public URLs and pre-signed URLs for accessing S3 objects.
+
+* S3 오브젝트 접근용 공용 URL과 pre-signed URL 차이 이해.
+
+* Managed folders within the bucket, including creating and deleting folders and objects securely.
+
+* 버킷 내 폴더 생성/삭제 및 오브젝트 안전하게 관리.
+
+---
+
+🎮 **게임보상:**  
+- **“S3 버킷 마스터 칭호 획득!”**  
+  - 버킷 생성 +30  
+  - 오브젝트 업로드 +20  
+  - URL 및 접근 권한 이해 +25  
+  - 폴더 관리 +25  
+
+총 **100 XP 획득!** 🎉  
