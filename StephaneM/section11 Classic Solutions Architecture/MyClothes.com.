@@ -1,0 +1,283 @@
+# MyClothes.com: Building a Scalable Stateful Web Application  
+# MyClothes.com: 확장 가능한 상태 유지 웹 애플리케이션 구축  
+(이 장에서는 상태를 가진 웹 애플리케이션을 어떻게 확장 가능하게 설계할 수 있는지 설명함.)
+
+---
+
+In the previous lecture, we discussed a stateless type of web application, such as WhatIsTheTime.com, which simply answers the current time without needing any database or external information.  
+이전 강의에서는 데이터베이스나 외부 정보 없이 단순히 현재 시간을 알려주는 WhatIsTheTime.com 같은 무상태(stateless) 웹 애플리케이션을 다뤘습니다.  
+(무상태 앱은 상태를 저장하지 않아 서버 확장이 용이하지만 기능에 한계가 있음.)
+
+---
+
+## Introduction to Stateful Web Applications  
+## 상태 유지 웹 애플리케이션 소개  
+(이제 상태를 저장해야 하는 웹 애플리케이션으로 넘어감.)
+
+Now, we will explore a stateful web application called MyClothes.com. This platform allows users to buy clothes online and includes a shopping cart feature.  
+이제 우리는 MyClothes.com이라는 상태 유지형 웹 애플리케이션을 살펴보겠습니다. 이 플랫폼은 사용자가 온라인으로 옷을 구매할 수 있고 장바구니 기능을 포함합니다.  
+(상태 유지는 장바구니와 같은 사용자별 데이터 보존을 의미함.)
+
+Since hundreds of users navigate the website simultaneously, we want to maintain horizontal scalability and keep the web tier as stateless as possible.  
+수백 명의 사용자가 동시에 웹사이트를 탐색하므로, 웹 계층은 가능한 한 무상태로 유지하면서 수평적 확장성을 유지해야 합니다.  
+(웹 계층은 확장을 쉽게 하고, 상태 데이터는 다른 방식으로 관리해야 함.)
+
+Even though the shopping cart represents state, our goal is to scale the web application easily without users losing their shopping cart contents while browsing.  
+장바구니가 상태를 의미하지만, 사용자가 탐색 중에 장바구니 내용을 잃지 않으면서 애플리케이션을 쉽게 확장하는 것이 목표입니다.  
+(즉, 상태 관리와 확장성을 동시에 달성해야 함.)
+
+Additionally, user details such as addresses should be stored effectively in a database accessible from anywhere.  
+또한 주소와 같은 사용자 정보는 어디서든 접근 가능한 데이터베이스에 효과적으로 저장되어야 합니다.  
+(영구 데이터는 DB에 저장해야 함.)
+
+---
+
+## Basic Architecture Overview  
+## 기본 아키텍처 개요  
+(기본적인 아키텍처 요소를 설명함.)
+
+Our application architecture includes Route 53 for DNS, Multi-AZ deployment, an Elastic Load Balancer (ELB), and an Auto Scaling Group spanning three Availability Zones.  
+우리의 애플리케이션 아키텍처에는 DNS를 위한 Route 53, 다중 가용 영역(Multi-AZ) 배포, ELB(Elastic Load Balancer), 그리고 세 개의 가용 영역에 걸친 오토스케일링 그룹이 포함됩니다.  
+(이것은 고가용성과 확장성을 위한 표준 패턴임.)
+
+The ELB distributes requests to EC2 instances. However, without session management, requests from the same user may be routed to different instances, causing the shopping cart to be lost and resulting in a poor user experience.  
+ELB는 요청을 EC2 인스턴스로 분산시킵니다. 그러나 세션 관리가 없으면 동일한 사용자의 요청이 다른 인스턴스로 분산되어 장바구니가 사라지고 사용자 경험이 나빠질 수 있습니다.  
+(세션 관리가 중요한 이유 설명.)
+
+---
+
+## ELB Stickiness (Session Affinity)  
+## ELB 스티키니스(세션 고정)  
+(사용자 요청을 같은 인스턴스로 보내 세션 유지를 보장하는 방법.)
+
+To address the shopping cart loss, we can enable ELB stickiness, which ensures that all requests from a user are routed to the same EC2 instance.  
+장바구니 손실을 방지하기 위해 ELB 스티키니스를 활성화할 수 있으며, 이를 통해 사용자의 모든 요청이 동일한 EC2 인스턴스로 라우팅됩니다.  
+(세션 일관성 유지 가능.)
+
+This approach improves the user experience by maintaining the shopping cart state on a single instance.  
+이 방식은 단일 인스턴스에서 장바구니 상태를 유지함으로써 사용자 경험을 개선합니다.  
+(사용자가 탐색 중에 장바구니를 잃지 않음.)
+
+However, if an EC2 instance terminates, the shopping cart data is lost, so this is only a partial solution.  
+그러나 EC2 인스턴스가 종료되면 장바구니 데이터가 손실되므로 이는 부분적인 해결책에 불과합니다.  
+(완벽한 해결책 아님.)
+
+---
+
+## Using User Cookies to Store Shopping Cart Data  
+## 사용자 쿠키를 이용한 장바구니 데이터 저장  
+(장바구니 데이터를 클라이언트 측에서 유지하는 방법.)
+
+An alternative approach is to store the shopping cart content on the client side using web cookies.  
+대안으로는 웹 쿠키를 사용하여 장바구니 내용을 클라이언트 측에 저장하는 방법이 있습니다.  
+(서버 무상태 유지 가능.)
+
+Each HTTP request includes the shopping cart data, allowing any EC2 instance to know the current cart contents without maintaining server-side state.  
+각 HTTP 요청에 장바구니 데이터가 포함되므로 서버는 상태를 유지할 필요 없이 어떤 EC2 인스턴스든 현재 장바구니 내용을 알 수 있습니다.  
+(수평 확장성과 무상태 유지 가능.)
+
+This achieves statelessness in the web tier. However, this increases the size of HTTP requests and introduces security risks, as cookies can be altered by attackers.  
+이는 웹 계층에서 무상태성을 달성합니다. 하지만 HTTP 요청 크기가 커지고, 쿠키가 공격자에 의해 변조될 수 있어 보안 위험이 있습니다.  
+(보안 검증이 필요함.)
+
+Therefore, EC2 instances must validate cookie contents. Additionally, cookies have a size limit of less than four kilobytes, restricting the amount of data that can be stored.  
+따라서 EC2 인스턴스는 쿠키 내용을 검증해야 하며, 쿠키는 4KB 미만의 크기 제한이 있어 저장 가능한 데이터 양이 제한됩니다.  
+(대규모 데이터에는 부적합.)
+
+---
+
+## Server-Side Sessions with ElastiCache  
+## ElastiCache를 이용한 서버 측 세션 관리  
+(더 안전하고 확장 가능한 세션 관리 방식.)
+
+A more secure and scalable pattern involves sending only a session ID in the cookie.  
+더 안전하고 확장 가능한 패턴은 쿠키에 세션 ID만 보내는 방식입니다.  
+(민감 데이터는 서버에 저장.)
+
+The actual shopping cart data is stored in a backend cache such as ElastiCache.  
+실제 장바구니 데이터는 ElastiCache 같은 백엔드 캐시에 저장됩니다.  
+(세션 데이터 서버 측 보관.)
+
+When a user adds items to the cart, the EC2 instance updates the cart content in ElastiCache using the session ID as the key.  
+사용자가 장바구니에 상품을 추가하면 EC2 인스턴스는 세션 ID를 키로 사용해 ElastiCache의 장바구니 데이터를 업데이트합니다.  
+(데이터가 중앙에서 관리됨.)
+
+Subsequent requests with the session ID allow any EC2 instance to retrieve the cart data from ElastiCache.  
+이후 요청은 세션 ID를 통해 어느 EC2 인스턴스든 ElastiCache에서 장바구니 데이터를 가져올 수 있습니다.  
+(수평 확장성 유지 가능.)
+
+ElastiCache offers sub-millisecond performance, making this approach efficient.  
+ElastiCache는 밀리초 미만의 성능을 제공하므로 이 방식은 효율적입니다.  
+(성능 우수.)
+
+An alternative backend for session storage is DynamoDB.  
+세션 저장을 위한 대안 백엔드는 DynamoDB입니다.  
+(데이터베이스 기반 세션 저장 가능.)
+
+This pattern is more secure since ElastiCache acts as the source of truth, preventing attackers from modifying session data.  
+이 패턴은 ElastiCache가 신뢰할 수 있는 데이터 원천(Source of Truth)이 되므로 공격자가 세션 데이터를 수정하는 것을 방지해 더 안전합니다.  
+(보안 강화.)
+
+## Storing User Data in RDS  
+## 사용자 데이터를 RDS에 저장하기  
+(사용자 장기 데이터를 안정적으로 저장하는 방법.)
+
+For long-term storage of user data such as addresses and names, EC2 instances communicate with an RDS database.  
+주소, 이름 등 장기적인 사용자 데이터 저장을 위해 EC2 인스턴스는 RDS 데이터베이스와 통신합니다.  
+(사용자 프로필, 배송 정보 등을 안전하게 보관.)
+
+This setup supports a Multi-AZ deployment for high availability.  
+이 설정은 고가용성을 위해 다중 가용 영역(Multi-AZ) 배포를 지원합니다.  
+(하나의 AZ 장애 발생 시 다른 AZ에서 서비스 지속 가능.)
+
+Each EC2 instance can access RDS, maintaining a stateless web tier while ensuring durable storage of user information.  
+각 EC2 인스턴스는 RDS에 접근할 수 있어 웹 계층은 무상태를 유지하면서 사용자 정보를 영구적으로 저장할 수 있습니다.  
+(웹 서버와 데이터 저장소 역할 분리.)
+
+---
+
+## Scaling Database Reads  
+## 데이터베이스 읽기 확장  
+(트래픽 증가 시 읽기 부하를 분산하는 방법.)
+
+As user traffic grows, most operations involve reading product information.  
+사용자 트래픽이 증가하면 대부분의 작업은 상품 정보를 읽는 데 집중됩니다.  
+(읽기 부하가 점점 커짐.)
+
+To scale reads, RDS supports a master instance for writes and up to 15 read replicas for read operations.  
+읽기 확장을 위해 RDS는 쓰기를 위한 마스터 인스턴스와 최대 15개의 읽기 전용 복제본(Read Replica)을 지원합니다.  
+(쓰기-읽기 분리 구조.)
+
+EC2 instances can direct read queries to replicas, distributing the load.  
+EC2 인스턴스는 읽기 쿼리를 복제본으로 보내 부하를 분산시킬 수 있습니다.  
+(DB 부하 줄이고 성능 향상.)
+
+Another approach is lazy loading with caching: EC2 instances first check ElastiCache for data; if missing, they fetch from RDS and update the cache.  
+다른 접근은 캐싱 기반의 지연 로딩입니다. EC2 인스턴스는 먼저 ElastiCache에서 데이터를 확인하고, 없다면 RDS에서 가져와 캐시에 업데이트합니다.  
+(자주 사용하는 데이터를 캐시에 두어 응답 속도 향상.)
+
+This reduces CPU usage on RDS and improves performance but requires application-side cache maintenance.  
+이 방식은 RDS의 CPU 사용량을 줄이고 성능을 향상시키지만, 애플리케이션 측에서 캐시 유지 관리가 필요합니다.  
+(트레이드오프 존재.)
+
+---
+
+## Disaster Recovery with Multi-AZ Deployments  
+## Multi-AZ 배포를 통한 재해 복구  
+(재해 상황에도 서비스가 중단되지 않도록 보장.)
+
+To ensure resilience against disasters, components are deployed across multiple Availability Zones.  
+재해에 대한 회복력을 보장하기 위해 구성 요소들은 여러 가용 영역(AZ)에 걸쳐 배포됩니다.  
+(단일 장애 지점 제거.)
+
+Route 53 is inherently highly available.  
+Route 53은 본질적으로 고가용성을 지원합니다.  
+(DNS 서비스는 글로벌 인프라 기반.)
+
+The ELB, Auto Scaling Group, RDS, and ElastiCache (when using Redis) all support Multi-AZ configurations.  
+ELB, 오토스케일링 그룹, RDS, ElastiCache(특히 Redis 사용 시) 모두 Multi-AZ 구성을 지원합니다.  
+(핵심 인프라를 모두 이중화 가능.)
+
+For RDS, a standby replica can take over automatically if the primary fails.  
+RDS에서는 기본(primary) 인스턴스가 실패할 경우 대기(standby) 복제본이 자동으로 인계받을 수 있습니다.  
+(장애 자동 복구 기능.)
+
+This architecture guarantees that the application can survive an Availability Zone outage.  
+이 아키텍처는 애플리케이션이 특정 AZ의 장애에도 살아남을 수 있도록 보장합니다.  
+(고가용성 확보.)
+
+---
+
+## Security Group Configuration  
+## 보안 그룹 설정  
+(보안을 위한 최소 권한 원칙 적용.)
+
+Security groups are configured to enhance security by restricting traffic:  
+보안 그룹은 트래픽 제한을 통해 보안을 강화하도록 구성됩니다.  
+(컴포넌트 간 최소한의 통신만 허용.)
+
+- The Application Load Balancer (ALB) allows HTTP/HTTPS traffic from anywhere.  
+  애플리케이션 로드 밸런서(ALB)는 어디서나 들어오는 HTTP/HTTPS 트래픽을 허용합니다.  
+  (외부 진입 지점.)
+
+- EC2 instances accept traffic only from the ALB.  
+  EC2 인스턴스는 ALB에서 오는 트래픽만 허용합니다.  
+  (직접 접근 차단.)
+
+- ElastiCache accepts traffic only from the EC2 security group.  
+  ElastiCache는 EC2 보안 그룹에서 오는 트래픽만 허용합니다.  
+  (불필요한 접근 방지.)
+
+- RDS accepts traffic only from the EC2 security group.  
+  RDS는 EC2 보안 그룹에서 오는 트래픽만 허용합니다.  
+  (DB 보호 강화.)
+
+This setup limits exposure and enforces strict communication paths between components.  
+이 설정은 노출을 최소화하고 컴포넌트 간 통신 경로를 엄격하게 제한합니다.  
+(보안 원칙 준수.)
+
+---
+
+## Summary of the Web Application Architecture  
+## 웹 애플리케이션 아키텍처 요약  
+(지금까지 다룬 핵심 패턴 정리.)
+
+In summary, we have discussed several key patterns:  
+요약하면, 우리는 다음과 같은 핵심 패턴을 다뤘습니다:  
+(아키텍처 설계의 기본 요소들.)
+
+- ELB sticky sessions for session affinity.  
+  세션 고정을 위한 ELB 스티키 세션.  
+
+- Client-side cookies to maintain statelessness.  
+  무상태 유지를 위한 클라이언트 측 쿠키.  
+
+- Server-side sessions using session IDs and ElastiCache.  
+  세션 ID와 ElastiCache를 이용한 서버 측 세션 관리.  
+
+- Durable user data storage in RDS.  
+  RDS를 이용한 사용자 데이터 영구 저장.  
+
+- Scaling reads with RDS read replicas and caching.  
+  RDS 읽기 복제본과 캐싱을 통한 읽기 확장.  
+
+- Multi-AZ deployments for high availability and disaster recovery.  
+  고가용성과 재해 복구를 위한 Multi-AZ 배포.  
+
+- Tight security group rules to restrict traffic.  
+  트래픽 제한을 위한 엄격한 보안 그룹 규칙.  
+
+This three-tier architecture, comprising the client tier, web tier, and database tier, is common in scalable web applications.  
+클라이언트 계층, 웹 계층, 데이터베이스 계층으로 구성된 이 3계층 아키텍처는 확장 가능한 웹 애플리케이션에서 흔히 사용됩니다.  
+(표준적인 대규모 애플리케이션 구조.)
+
+While costs may increase with Multi-AZ and scaling features, these trade-offs provide robustness and performance.  
+Multi-AZ 및 확장 기능은 비용을 증가시킬 수 있지만, 이러한 트레이드오프는 강건성과 성능을 제공합니다.  
+(비용 대비 안정성과 성능 확보.)
+
+---
+
+## Key Takeaways  
+## 핵심 요약  
+(강의의 교훈 정리.)
+
+- Stateful web applications require careful management of user session data to maintain a seamless user experience.  
+  상태 유지 웹 애플리케이션은 원활한 사용자 경험을 위해 세션 데이터 관리를 신중히 해야 합니다.  
+
+- ELB stickiness can help maintain session affinity but has limitations if instances terminate.  
+  ELB 스티키니스는 세션 일관성을 유지하는 데 도움을 주지만, 인스턴스가 종료되면 한계가 있습니다.  
+
+- Using user cookies to store shopping cart data achieves statelessness but has size and security constraints.  
+  사용자 쿠키를 이용한 장바구니 저장은 무상태성을 달성하지만 크기와 보안 제약이 있습니다.  
+
+- Storing session data in ElastiCache with session IDs offers a secure, scalable, and performant solution.  
+  세션 ID와 ElastiCache를 이용한 세션 데이터 저장은 안전하고 확장 가능하며 성능도 우수한 해결책입니다.  
+
+- Scaling database reads can be achieved with RDS Read Replicas and caching strategies like lazy loading with ElastiCache.  
+  RDS 읽기 복제본과 ElastiCache의 지연 로딩 같은 캐싱 전략으로 DB 읽기 확장이 가능합니다.  
+
+- Multi-AZ deployments across ELB, Auto Scaling Groups, RDS, and ElastiCache ensure high availability and disaster recovery.  
+  ELB, 오토스케일링 그룹, RDS, ElastiCache를 Multi-AZ로 배포하면 고가용성과 재해 복구가 보장됩니다.  
+
+- Tight security group configurations are essential to restrict traffic appropriately between components.  
+  컴포넌트 간 트래픽을 제한하기 위해 엄격한 보안 그룹 구성이 필수적입니다.  
