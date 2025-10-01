@@ -1,0 +1,284 @@
+# S3 Overview  
+# S3 개요  
+👉 설명: 이번 섹션에서는 AWS의 핵심 서비스 중 하나인 Amazon S3를 학습한다. S3는 무한 확장 가능한 스토리지로 광고됨.  
+
+---
+
+Welcome to this section on Amazon S3.  
+Amazon S3 섹션에 오신 것을 환영합니다.  
+👉 설명: 학습 시작 안내.  
+
+This section is very important because Amazon S3 is one of the main building blocks of AWS.  
+이 섹션은 매우 중요하다. Amazon S3는 AWS의 주요 구성 요소 중 하나이기 때문.  
+👉 설명: S3는 다양한 AWS 서비스와 웹 서비스의 기반으로 사용됨.  
+
+It is advertised as infinitely scalable storage.  
+S3는 무한 확장 가능한 스토리지로 알려져 있다.  
+👉 설명: 데이터 용량 제한 없이 확장 가능.  
+
+---
+
+A lot of the web relies on Amazon S3.  
+많은 웹 서비스가 Amazon S3에 의존한다.  
+👉 설명: 파일 저장, 미디어 서비스, 백업 등 다양한 활용 사례.  
+
+For example, many websites use Amazon S3 as a backbone, and many AWS services also use Amazon S3 for integrations.  
+예를 들어, 여러 웹사이트가 S3를 백엔드로 사용하며, 많은 AWS 서비스도 통합용으로 S3를 사용.  
+👉 설명: S3는 웹사이트 및 클라우드 서비스에서 핵심 데이터 저장소 역할.  
+
+---
+
+In this section, we will have a step-by-step approach to Amazon S3 to learn its main features.  
+이번 섹션에서는 S3의 주요 기능을 단계별로 학습.  
+👉 설명: 기능 학습을 위해 실습 중심 접근.  
+
+There are many use cases for Amazon S3 because at its core, it is storage.  
+S3는 기본적으로 스토리지이므로 많은 사용 사례가 존재.  
+👉 설명: 데이터 저장, 백업, 아카이브 등 다양한 활용 가능.  
+
+---
+
+Imagine S3 is used for backup and storage. It could be for your files, your disks, and so on.  
+S3를 백업 및 스토리지 용도로 사용한다고 생각해보자. 파일, 디스크 등 다양한 용도로 사용 가능.  
+👉 설명: 개인/기업 데이터 보관에 적합.  
+
+It is also used for disaster recovery purposes.  
+재해 복구 용도로도 사용됨.  
+👉 설명: 리전 장애 시 데이터를 다른 지역에 백업 가능.  
+
+For example, you can move your data to another region so that if a region goes down, your data is backed up somewhere else.  
+예를 들어, 데이터를 다른 리전으로 이동시켜 특정 리전이 다운되더라도 데이터가 다른 곳에 백업되도록 할 수 있음.  
+👉 설명: 다중 리전 활용 재해 복구 전략.  
+
+---
+
+Amazon S3 is used for archival purposes.  
+Amazon S3는 아카이브 용도로도 사용됨.  
+👉 설명: 장기 보관 데이터 저비용 아카이브 가능.  
+
+You can archive files in Amazon S3 and retrieve them later at a much cheaper cost.  
+S3에 파일을 아카이브하고 나중에 더 저렴한 비용으로 복원 가능.  
+👉 설명: Glacier 등의 저비용 스토리지 활용.  
+
+It is also used for hybrid cloud storage.  
+하이브리드 클라우드 스토리지 용도로도 사용됨.  
+👉 설명: 온프레미스 스토리지와 클라우드 통합.  
+
+For instance, if you have storage on premises but want to expand into the cloud, you can use Amazon S3 for this.  
+예를 들어, 온프레미스 스토리지가 있지만 클라우드 확장을 원한다면 S3를 사용할 수 있음.  
+👉 설명: 클라우드 확장 시 S3를 연동.  
+
+---
+
+Amazon S3 can be used to host applications, media such as video files and images, to have a data lake for storing large amounts of data and performing big data analytics, for delivering software updates, and for hosting static websites.  
+S3는 애플리케이션 호스팅, 비디오/이미지 등 미디어 저장, 데이터 레이크 구축, 소프트웨어 업데이트 배포, 정적 웹사이트 호스팅 등 다양한 용도로 사용 가능.  
+👉 설명: S3의 활용 범위 광범위.  
+
+---
+
+Two notable use cases are: Nasdaq stores seven years of data into the S3 Glacier service, which is the archival service of Amazon S3, and Sysco runs analytics on its data and gains business insights from Amazon S3.  
+주요 사례: Nasdaq는 7년치 데이터를 S3 Glacier에 저장, Sysco는 데이터를 분석하여 비즈니스 인사이트 도출.  
+👉 설명: 실제 기업 사례로 S3 활용 이해.  
+
+---
+
+Amazon S3 stores files into buckets.  
+Amazon S3는 파일을 버킷에 저장.  
+👉 설명: 버킷 = 최상위 디렉터리.  
+
+Buckets can be seen as top-level directories.  
+버킷은 최상위 디렉터리로 볼 수 있음.  
+👉 설명: S3에서 파일 관리 단위.  
+
+The files in these S3 buckets are called objects.  
+버킷 내 파일은 오브젝트라고 불림.  
+👉 설명: S3의 핵심 저장 단위 = 오브젝트.  
+
+Buckets are created in your account and must have a globally unique name.  
+버킷은 계정 내에서 생성되며, 전 세계에서 유일한 이름이어야 함.  
+👉 설명: S3에서 버킷 이름은 글로벌 유니크 요구.  
+
+---
+
+The bucket name must be unique across all regions and all AWS accounts.  
+버킷 이름은 모든 리전과 AWS 계정에서 유일해야 함.  
+👉 설명: 이름 충돌 방지.  
+
+This is the only element in AWS that must be globally unique.  
+AWS에서 유일하게 전 세계적으로 유일해야 하는 요소임.  
+👉 설명: 글로벌 네임스페이스 개념.  
+
+Buckets are defined at the region level.  
+버킷은 리전 단위로 정의됨.  
+👉 설명: S3는 글로벌 서비스 같지만 실제 리전별 생성.  
+
+Although S3 looks like a global service, buckets are actually created in a specific AWS region.  
+S3는 글로벌 서비스처럼 보이지만 버킷은 특정 리전에 생성됨.  
+👉 설명: 초보자가 자주 실수하는 부분.  
+
+This is a common mistake for beginners.  
+초보자들이 흔히 하는 실수임.  
+👉 설명: 리전 선택 중요성 강조.  
+
+---
+
+There is a naming convention for S3 buckets.  
+S3 버킷에는 명명 규칙이 있음.  
+👉 설명: 올바른 이름 형식 필요.  
+
+Bucket names must have no uppercase letters and no underscores.  
+버킷 이름에 대문자나 언더스코어를 사용할 수 없음.  
+👉 설명: 규칙 위반 시 오류 발생.  
+
+They must be between three and 63 characters long.  
+길이는 3~63자 사이여야 함.  
+👉 설명: 최소/최대 길이 제한.  
+
+They must not be formatted as an IP address.  
+IP 주소 형식 사용 불가.  
+👉 설명: 혼동 방지.  
+
+They must start with a lowercase letter or number.  
+소문자나 숫자로 시작해야 함.  
+👉 설명: 표준 네이밍 규칙 준수.  
+
+As long as you use letters, numbers, and hyphens, you are good to go.  
+문자, 숫자, 하이픈 사용 시 문제 없음.  
+👉 설명: 안전한 이름 작성 규칙.  
+
+---
+
+Now let's talk about objects.  
+이제 오브젝트에 대해 알아보자.  
+👉 설명: S3 저장 단위 핵심 학습.  
+
+These objects are files and they have what is called a key.  
+오브젝트는 파일이며, 키(key)를 가짐.  
+👉 설명: 키 = 파일 경로.  
+
+An Amazon S3 object key is the full path of your file.  
+S3 오브젝트 키는 파일의 전체 경로.  
+👉 설명: 키로 객체 위치 식별.  
+
+For example, if you look at a bucket, the top-level directory is the bucket itself.  
+예를 들어, 버킷을 보면 최상위 디렉터리는 버킷 자체.  
+👉 설명: 루트 디렉터리 개념 이해.  
+
+The key of a file named "myfile.txt" is simply "myfile.txt".  
+"myfile.txt" 파일의 키는 단순히 "myfile.txt".  
+👉 설명: 기본 파일 키.  
+
+If you want to nest it in folders, then the key is the full path, such as "myfolder1/anotherfolder/myfile.txt".  
+폴더 안에 넣고 싶으면 키는 전체 경로, 예: "myfolder1/anotherfolder/myfile.txt".  
+👉 설명: 접두사(prefix) 사용 방식 이해.  
+
+Therefore, the key is composed of a prefix and an object name.  
+따라서 키는 접두사와 오브젝트 이름으로 구성됨.  
+👉 설명: S3에서는 디렉터리가 아닌 키 기반 관리.  
+
+For example, the prefix could be "myfolder1/anotherfolder" and the object name could be "myfile.txt".  
+예: 접두사 = "myfolder1/anotherfolder", 오브젝트 이름 = "myfile.txt".  
+👉 설명: 키 구조 예시.  
+
+---
+
+Amazon S3 does not have a concept of directories per se.  
+S3에는 디렉터리 개념이 사실상 없음.  
+👉 설명: UI 상 폴더처럼 보여도 내부적으로는 키.  
+
+Although when you look in the console UI, it appears as if you have directories and you can create them, everything in Amazon S3 is actually a key.  
+콘솔 UI에서는 디렉터리처럼 보이지만, 실제로는 모든 것이 키.  
+👉 설명: 가상
+```
+
+
+디렉터리 구조 이해.
+
+Keys are very long names that contain slashes and are made of a prefix and an object name.
+키는 슬래시를 포함하는 긴 이름이며, 접두사와 오브젝트 이름으로 구성.
+👉 설명: S3 키 구조 핵심.
+
+---
+
+What are objects? Their values are the content or body of the file.
+오브젝트란 무엇인가? 파일의 내용(본문)이 값이 됨.
+👉 설명: 실제 데이터 저장 위치.
+
+You can upload any file you want into Amazon S3.
+S3에 원하는 파일을 업로드 가능.
+👉 설명: 유연한 데이터 저장.
+
+The maximum object size is five terabytes, which is 5,000 gigabytes.
+최대 오브젝트 크기는 5TB(5,000GB).
+👉 설명: 대용량 파일 저장 가능.
+
+If you upload a file larger than five gigabytes, you must use the multipart upload feature to upload the file in several parts.
+5GB 초과 파일은 멀티파트 업로드 기능 사용 필요.
+👉 설명: 대용량 파일 분할 업로드 방식.
+
+For example, if you have a file of five terabytes, you must upload at least 1,000 parts of five gigabytes each.
+예: 5TB 파일 = 5GB씩 1,000개 파트 업로드.
+👉 설명: 멀티파트 업로드 실제 사례.
+
+---
+
+Objects can also have metadata, which is a list of key and value pairs.
+오브젝트는 메타데이터도 가질 수 있음(키-값 쌍 목록).
+👉 설명: 파일 정보 관리 용도.
+
+Metadata can be set by the system or by the user to indicate some elements about the file.
+메타데이터는 시스템 또는 사용자가 파일 관련 정보를 표시하도록 설정 가능.
+👉 설명: 자동/수동 메타데이터 관리.
+
+Objects can also have tags, which are Unicode key and value pairs up to 10 in number.
+오브젝트는 최대 10개의 유니코드 키-값 쌍 태그도 가질 수 있음.
+👉 설명: 보안, 라이프사이클 관리 용도.
+
+Tags are useful for security and lifecycle management.
+태그는 보안 및 수명주기 관리에 유용.
+👉 설명: 정책 기반 필터링과 관리 가능.
+
+Additionally, objects can have a version ID if versioning is enabled.
+버전 관리 활성화 시, 오브젝트는 버전 ID를 가질 수 있음.
+👉 설명: 파일 변경 추적 가능.
+
+---
+
+This concludes the introduction to Amazon S3.
+Amazon S3 소개를 마침.
+👉 설명: 기본 개념, 구조, 활용 사례 학습 완료.
+
+Now, let's proceed to the AWS console to get started.
+이제 AWS 콘솔로 이동하여 실습 시작.
+👉 설명: 실제 콘솔 실습 준비.
+
+---
+
+## Key Takeaways
+
+## 핵심 요약
+
+* Amazon S3 is a core AWS service providing infinitely scalable storage used widely across the web and AWS ecosystem.
+
+* Amazon S3는 웹과 AWS 생태계 전반에서 널리 사용되는 무한 확장 가능한 핵심 서비스.
+
+* S3 stores data as objects within buckets, which are region-specific and require globally unique names.
+
+* S3는 데이터를 버킷 내 오브젝트로 저장하며, 버킷은 리전별로 생성되고 전 세계적으로 유일한 이름 필요.
+
+* Objects in S3 have keys representing their full path, combining prefixes and object names, though S3 does not have true directories.
+
+* 오브젝트는 키를 가지며, 접두사와 오브젝트 이름을 합쳐 전체 경로 표현, 실제 디렉터리 개념은 없음.
+
+* S3 supports large files up to 5 terabytes, with multipart upload required for files larger than 5 gigabytes.
+
+* S3는 최대 5TB 파일 지원, 5GB 이상 파일은 멀티파트 업로드 필요.
+
+* Metadata, tags, and versioning can be associated with objects to enhance management and security.
+
+* 오브젝트에는 메타데이터, 태그, 버전 관리 가능, 관리 및 보안 강화.
+
+
+---
+
+🎮 게임보상: **“S3 기초 마스터 칭호 획득!”** (버킷/오브젝트 이해 +50, 멀티파트 업로드 이해 +30, 태그/메타데이터 관리 +20)
