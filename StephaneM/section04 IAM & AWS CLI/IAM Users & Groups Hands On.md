@@ -1,4 +1,3 @@
-```markdown
 # IAM Users & Groups Hands On  
 # IAM 사용자 및 그룹 실습  
 → IAM 실습 강의 시작. 사용자를 생성하고 그룹과 권한을 설정하는 과정입니다.  
@@ -268,11 +267,7 @@ We will continue from here in the next lecture.
 → 전역 사용자 관리 이해.  
 
 - It is best practice to avoid using the root account and instead create IAM users with appropriate permissions.  
-- 루트 계정 사용을 피하고 적절한 권한을 가진 IAM 사용자를 만드는 것이 최선의 방법
-```
-
-
-입니다.
+- 루트 계정 사용을 피하고 적절한 권한을 가진 IAM 사용자를 만드는 것이 최선의 방법입니다.
 → 보안 원칙 요약.
 
 * Users can be organized into groups to simplify permission management.
@@ -284,7 +279,5 @@ We will continue from here in the next lecture.
 
 * AWS는 계정 별칭을 통해 로그인 URL을 맞춤 설정하여 접근성을 높일 수 있습니다.
   → 로그인 편의성 팁.
-
-```
 
 ✅ 게임보상: 경험치 +70 (IAM Hands-On 이해도 +1)  
