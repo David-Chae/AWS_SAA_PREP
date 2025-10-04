@@ -1,4 +1,3 @@
-```md
 # Create an EC2 Instance with EC2 User Data to have a Website Hands On  
 # EC2 User Data를 사용하여 웹사이트를 위한 EC2 인스턴스 생성 실습  
 👉 EC2 인스턴스를 생성하고 User Data를 통해 웹서버를 자동으로 띄우는 실습 강의입니다.  
@@ -179,4 +178,3 @@ We launched our first EC2 instance and web server in the cloud.
 
 - Learned to start, stop, and terminate instances.  
 - 인스턴스 시작, 중지, 종료 방법 학습.  
-```
