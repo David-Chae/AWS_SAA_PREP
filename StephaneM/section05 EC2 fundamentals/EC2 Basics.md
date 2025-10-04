@@ -1,4 +1,3 @@
-```md
 # EC2 Basics  
 # EC2 기초  
 👉 EC2에 대한 기초 개념을 배우는 섹션입니다.  
@@ -115,4 +114,3 @@ EC2 User Data 스크립트는 root 권한으로 실행되므로 모든 명령은
 
 - EC2 user data (bootstrapping) runs once at first launch as root to automate tasks such as updates and software installation.  
 - EC2 User Data(부트스트래핑)는 인스턴스 최초 실행 시 root 권한으로 업데이트, 소프트웨어 설치 등의 작업을 자동화합니다.  
-```
