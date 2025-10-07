@@ -108,9 +108,6 @@ On-demand instances have the highest cost but require no upfront payments or lon
 온디맨드는 가장 비싸지만, 선결제나 장기 약정이 필요 없습니다.  
 👉 짧고 예측 불가능한 워크로드에 적합합니다.  
 
----
-
-(⚡ 여기서부터 Reserved Instances, Savings Plans, Spot Instances, Dedicated Hosts & Instances, Capacity Reservations 세부 설명도 같은 방식으로 이어짐. 각 줄 → 한국어 번역 + 설명 유지.)  
 
 ---
 
