@@ -187,3 +187,86 @@ aws sts get-caller-identity
 3. **AWS CLI 캐시 폴더 주기적 점검**
 4. **CloudTrail 활성화 + GuardDuty 켜기**
 5. **보안 이벤트 자동 알림 (SNS + CloudWatch)** 설정
+
+
+좋아요, 결정을 내리기 전에 **이 파일이 무엇인지 정확히 확인하는 것이 먼저**입니다.
+삭제 여부는 **내용과 출처**에 따라 달라집니다.
+
+---
+
+## 1️⃣ 먼저 확인할 것
+
+```bash
+cat ~/.aws/credentials
+```
+
+* **임시 STS 세션 키**인지 확인
+
+  ```
+  [default]
+  aws_access_key_id = ASIA...
+  aws_secret_access_key = ...
+  aws_session_token = ...
+  ```
+
+  → `ASIA`로 시작하면 **EC2 IAM Role에서 자동으로 부여된 임시 키**입니다.
+  이 경우 **삭제해도 문제가 없음**, 다만 **AWS CLI/SDK가 해당 Role을 사용해 자동으로 다시 가져올 수 있음**.
+
+* **영구 키(Access Key ID)**인지 확인
+
+  ```
+  [default]
+  aws_access_key_id = AKIA...
+  aws_secret_access_key = ...
+  ```
+
+  → 사람이 넣은 키 또는 이미지에 포함된 키.
+  **즉시 삭제 후 키 폐기 필요**. (보안 사고 예방)
+
+---
+
+## 2️⃣ 삭제 여부 판단
+
+| 경우                  | 삭제 여부                                |
+| ------------------- | ------------------------------------ |
+| **임시 STS 키(ASIA…)** | 삭제 가능하지만 없어도 AWS CLI가 Role 통해 자동 발급  |
+| **영구 키(AKIA…)**     | 반드시 삭제 + AWS 계정에서 키 비활성화/폐기          |
+| **출처 불명 / 의심됨**     | 삭제 후 IAM Role 확인 및 CloudTrail 이벤트 점검 |
+
+---
+
+## 3️⃣ 삭제 명령
+
+```bash
+rm ~/.aws/credentials
+```
+
+> Linux / macOS / WSL
+> Windows PowerShell:
+
+```powershell
+del $env:USERPROFILE\.aws\credentials
+```
+
+> 삭제 후 AWS CLI 사용 시 IAM Role이 연결된 EC2라면 **자동으로 STS 임시 자격증명을 가져와 사용 가능**합니다.
+
+---
+
+💡 **Tip**
+
+* 삭제 후 CLI 실행 테스트:
+
+```bash
+aws sts get-caller-identity
+```
+
+→ Role이 정상 연결되어 있으면 여전히 AWS API 호출 가능
+→ Role이 없거나 영구 키 필요 시 오류 발생
+
+---
+
+정리하면:
+
+* **임시 키 → 삭제 가능, 안전**
+* **영구 키 → 삭제 + AWS 키 폐기 필수**
+* **불명 → 삭제 후 조사**
