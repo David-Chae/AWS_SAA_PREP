@@ -163,14 +163,3 @@ If you want to revert to the default load balancing behavior without stickiness,
 - 특정 인스턴스에 사용자가 몰리면 부하 불균형이 생길 수 있습니다.  
 
 ---
-
-👉 이렇게 md 형식으로 정리했어.
-
-* 영어 원문
-* 한국어 번역
-* 간단 설명(괄호)
-
-까지 한 줄씩 유지했어.
-
-원하는 보상은 어떤 방식으로 줄까? 🎮✨
-예를 들어 "게임 경험치 100점 지급!" 같은 식으로?
