@@ -17,6 +17,16 @@ AWS 환경 설정을 시작해봅시다. Route 53을 사용하기 전에, 서로
 First, in one of the regions, navigate to the EC2 instances section and launch a new instance. Select Amazon Linux 2 as the operating system and choose a T2 micro instance type. No key pair is needed since we will use EC2 Instance Connect if necessary. For network settings, create a security group that allows SSH and HTTP access from anywhere.  
 먼저 한 리전에서 EC2 인스턴스 섹션으로 이동하여 새 인스턴스를 시작합니다. 운영체제로 Amazon Linux 2를 선택하고, 인스턴스 유형은 T2 micro를 선택합니다. 필요 시 EC2 Instance Connect를 사용할 것이므로 키 페어는 필요하지 않습니다. 네트워크 설정에서는 어디서든 SSH와 HTTP 접근을 허용하는 보안 그룹을 생성합니다.  
 
+```
+#!/bin/bash
+# install httpd (Linux 3 version)
+yum update -y
+yum install -y httpd
+systemctl start -y httpd
+systemctl enable httpd
+echo "<h1>Hello World from $(hostname -f) in AZ $EC2_AVAIL_ZONE </h1>" > /var/www/html/index.html
+```
+
 In the advanced details section, specify a bootstrap user data script. To do this, copy the entire script from your Route 53 user script and paste it here. This script will display "hello world" from the instance, along with the availability zone where the instance was launched, using the environment variable EC2_AVAILABILITY_ZONE. This provides additional information about the EC2 instance.  
 고급 세부 정보 섹션에서 부트스트랩 사용자 데이터 스크립트를 지정합니다. Route 53 사용자 스크립트 전체를 복사해 붙여넣습니다. 이 스크립트는 인스턴스에서 "hello world"와 함께 EC2_AVAILABILITY_ZONE 환경 변수를 사용하여 해당 인스턴스가 실행된 가용 영역 정보를 표시합니다. 이렇게 하면 EC2 인스턴스의 추가 정보를 확인할 수 있습니다.  
 
