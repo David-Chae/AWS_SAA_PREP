@@ -234,11 +234,7 @@ S3 크로스리전 복제는 대상 리전별로 구성되며, 객체를 거의 
 
 ---
 
-It is typically used for read-only replicas of data across regions and is useful for dynamic content that changes frequently and needs to be available at low
-```
-
-
-latency in a few regions.
+It is typically used for read-only replicas of data across regions and is useful for dynamic content that changes frequently and needs to be available at low latency in a few regions.
 주로 리전 간 읽기 전용 복제본에 사용되며, 자주 변경되는 동적 콘텐츠를 몇몇 리전에서 낮은 지연으로 제공할 때 유용합니다.
 
 ---
