@@ -105,3 +105,49 @@ DataSync는 온프레미스, 다른 클라우드, AWS 간 데이터 동기화를
 
 **한국어 요약:**  
 DataSync는 다양한 위치와 AWS 스토리지 간 안전하게 데이터를 이동하고 동기화하는 완전 관리형 서비스이며, 예약 동기화와 대역폭 제어 기능을 제공합니다.
+
+AWS DataSync - Overview
+Introduction to AWS DataSync
+AWS DataSync is a service that is increasingly appearing in AWS certification exams. It is a straightforward service, but it is essential to understand its core functionality. Essentially, DataSync is designed to synchronize data, enabling the transfer of large amounts of data to and from various locations.
+
+These locations can include on-premises environments or other cloud locations into AWS. To connect to your server, DataSync supports protocols such as NFS, SMB, HDFS, and others. When connecting to on-premises or other cloud environments, an agent must be installed to facilitate this connection.
+
+DataSync also supports migrations between AWS services themselves, which does not require an agent. This means you can move data from one AWS storage service to another seamlessly.
+
+Supported Storage Services
+DataSync can synchronize data to various AWS storage services, including:
+
+Amazon S3, supporting all storage classes including Glacier.
+Amazon Elastic File System (EFS).
+Amazon FSx.
+It fully supports all these services for data synchronization.
+
+Scheduling and Metadata Preservation
+Replication tasks in DataSync are not continuous; instead, they are scheduled. You can configure DataSync to run hourly, daily, or weekly, which means there is a lag between synchronizations. However, the service ensures that data is synchronized according to the schedule.
+
+Additionally, DataSync preserves file permissions and metadata, maintaining security and compliance. It supports NFS POSIX file system permissions and SMB permissions, which is crucial for preserving metadata when moving files between locations.
+
+Performance and Bandwidth Control
+A single DataSync agent is quite powerful and can handle up to 10 gigabits of data per second. If you want to avoid saturating your network, you can configure bandwidth limits to control the data transfer rate.
+
+Architecture Overview
+Consider the use case of synchronizing your on-premises files using SMB or NFS protocols into AWS. Your on-premises environment contains an NFS or SMB server. To enable synchronization, you install the AWS DataSync agent on-premises and configure it to connect to your NFS or SMB server.
+
+The DataSync agent establishes an encrypted connection to the DataSync service in AWS. From there, you can specify the destination, which could be any storage class in Amazon S3, Amazon EFS, or Amazon FSx.
+
+Synchronization can be one-way, from on-premises to AWS, or it can be bi-directional, synchronizing data from AWS back to on-premises. This flexibility is why the service is named DataSync.
+
+Handling Limited Network Capacity
+In scenarios where network capacity is insufficient to use DataSync directly, AWS Snowcone devices can be utilized. The Snowcone device comes with the DataSync agent pre-installed. You can run Snowcone on-premises to pull your data using the DataSync agent. Then, the device is physically shipped back to your AWS region, where the data is synchronized to AWS storage resources.
+
+Synchronization Between AWS Storage Services
+DataSync can also synchronize data between different AWS storage services, such as between Amazon S3, Amazon EFS, and Amazon FSx. This process preserves both the data and the metadata, including file permissions, which is important for maintaining data integrity and security.
+
+Summary
+To summarize, AWS DataSync is a versatile service that can synchronize data between various locations and storage services. It operates on scheduled tasks rather than continuous replication, preserves metadata and file permissions, and requires agents when connecting to NFS or SMB servers. It is a powerful tool for data migration and synchronization in AWS environments.
+
+Key Takeaways
+AWS DataSync is a service designed to synchronize and move large amounts of data between on-premises, other cloud locations, and AWS.
+DataSync supports protocols like NFS, SMB, and HDFS, requiring an on-premises or cloud agent for these connections.
+It can synchronize data to Amazon S3 (including Glacier), Amazon EFS, and Amazon FSx, preserving file permissions and metadata.
+DataSync tasks are scheduled (hourly, daily, weekly), not continuous, and bandwidth limits can be configured to manage network usage.
