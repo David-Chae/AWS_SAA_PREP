@@ -1,3 +1,103 @@
+
+# 🚀 Amazon EKS 쉽게 이해하기
+
+**EKS**는 AWS에서 제공하는 **관리형 Kubernetes 서비스**야.
+
+* Kubernetes는 **컨테이너 자동 배포·확장·관리를 도와주는 오픈소스 시스템**
+* ECS와 비슷하지만, **표준화된 오픈소스 API**를 제공하고 여러 클라우드에서 동일하게 사용 가능
+
+즉, EKS를 쓰면 AWS에서 Kubernetes 클러스터를 쉽게 만들고 관리할 수 있어.
+
+---
+
+## 1️⃣ Kubernetes와 EKS
+
+* **Kubernetes** = 컨테이너를 자동 배포, 스케일링, 관리
+* **Pod** = Kubernetes에서 하나의 컨테이너 또는 관련 컨테이너 그룹, ECS의 Task와 유사
+* **EKS** = AWS에서 Kubernetes 클러스터를 관리해주는 서비스
+
+---
+
+## 2️⃣ EKS 실행 모드 (Launch Modes)
+
+1. **EC2 모드**
+
+   * 클러스터 안의 워커 노드를 **EC2 인스턴스로 배포**
+   * 직접 노드 관리 가능 (자동 확장 가능)
+
+2. **Fargate 모드**
+
+   * 서버리스 컨테이너 실행
+   * 노드 관리 불필요 → 유지보수 부담 없음
+
+---
+
+## 3️⃣ EKS 사용 사례
+
+* 이미 다른 곳에서 Kubernetes를 사용 중
+* 다른 클라우드(Azure, GCP 등)와 연동하여 컨테이너 운영
+* Kubernetes API를 그대로 사용하면서 AWS의 관리 편의성 활용
+
+> Kubernetes는 클라우드 독립적(Cloud-agnostic)이라, EKS를 사용하면 여러 클라우드 간 컨테이너 이동도 용이
+
+---
+
+## 4️⃣ EKS 클러스터 구조
+
+* 클러스터는 **VPC 내 3개의 가용 영역(AZ)**에 분산
+* Public / Private Subnet 구성 가능
+* **Worker Node** = EC2 인스턴스, Pod 실행
+* Auto Scaling 그룹으로 확장 가능
+* 서비스 노출 시, Load Balancer 사용 가능 (ECS와 유사)
+
+---
+
+## 5️⃣ EKS 노드 유형(Node Types)
+
+1. **Managed Node Groups**
+
+   * AWS가 EC2 인스턴스를 자동 관리
+   * On-Demand / Spot 가능
+
+2. **Self-Managed Nodes**
+
+   * 직접 EC2 노드 생성·관리
+   * EKS Optimized AMI 사용 가능
+
+3. **Fargate Mode**
+
+   * 서버리스
+   * 노드 관리 없이 컨테이너 실행
+
+---
+
+## 6️⃣ EKS 저장소(Storage) 통합
+
+* Kubernetes **StorageClass**를 사용하여 볼륨 연결
+* **지원 스토리지 옵션**:
+
+  * Amazon **EBS**
+  * Amazon **EFS** (Fargate에서도 사용 가능)
+  * Amazon **FSx for Lustre**
+  * Amazon **FSx for NetApp ONTAP**
+
+---
+
+# 📌 핵심 요약
+
+1. **EKS = AWS에서 Kubernetes 관리형 서비스**
+2. **Pod = ECS Task**, Kubernetes 단위 컨테이너 실행 단위
+3. 실행 모드: **EC2 모드 / Fargate 서버리스 모드**
+4. 노드 유형: Managed Node, Self-Managed Node, Fargate
+5. 스토리지: CSI 사용 → EBS, EFS, FSx 지원
+
+---
+
+💡 **Tip:**
+시험이나 실무에서 “AWS에서 Kubernetes 운영”이 나오면 **EKS = AWS 관리형 Kubernetes**라고 바로 떠올리면 이해 쉬워.
+
+---
+
 # Amazon EKS - Overview  
 # 아마존 EKS - 개요  
 (Amazon EKS: AWS에서 Kubernetes 클러스터를 관리할 수 있는 서비스)
