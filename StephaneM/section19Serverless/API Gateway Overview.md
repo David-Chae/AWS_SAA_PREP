@@ -1,3 +1,171 @@
+아래 내용을 **“API Gateway가 왜 필요한지, 어떻게 동작하는지”** 중심으로 아주 쉽게 풀어서 설명해드릴게요.
+(서버리스 애플리케이션 전체 그림까지 잡힐 수 있도록 구성해드립니다.)
+
+---
+
+# 🌐 **API Gateway란 무엇인가? (초간단 핵심)**
+
+**클라이언트(웹·모바일 앱 등)** → **API Gateway** → **Lambda / DynamoDB / AWS 서비스**
+
+즉, **외부에서 AWS 내부 기능에 안전하게 접근하도록 해주는 문지기(게이트웨이)**입니다.
+Lambda를 그대로 외부에 노출할 수 없기 때문에, API Gateway가 *공개용 문* 역할을 합니다.
+
+---
+
+# 1️⃣ 왜 API Gateway를 쓰는가?
+
+Lambda 함수는 원래 **직접 호출하려면 IAM 권한**이 필요함 → 일반 사용자 앱에서는 불가능.
+
+그래서 외부 사용자를 위한 **공개 엔드포인트(HTTPS URL)**가 필요함.
+이걸 만들어주는 게 API Gateway.
+
+**하지만 API Gateway는 단순한 HTTP 엔드포인트가 아님.**
+API를 운영하는 데 필요한 거의 모든 기능을 줌:
+
+* 인증/인가
+* 요금제 및 사용량 제한
+* 요청·응답 데이터 변환
+* 캐싱
+* 버저닝
+* 여러 환경(dev/test/prod) 분리
+* WebSocket 실시간 API 지원
+
+즉, **API 운영에 필요한 모든 올인원 관리 도구**라고 보면 됩니다.
+
+---
+
+# 2️⃣ API Gateway가 하는 일 (한 번에 이해하기)
+
+### ✔ 클라이언트 요청을 받아
+
+* 올바른 Lambda로 전달
+* HTTP 서버로 전달
+* AWS 서비스(SQS, Kinesis, Step Functions 등)에 직접 전달
+
+### ✔ 요청을 검증하고 변환하고
+
+* JSON이나 파라미터가 올바른지 검사
+* 필요하면 요청/응답 포맷을 변환
+
+### ✔ 인증·보안 처리
+
+* 사용자 인증(Cognito, IAM, Custom Authorizer)
+* 요청 제한(Throttle)
+* API 키 발급
+* HTTPS 인증서 적용(Custom Domain)
+
+### ✔ 그 외 API 운영 기능
+
+* 캐싱
+* 버저닝 (v1 → v2 업그레이드 시 이전 것 유지)
+* Stage(dev / test / prod)
+
+---
+
+# 3️⃣ API Gateway에서 연결할 수 있는 백엔드 3가지
+
+### **① Lambda (가장 일반적)**
+
+* 완전 서버리스 API 구축 가능
+* CRUD, 로그인, 비즈니스 로직 등 대부분 여기에서 처리
+
+### **② HTTP 엔드포인트**
+
+* On-prem 서버 / EC2 / ALB 등
+* API Gateway를 앞에 세우면 인증·캐싱·제한걸기 가능
+
+### **③ AWS 서비스 직접 호출**
+
+예:
+
+* SQS 큐에 메시지 넣기
+* Step Functions 워크플로 시작
+* Kinesis로 데이터 넣기
+
+➡ 클라이언트에게 AWS 권한을 줄 필요가 없음
+➡ API Gateway가 대신 안전하게 중개해줌
+
+**대표 예시:**
+모바일 앱 → API Gateway → Kinesis → Firehose → S3
+
+---
+
+# 4️⃣ API Gateway 엔드포인트 유형 (중요 포인트)
+
+### **① Edge-Optimized (기본값)**
+
+* 전 세계 사용자용
+* CloudFront 엣지 로케이션을 경유해서 지연 최소화
+* API Gateway는 한 지역에 있어도 글로벌로 빠르게 호출됨
+
+### **② Regional**
+
+* 사용자와 서버가 같은 Region에 있을 때
+* CloudFront를 기본 사용하지 않음
+* 필요하면 직접 CloudFront 붙일 수 있음
+
+### **③ Private**
+
+* 외부 공개 X
+* VPC 안에서만 호출 가능
+* 사내 API, 내부 시스템용
+
+---
+
+# 5️⃣ API Gateway 보안 방식
+
+### **① IAM 인증**
+
+* 주로 서버 간 통신(EC2 → API Gateway)
+
+### **② Amazon Cognito**
+
+* 일반 사용자 인증(로그인, Sign Up)
+* 모바일/웹 앱용
+
+### **③ Custom Authorizer**
+
+* Lambda로 로그인 검증 로직 직접 구현
+  (예: JWT 토큰 분석, OAuth 토큰 검증)
+
+### **HTTPS / Custom Domain**
+
+* API를 “나만의 도메인”으로 공개
+* 인증서는 AWS Certificate Manager에서 관리
+* Edge-Optimized는 **us-east-1에만 설치** 가능
+* Regional은 해당 리전에 설치 가능
+
+---
+
+# 전체 흐름 요약 그림 (텍스트로 표현)
+
+```
+사용자 → HTTPS 요청
+             ↓
+       API Gateway
+   - 인증/인가
+   - 요청 검증/변환
+   - 캐싱/제한
+             ↓
+     백엔드 선택
+   1) Lambda
+   2) HTTP 엔드포인트
+   3) AWS 서비스
+```
+
+---
+
+# 📌 핵심 요약 (초집중)
+
+* **API Gateway = 서버리스 API 관리 플랫폼**
+* Lambda나 AWS 서비스를 **안전하게 외부에 노출**시켜주는 통로
+* 인증/인가, 캐싱, 요금제, 버저닝 등 API 운영 기능을 전부 제공
+* Edge / Regional / Private 세 가지 배포 방식
+* 보안 방식: IAM, Cognito, Custom Authorizer
+* AWS 서비스 직접 호출도 가능 (SQS / Kinesis / Step Functions 등)
+
+---
+
 # API Gateway Overview
 # API Gateway 개요
 > Lambda와 DynamoDB를 사용한 서버리스 여정에서 API를 외부에 노출하는 방법을 다룹니다.
