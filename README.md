@@ -4,7 +4,13 @@ Below are AWS Solutions Architect Associate Exam guide links:
 [AWS Certified Solutions Architect - Associate](https://aws.amazon.com/certification/certified-solutions-architect-associate/#exam-prep)  
 [Skill Builder - AWS Certified Solutions Architect - Associate](https://skillbuilder.aws/exam-prep/solutions-architect-associate)
 
+
+[Article AWS Certified Solutions Architect — Associate Exam Preparation](https://medium.com/@deep-dive/aws-certified-solutions-architect-associate-exam-preparation-9d8c58ffeb73)
+
+
 Below content is directly from the AWS Certified Solutions Architect Associate (SAA-C03) Exam Guide.
+
+
 
 The exam has the following content domains and weightings:  
 • Domain 1: Design Secure Architectures (30% of scored content)  
