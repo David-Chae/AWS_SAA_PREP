@@ -1,3 +1,5 @@
+
+
 Question 2
 Incorrect
 A company hosted a web application in an Auto Scaling group of EC2 instances. The IT manager is concerned about the over-provisioning of the resources that can cause higher operating costs. A Solutions Architect has been instructed to create a cost-effective solution without affecting the performance of the application.
@@ -717,6 +719,62 @@ https://tutorialsdojo.com/amazon-aurora/
 
 Domain
 Design High-Performing Architectures
+
+
+
+Question 23
+Skipped
+A company plans to build a data analytics application in AWS which will be deployed in an Auto Scaling group of On-Demand EC2 instances and a MongoDB database. It is expected that the database will have high-throughput workloads performing small, random I/O operations. As the Solutions Architect, you are required to properly set up and launch the required resources in AWS.
+
+Which of the following is the most suitable EBS type to use for your database?
+
+Correct answer
+Provisioned IOPS SSD (io1)
+
+General Purpose SSD (gp2)
+
+Throughput Optimized HDD (st1)
+
+Cold HDD (sc1)
+
+Overall explanation
+On a given volume configuration, certain I/O characteristics drive the performance behavior for your EBS volumes. SSD-backed volumes, such as General Purpose SSD (gp2) and Provisioned IOPS SSD (io1), deliver consistent performance whether an I/O operation is random or sequential. HDD-backed volumes like Throughput Optimized HDD (st1) and Cold HDD (sc1) deliver optimal performance only when I/O operations are large and sequential.
+
+In the exam, always consider the difference between SSD and HDD as shown on the table below. This will allow you to easily eliminate specific EBS-types in the options which are not SSD or not HDD, depending on whether the question asks for a storage type which has small, random I/O operations or large, sequential I/O operations.
+
+
+
+Provisioned IOPS SSD (io1) volumes are designed to meet the needs of I/O-intensive workloads, particularly database workloads, that are sensitive to storage performance and consistency. Unlike gp2, which uses a bucket and credit model to calculate performance, an io1 volume allows you to specify a consistent IOPS rate when you create the volume, and Amazon EBS delivers within 10 percent of the provisioned IOPS performance 99.9 percent of the time over a given year.
+
+
+
+General Purpose SSD (gp2) is incorrect because although General Purpose is a type of SSD that can handle small, random I/O operations, the Provisioned IOPS SSD volumes are much more suitable to meet the needs of I/O-intensive database workloads such as MongoDB, Oracle, MySQL, and many others.
+
+Throughput Optimized HDD (st1) and Cold HDD (sc1) are incorrect because HDD volumes (such as Throughput Optimized HDD and Cold HDD volumes) are more suitable for workloads with large, sequential I/O operations instead of small, random I/O operations.
+
+
+
+References:
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-io-characteristics.html
+
+
+
+Amazon EBS Overview - SSD vs HDD:
+
+https://www.youtube.com/watch?v=LW7x8wyLFvw
+
+
+
+Check out this Amazon EBS Cheat Sheet:
+
+https://tutorialsdojo.com/amazon-ebs/
+
+Domain
+Design High-Performing Architectures
+
 Question 25
 Incorrect
 An organization needs to provision a new Amazon EC2 instance with a persistent block storage volume to migrate data from its on-premises network to AWS. The required maximum performance for the storage volume is 64,000 IOPS.
