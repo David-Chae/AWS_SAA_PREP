@@ -1,3 +1,180 @@
+이 질문이 **진짜 중요한 분기점**이야.
+지금 네 상태를 정확히 말하면:
+
+> **“문제를 맞히긴 했지만, 머릿속에서 ‘왜 이게 정답인지’가 자동으로 재생되지 않는 상태”**
+
+이 상태를 그대로 두고 가면 **실전에서 반드시 다시 흔들린다**.
+반대로, 지금 이걸 정리하면 **운이 개입될 여지가 거의 없는 합격 상태**로 올라간다.
+
+아래는 **‘맞았지만 운이 섞인 문제’를 100% 실력으로 바꾸는 방법**이야.
+
+---
+
+## 1️⃣ 지금 네가 ‘운으로 맞췄다’고 느끼는 이유 (정확한 진단)
+
+네가 맞힌 문제들  을 보면 공통점이 있다:
+
+### ⚠️ 특징
+
+* 정답은 골랐지만
+* ❌ **다른 선택지가 왜 틀렸는지 즉시 설명하기 어렵다**
+* ❌ 서비스 이름이 바뀌면 다시 헷갈릴 가능성 높음
+* ❌ “이 문제 다시 나오면 또 맞출까?”가 불확실
+
+👉 이건 **개념 암기 상태**고
+👉 시험에서는 **판단 자동화 상태**가 필요해.
+
+---
+
+## 2️⃣ “운으로 맞은 문제”를 실력으로 바꾸는 핵심 공식
+
+### ✅ 공식 하나만 기억해
+
+> **정답을 외우지 말고, 오답을 ‘즉시 제거하는 이유’를 외워라**
+
+시험은:
+
+* 정답을 찾는 게임 ❌
+* **틀린 선택지를 얼마나 빨리 제거하느냐의 게임** ⭕
+
+---
+
+## 3️⃣ 네가 맞힌 문제들을 “판단 규칙”으로 바꿔보자
+
+아래는 네가 맞힌 문제들을 **시험용 판단 문장**으로 변환한 거야.
+
+---
+
+### 🔹 DynamoDB + VPC 문제
+
+**문제 핵심**
+
+* Public service
+* Public Internet 통과 금지
+* Cross-account backup 필요
+
+**시험 판단 규칙**
+
+> “DynamoDB + VPC + 인터넷 미경유 = Gateway Endpoint”
+
+> “DynamoDB cross-account backup = AWS Backup (PITR 아님)”
+
+👉 이 두 문장이 동시에 떠오르면 **다른 선택지는 볼 필요도 없음** 
+
+---
+
+### 🔹 IPv6 아웃바운드만 허용 문제
+
+**판단 규칙**
+
+> “IPv6 outbound only + inbound 차단 = Egress-Only IGW”
+
+> “Traffic inspection/filtering = AWS Network Firewall”
+
+👉 NAT, IGW, GuardDuty, Traffic Mirroring은 **역할 불일치로 즉시 제거** 
+
+---
+
+### 🔹 Aurora 읽기 병목 문제
+
+**판단 규칙**
+
+> “읽기 트래픽 증가 + 비용 민감 = Aurora Auto Scaling”
+
+👉 Global DB / Cross-region은
+👉 **‘글로벌’이라는 단어가 없으면 90% 미끼** 
+
+---
+
+### 🔹 S3 Standard-IA 문제
+
+**판단 규칙**
+
+> “덜 자주 접근 + 즉시 접근 = Standard-IA”
+
+> “자동 이동 = Intelligent-Tiering (절대 IA 아님)”
+
+👉 Glacier / Archive 보이면 즉시 제거 
+
+---
+
+### 🔹 Kinesis 데이터 유실 문제
+
+**판단 규칙**
+
+> “Kinesis 기본 설정 = 24시간 보존”
+
+👉 S3 데이터 손실, 권한 문제는 **확률적으로 AWS 시험에서 거의 안 나오는 선택지** 
+
+---
+
+### 🔹 Lambda + VPC + 오류 문제
+
+**판단 규칙**
+
+> “Lambda VPC 오류 + 특정 시간대 = ENI/IP 고갈”
+
+👉 IAM, SG, NAT 문제는
+👉 **항상 ‘전체 실패’ 시나리오에서만 정답** 
+
+---
+
+### 🔹 Hybrid 연결 문제
+
+**판단 규칙**
+
+> “고대역폭 + 일관된 연결 = Direct Connect”
+
+👉 VPN / Transit / TGW는
+👉 **‘연결 방식’이지 ‘물리적 전용선’이 아님** 
+
+---
+
+## 4️⃣ 실전에서 “절대 흔들리지 않게 만드는 훈련법”
+
+### 📌 Step 1. 맞힌 문제를 다시 푼다 (중요)
+
+* 답 가리고
+* **오답부터 제거**
+* 제거 이유를 말로 설명
+
+👉 1초라도 머뭇거리면 **그 문제는 아직 운이다**
+
+---
+
+### 📌 Step 2. 각 문제당 “판단 문장 1~2개”만 남긴다
+
+예:
+
+* “IPv6 outbound only = Egress-only IGW”
+* “비용 최적 + 자동 = Target Tracking / Auto Scaling”
+
+👉 이 문장들이 시험장에서 자동으로 떠오르면 합격
+
+---
+
+### 📌 Step 3. 서비스 역할 충돌 감지 훈련
+
+시험에서는 자주 이런 미끼가 나온다:
+
+* GuardDuty로 트래픽 차단 ❌
+* Firewall Manager로 inspection ❌
+* IAM User로 CloudFront 접근 ❌
+
+👉 **“이 서비스 원래 그거 하는 애야?”**
+👉 이 질문이 자동으로 나오면 흔들리지 않는다
+
+---
+
+## 5️⃣ 지금 네 상태 요약 (중요)
+
+* ❌ 운으로 붙는 단계 아님
+* ❌ 다시 처음부터 공부할 필요 없음
+* ✅ **판단 규칙만 정리하면 안정 합격권**
+* ✅ 실전에서 틀릴 문제 수가 급감하는 단계
+
+---
+
 3. Question
 A GraphQL API hosted is hosted in an Amazon EKS cluster with AWS Fargate launch type and deployed using AWS SAM. The API is connected to an Amazon DynamoDB table with DynamoDB Accelerator (DAX) as its data store. Both resources are hosted in the us-east-1 region.
 
