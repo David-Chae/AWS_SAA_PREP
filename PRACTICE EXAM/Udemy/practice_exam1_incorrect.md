@@ -1,3 +1,315 @@
+좋아. **“각 문제마다, 다음에 나오면 자동으로 오답이 지워지고 정답만 남는 판단공식”**으로 정리해줄게. 아래는 네 `practice_exam1_incorrect.md` 기준이야. 
+
+---
+
+## Q2. Auto Scaling 비용 과다(오버프로비저닝) + 성능 유지
+
+**문제 신호:** “over-provisioning / cost-effective / performance 유지” 
+**정답 판단 공식:**
+
+* **목표값(예: CPU 50%)을 유지**하며 자동 증감 ⇒ **Target Tracking Scaling** 
+  **오답 제거 규칙:**
+* **Scheduled** = 트래픽이 예측 가능할 때만
+* **Simple** = 쿨다운 때문에 반응 느려서 “최적화” 문제에 자주 미끼
+
+---
+
+## Q5. 스파이크/간헐/예측불가 OLTP + “관계형 DB” + 자동 스케일
+
+**문제 신호:** “intermittent, sporadic, unpredictable + relational + autoscale up/down” 
+**정답 판단 공식:**
+
+* **관계형 + 불규칙 + 자동으로 0까지 줄이고 싶다** ⇒ **Aurora Serverless + min/max capacity** 
+  **오답 제거 규칙:**
+* DynamoDB( NoSQL )는 “관계형” 요구 나오면 즉시 탈락 
+* Redshift = OLAP(분석) 용
+
+---
+
+## Q6. Windows 공유 파일스토리지 + AD 통합 + HA
+
+**문제 신호:** “SharePoint / Windows shared file storage / Active Directory” 
+**정답 판단 공식:**
+
+* **Windows + SMB + AD** ⇒ **FSx for Windows File Server + AD Join** 
+  **오답 제거 규칙:**
+* **EFS = Linux(NFS)** 쪽 (Windows 공유 스토리지 요구면 탈락)
+
+---
+
+## Q7. Private subnet EC2 → S3/DynamoDB “인터넷 안 거치고” 접근
+
+**문제 신호:** “private subnet + S3 + DynamoDB + no public Internet” 
+**정답 판단 공식:**
+
+* **S3/DynamoDB를 VPC 내부 사설 경로로** ⇒ **VPC Endpoint** 
+  **오답 제거 규칙:**
+* Direct Connect/VPN/TGW는 “하이브리드/네트워크 연결”이지, S3/DDB 사설 엔드포인트 자체가 아님
+
+---
+
+## Q8. Reserved Instance(표준 vs 전환형) 특성 2개
+
+**문제 신호:** “Standard RI + Convertible RI 특징/혜택” 
+**정답 판단 공식 2개:**
+
+* **Standard RI**: 안 쓰면 **RI Marketplace에 판매 가능** 
+* **Convertible RI**: **다른 instance family로 교환 가능** 
+  **오답 제거 규칙:**
+* “Dedicated 하드웨어” 문구 나오면 RI가 아니라 Dedicated 인스턴스 설명
+* “Convertible도 Marketplace 판매”는 미끼(표준만 가능)
+
+---
+
+## Q9. ECS Fargate에서 DB 크리덴셜을 env var로 주입(평문 노출 금지) + 최소 노력
+
+**문제 신호:** “ECS Fargate + env var + not view in plaintext + minimal effort” 
+**정답 판단 공식:**
+
+* **ECS task definition의 `secrets`로 주입** ⇒ **SSM Parameter Store(암호화는 KMS) + task execution role 권한** 
+  **오답 제거 규칙:**
+* Docker Secrets = Docker Swarm 맥락(시험 미끼) 
+* “ECS는 resource-based policy 지원” 같은 문장 나오면 의심(미끼 포인트) 
+
+---
+
+## Q10. API Gateway + Lambda 대규모 트래픽(제품 발표) → 백엔드 보호
+
+**문제 신호:** “massive visitors + protect backend from traffic spikes” 
+**정답 판단 공식:**
+
+* **API Gateway로 백엔드 보호(유량 제한)** ⇒ **Throttling limits( rate + burst )** 
+  **오답 제거 규칙:**
+* “API Gateway는 아무 설정 없이 자동으로 다 처리”는 함정(기본은 보호장치가 목적대로 안 맞음) 
+
+---
+
+## Q11. SSH는 특정 단일 IP만 허용
+
+**문제 신호:** “only this IP + SSH” 
+**정답 판단 공식:**
+
+* **SSH = TCP/22**
+* **단일 IP = /32**
+  ⇒ `TCP 22 110.238.98.71/32` 
+  **오답 제거 규칙:** UDP는 즉시 탈락, `/0`는 전세계 오픈
+
+---
+
+## Q13. CloudWatch에 기본으로 없는 EC2 지표(커스텀으로 넣어야 하는 것)
+
+**문제 신호:** “CloudWatch에 없음 / custom metric” 
+**정답 판단 공식:**
+
+* 기본 제공(대부분): CPU, Network, Disk Read/Write
+* **기본 미제공(대표): Memory(및 디스크 사용률)**
+  ⇒ **Memory Utilization** 
+
+---
+
+## Q15. S3 기밀문서 보안(암호화) 2개
+
+**문제 신호:** “confidential documents + data security (Select TWO)” 
+**정답 판단 공식:**
+
+* S3 암호화는 크게 2가지:
+
+  * **Server-side encryption(SSE)**
+  * **Client-side encryption(CSE)**
+    ⇒ **S3 Server-Side Encryption + S3 Client-Side Encryption** 
+    **오답 제거 규칙:** “On-Premises Data Encryption” 같은 문구는 존재하지 않는 옵션이라 미끼 
+
+---
+
+## Q16. RDS에서 “프로세스/스레드별” CPU·메모리 사용량까지 보고 싶다
+
+**문제 신호:** “different processes/threads CPU, memory per process” 
+**정답 판단 공식:**
+
+* **OS 레벨/프로세스 단위 지표** ⇒ **RDS Enhanced Monitoring** 
+  **오답 제거 규칙:**
+* CloudWatch 기본 CPU는 하이퍼바이저 레벨이라 “프로세스별” 요구 나오면 탈락 
+
+---
+
+## Q18. 온프레미스 메시지 브로커를 “코드 수정 없이” AWS로
+
+**문제 신호:** “industry standard messaging APIs/protocols + no rewrite” 
+**정답 판단 공식:**
+
+* **기존 브로커(JMS/AMQP 등) 그대로 옮기기** ⇒ **Amazon MQ** 
+  **오답 제거 규칙:**
+* SNS/SQS는 “클라우드 네이티브로 새로 설계”할 때 강함(기존 프로토콜 호환 목적이면 MQ)
+
+---
+
+## (추가) Aurora에서 “고성능 인스턴스(프로덕션)”와 “저성능(리포팅)”을 분리해 연결
+
+**문제 신호:** “production traffic은 high-capacity, reporting은 low-capacity로” 
+**정답 판단 공식:**
+
+* **역할/그룹별로 원하는 인스턴스 묶어서 로드밸런싱** ⇒ **Aurora Custom Endpoint** 
+  **오답 제거 규칙:**
+* Reader endpoint는 “읽기 로드밸런싱”만(인스턴스 등급 분리 요구면 custom endpoint가 정답) 
+
+---
+
+## Q22. Aurora에서 “행 삭제(데이터 변경)” 시점에 외부 분산 처리 시스템으로 전달
+
+**문제 신호:** “sold → row 삭제 + forwarding to distributed processing system” 
+**정답 판단 공식:**
+
+* **DB 데이터 변경 이벤트(INSERT/UPDATE/DELETE)** 를 잡아야 함
+  ⇒ **Aurora native function / stored procedure로 Lambda invoke**
+  ⇒ Lambda가 **SQS로 전달(처리 시스템 소비)** 
+  **오답 제거 규칙:**
+* **RDS Event Subscription**은 “운영 이벤트(DB 인스턴스/스냅샷 등)”라서 **데이터 변경 감지용이 아님** 
+
+---
+
+# 시험장에서 이걸 “자동화”하는 한 줄 규칙
+
+각 문제를 볼 때 정답을 찾지 말고, 먼저 이렇게 말해:
+
+* **“이 요구사항은 ‘어떤 레이어(네트워크/애플리케이션/DB/스토리지/운영)’ 문제냐?”**
+* 그 레이어의 대표 정답 서비스가 바로 떠오르면, 나머지는 “역할 불일치”로 제거.
+
+---
+좋아. `practice_exam1_incorrect.md`에서 **Q22 이후**로 추가로 확인되는 틀린 문제들에 대해, **“문제 신호 → 정답 공식 → 오답 제거”**로 계속 정리할게. (아래는 파일 내용 기반) 
+
+---
+
+## Q51-1. S3 웹사이트/JS가 S3 API 엔드포인트 호출이 막힘
+
+**문제 신호**
+
+* S3 website endpoint에서 로드된 웹페이지
+* JS가 다른 도메인(=S3 API endpoint)로 GET/PUT 호출
+* 브라우저가 차단 
+
+**정답 판단 공식**
+
+* **브라우저 Cross-domain 차단**이면 → **S3 버킷 CORS 설정** 
+
+**오답 제거 규칙**
+
+* Cross-Account Access: IAM 영역이지 “브라우저 정책” 해결 아님 
+* Cross-Zone LB: ELB 기능(=S3랑 무관) 
+* CRR: 복제 기능(=접근 차단 문제 해결 아님) 
+
+---
+
+## Q51-2. 멀티 계정에서 리소스(Transit GW, License Manager, Route53 Resolver rules 등) “중앙 생성 후 공유”
+
+**문제 신호**
+
+* “여러 AWS 계정”
+* 중앙에서 리소스 만들고 여러 계정에 공유
+* 예시로 Transit Gateway, License Manager, Route53 Resolver rules 
+
+**정답 판단 공식 (2개 세트)**
+
+* **계정 묶기/거버넌스** → **AWS Organizations** 
+* **리소스 공유** → **AWS RAM(Resource Access Manager)** 
+
+**오답 제거 규칙**
+
+* IAM cross-account는 가능은 한데, 계정마다 다 수동 세팅해야 해서 “중앙 공유” 요구에 보통 오답(운영 오버헤드 큼) 
+* Control Tower는 “멀티계정 세팅/거버넌스”지 “리소스 공유”의 정답 도구가 아님 
+* ParallelCluster는 HPC 클러스터 도구라 완전 역할 불일치 
+
+---
+
+## Q54. ElastiCache for Redis에 “명령 실행 전에 비밀번호 요구”
+
+**문제 신호**
+
+* ElastiCache Redis
+* Cloud Engineer들도 클러스터 접근 가능
+* Redis 명령 실행 전에 password 요구 
+
+**정답 판단 공식**
+
+* **Redis에서 “패스워드로 명령 허용”** → **Redis AUTH(auth-token) + in-transit encryption** 
+
+**오답 제거 규칙**
+
+* At-rest encryption / in-transit encryption만으로는 “명령 실행 전 비밀번호” 요구 충족 못함 
+* IAM/MFA로 “Redis 명령 비밀번호”를 강제하는 건 불가능(역할 불일치) 
+
+---
+
+## (질문번호는 파일 조각상 생략) “대용량 데이터를 가장 빠르게 S3로 전송”
+
+**문제 신호**
+
+* 빠른 전송이 핵심
+* Snowball Edge(주 단위) / VPN(필요 없음, 느림) 같은 선택지 등장 
+
+**정답 판단 공식**
+
+* **인터넷 경로로 ‘가속’해서 S3 업로드** → **S3 Transfer Acceleration** 
+
+**오답 제거 규칙**
+
+* Snowball은 “초대용량/물리배송”이지만 “가장 빠르게” 문맥에서 종종 시간(물류) 때문에 탈락 
+* Site-to-Site VPN은 하이브리드 보안 연결이지, 최단 전송 가속 솔루션이 아님 
+
+---
+
+## Q62. 글로벌 스케일 + 잦은 스키마 변경 + 변경 시 다운타임/성능저하 없어야 함 + 저지연
+
+**문제 신호**
+
+* “frequent schema changes”
+* “no downtime/performance issues on schema change”
+* “low latency + high traffic”
+* “scale globally” 
+
+**정답 판단 공식**
+
+* **스키마 자주 바뀜 + 다운타임 싫음 + 고트래픽 저지연** → **NoSQL, 특히 DynamoDB** 
+
+**오답 제거 규칙**
+
+* Aurora/RDS는 “관계형+스키마(DDL) 변화”가 부담. 잦은 변경 요구 나오면 기본적으로 불리(시험에서는 보통 오답 처리) 
+* Redshift는 분석(OLAP) 성격이라 트랜잭션/저지연 앱 DB로는 역할 불일치 
+
+---
+
+## Q65. “동기식(synchronous) 복제”로 RDS 고가용성
+
+**문제 신호**
+
+* RDS(MySQL)
+* 다른 AZ로 **synchronous replication**
+* 고가용성 
+
+**정답 판단 공식**
+
+* **RDS 동기식 복제 = Multi-AZ** 
+
+**오답 제거 규칙**
+
+* **Read Replica는 비동기(asynchronous)**라서 “동기식” 단어 나오면 즉시 탈락 
+* DynamoDB/CloudFront “read replica” 같은 표현은 역할 불일치 미끼 
+
+---
+
+# 시험장에서 바로 쓰는 “초단기 체크”
+
+* **브라우저에서 S3 API 호출 막힘** → CORS
+* **멀티계정 리소스 공유** → Organizations + RAM
+* **Redis 명령 전 비번** → AUTH(auth-token)
+* **가장 빠른 S3 업로드 가속** → Transfer Acceleration
+* **스키마 자주 바뀜+저지연 고트래픽** → DynamoDB
+* **RDS 동기식 복제** → Multi-AZ
+
+---
+
+원하면, 지금까지 정리한 오답 전부를 **“한 장짜리 제거 공식 카드(키워드→정답/오답)”**로 압축해서 만들어줄게.
+그리고 혹시 `practice_exam1_incorrect.md`에 **이 외에도 더** 있다면(예: Q66~), 파일에서 그 부분을 더 열어서 **계속 같은 포맷으로** 이어서 정리해줄게.
+----
 
 
 Question 2
