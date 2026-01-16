@@ -1,5 +1,5 @@
 Design Resilient Architectures
-10 of 17 correct
+10 of 15 correct
 
 Question 2
 A company has an Auto Scaling group of Amazon Elastic Compute Cloud (EC2) instances hosting its retail sales application. Any significant downtime can result in significant profit loss. The solution architecture also includes an Application Load Balancer and an Amazon Relational Database Service (Amazon RDS) database in a Multi-AZ deployment. What occurs automatically to maintain high availability if the primary database instance fails?
